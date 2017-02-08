@@ -110,10 +110,10 @@ paths:
         Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8
       x-wso2-response: "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n   \"previous\": \"\",\n   \"list\":    [\n            {\n         \"provider\": \"admin\",\n         \"version\": \"1.0.0\",\n         \"description\": \"This sample API provides Account Status Validation\",\n         \"name\": \"AccountVal\",\n         \"context\": \"/account\",\n         \"id\": \"2e81f147-c8a8-4f68-b4f0-69e0e7510b01\",\n         \"status\": \"PUBLISHED\"\n      },\n            {\n         \"provider\": \"admin\",\n         \"version\": \"1.0.0\",\n         \"description\": null,\n         \"name\": \"api1\",\n         \"context\": \"/api1\",\n         \"id\": \"3e22d2fb-277a-4e9e-8c7e-1c0f7f73960e\",\n         \"status\": \"PUBLISHED\"\n      }\n   ],\n   \"next\": \"\",\n   \"count\": 2\n}"
       summary: |
-        Retrieve/Search APIs 
+        Retrieve/Search APIs
       description: |
         This operation provides you a list of available APIs qualifying under a given search condition.
-        
+
         Each retrieved API is represented with a minimal amount of attributes. If you want to get complete details of an API, you need to use **Get details of an API** operation.
       parameters:
         - $ref : '#/parameters/limit'
@@ -136,8 +136,8 @@ paths:
             Supported attribute modifiers are [**version, context, status,
             description, subcontext, doc, provider**]
 
-            If no advanced attribute modifier has been specified, search will match the
-            given query string against API Name.
+            If no advanced attribute modifier has been specified,  the API names containing
+            the search term will be returned as a result.
             
           type: string
         - $ref : "#/parameters/Accept"
@@ -181,7 +181,7 @@ paths:
       summary: Create a new API
       description: |
         This operation can be used to create a new API specifying the details of the API in the payload. The new API will be in `CREATED` state.
-        
+
         There is a special capability for a user who has `APIM Admin` permission such that he can create APIs on behalf of other users. For that he can to specify `"provider" : "some_other_user"` in the payload so that the API's creator will be shown as `some_other_user` in the UI.
       parameters:
         - in: body
@@ -484,10 +484,10 @@ paths:
        Authorization:Bearer 5311eca3-8ac8-354e-ab36-7e2fdd6a4013
        Content-Length: 477
        Content-Type: multipart/form-data; boundary=------------------------4f51e636c0003d99
-       
+
        --------------------------4f51e636c0003d99
        Content-Disposition: form-data; name="apiDefinition"
-       
+
        {"paths":{"\/*":{"get":{"x-auth-type":"Application","x-throttling-tier":"Unlimited","responses":{"200":{"description":"OK"}}}}},"x-wso2-security":{"apim":{"x-wso2-scopes":[]}},"swagger":"2.0","info":{"title":"PhoneVerification","description":"Verify a phone number","contact":{"email":"xx@ee.com","name":"xx"},"version":"1.0.0"}}
        --------------------------4f51e636c0003d99--
       x-wso2-response: "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\n   \"paths\": {\"/*\": {\"get\":    {\n      \"x-auth-type\": \"Application\",\n      \"x-throttling-tier\": \"Unlimited\",\n      \"responses\": {\"200\": {\"description\": \"OK\"}}\n   }}},\n   \"x-wso2-security\": {\"apim\": {\"x-wso2-scopes\": []}},\n   \"swagger\": \"2.0\",\n   \"info\":    {\n      \"title\": \"PhoneVerification\",\n      \"description\": \"Verify a phone number\",\n      \"contact\":       {\n         \"email\": \"xx@ee.com\",\n         \"name\": \"xx\"\n      },\n      \"version\": \"1.0.0\"\n   }\n}"
@@ -766,9 +766,9 @@ paths:
       summary: Change API Status
       description: |
         This operation is used to change the lifecycle of an API. Eg: Publish an API which is in `CREATED` state. In order to change the lifecycle, we need to provide the lifecycle `action` as a query parameter.
-        
+
         For example, to Publish an API, `action` should be `Publish`.
-        
+
         Some actions supports providing additional paramters which should be provided as `lifecycleChecklist` parameter. Please see parameters table for more information.
       parameters:
         - name: action
@@ -1151,12 +1151,12 @@ paths:
         summary: Get the content of an API document
         description: |
           This operation can be used to retrive the content of an API's document.
-          
+
           The document can be of 3 types. In each cases responses are different.
-          
+
           1. **Inline type**:
              The content of the document will be retrieved in `text/plain` content type
-          2. **FILE type**: 
+          2. **FILE type**:
              The file will be downloaded with the related content type (eg. `application/pdf`)
           3. **URL type**:
               The client will recieve the URL of the document as the Location header with the response with - `303 See Other`
@@ -1992,7 +1992,7 @@ paths:
       summary: Block a subscription
       description: |
         This operation can be used to block a subscription. Along with the request, `blockState` must be specified as a query parameter.
-        
+
         1. `BLOCKED` : Subscription is completely blocked for both Production and Sandbox environments.
         2. `PROD_ONLY_BLOCKED` : Subscription is blocked for Production environment only.
       parameters:
@@ -2180,7 +2180,7 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Tier'
-        - $ref: '#/parameters/tierLevel'
+        - $ref: '#/parameters/tierLevel-A'
         - $ref: '#/parameters/Content-Type'
       tags:
         - Throttling Tier (Collection)
@@ -2235,6 +2235,8 @@ paths:
       summary: Get details of a tier
       description: |
         This operation can be used to retrieve details of a single tier by specifying the tier level and tier name.
+        Note that the scope of the API is mandatory while retreiving the access token with the following cURL command : `curl -k -d \"grant_type=password&username=username&password=password&scope=apim:tier_view\" -H \"Authorization: Basic <token>\" https://127.0.0.1:8243/token`.
+        You will receive the access token as the response, for example `"access_token":"8644c013-7ff1-3217-b150-d7b92cae6be7"`.
       parameters:
         - $ref: '#/parameters/tierName'
         - $ref: '#/parameters/tierLevel'
@@ -2306,7 +2308,7 @@ paths:
           required: true
           schema:
             $ref: '#/definitions/Tier'
-        - $ref: '#/parameters/tierLevel'
+        - $ref: '#/parameters/tierLevel-A'
         - $ref: '#/parameters/Content-Type'
         - $ref: '#/parameters/If-Match'
         - $ref: '#/parameters/If-Unmodified-Since'
@@ -2376,10 +2378,10 @@ paths:
         * This is only effective when Advanced Throttling is disabled in the Server. If enabled, we need to use Admin REST API for throttling tiers modification related operations.
       parameters:
         - $ref: '#/parameters/tierName'
-        - $ref: '#/parameters/tierLevel'
+        - $ref: '#/parameters/tierLevel-A'
         - $ref: '#/parameters/If-Match'
         - $ref: '#/parameters/If-Unmodified-Since'
-      tags:
+      tags: 
         - Throttling Tier (Individual)
       responses:
         200:
@@ -2598,8 +2600,8 @@ paths:
           schema:
             $ref: '#/definitions/Error'
 
-            
-            
+
+
 ######################################################
 # The "Workflow approval" resource API
 ######################################################
@@ -2626,7 +2628,7 @@ paths:
          schema:
            $ref: '#/definitions/Workflow'
       tags:
-        - Workflows (Individual) 
+        - Workflows (Individual)
       responses:
         200:
           description: |
@@ -2768,6 +2770,18 @@ parameters:
     required: true
 
 # Tier Type
+# Specified as part of the path expression
+  tierLevel-A:
+    name: tierLevel
+    in: path
+    description: |
+      List API or Application or Resource type tiers.
+    type: string
+    enum:
+      - api
+    required: true
+
+# Tier Type
 # Specified as part of the query string
   tierLevel-Q:
     name: tierLevel
@@ -2858,7 +2872,7 @@ parameters:
     description: |
       Validator for conditional requests; based on Last Modified header.
     type: string
-    
+
 
 # Workflow reference ID
 # Specified as part of the path expression
@@ -2956,15 +2970,19 @@ definitions:
         example: 01234567-0123-0123-0123-012345678901
       name:
         type: string
+        description: Name of the API
         example: CalculatorAPI
       description:
         type: string
+        description: A brief description about the API
         example: A calculator API that supports basic operations
       context:
         type: string
+        description: A string that represents the context of the user's request
         example: CalculatorAPI
       version:
         type: string
+        description: The version of the API
         example: 1.0.0
       provider:
         description: |
@@ -2983,6 +3001,7 @@ definitions:
         example: "http://www.webservicex.com/globalweather.asmx?wsdl"
       status:
         type: string
+        description: This describes in which status of the lifecycle the API is
         example: CREATED
       responseCaching:
         type: string
@@ -3012,11 +3031,13 @@ definitions:
         example: ["http","https"]
       tags:
         type: array
+        description: Search keywords related to the API
         items:
           type: string
         example: ["substract","add"]
       tiers:
         type: array
+        description: The subscription tiers selected for the particular API
         items:
           type: string
         example: ["Unlimited"]
@@ -3043,6 +3064,7 @@ definitions:
         example: PUBLIC
       visibleRoles:
         type: array
+        description: The user roles that are able to access the API
         items:
           type: string
         example: []
@@ -3720,4 +3742,3 @@ definitions:
       description:
         type: string
         example: "Approve workflow request."
-
