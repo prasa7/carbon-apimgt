@@ -7,6 +7,8 @@
             <p class="marked"></p>
 
             <p class="marked">This operation can be used to retrieve details of a single tier by specifying the tier level and tier name.
+
+&#x60;X-WSO2-Tenant&#x60; header can be used to retrive tiers that belongs to a different tenant domain. If not specified super tenant will be used. If Authorization header is present in the request, the user&#39;s tenant associated with the access token will be used.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
@@ -199,7 +201,7 @@ Content-Type: application/json
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
-variant of the resourec.
+variant of the resource.
 </p>
                         </td>
                         <td>
@@ -228,7 +230,7 @@ variant of the resourec.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on Last Modified header of the
-formerly retrieved variant of the resource.
+formerly retrieved variant of the resource (Will be supported in future). 
 </p>
                         </td>
                         <td>
