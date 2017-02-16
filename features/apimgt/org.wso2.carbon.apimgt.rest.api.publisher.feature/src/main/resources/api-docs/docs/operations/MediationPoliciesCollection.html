@@ -1,268 +1,49 @@
 <div class="main-content">
-    <h1><a name="Throttling Tier (Individual)"></a>Throttling Tier (Individual)</h1>
+    <h1><a name="Mediation Policies (Collection)"></a>Mediation Policies (Collection)</h1>
 
             <hr/>
-            <h3 class="operation-heading"><a name="tiersTierLevelTierNameDelete"></a>Delete a Tier <br><small>DELETE https://apis.wso2.com/api/am/publisher/v0.11/tiers/{tierLevel}/{tierName}</small></h3>
+            <h3 class="operation-heading"><a name="apisApiIdPoliciesMediationGet"></a>Get all mediation policies of an API
+ <br><small>GET https://apis.wso2.com/api/am/publisher/v0.11/apis/{apiId}/policies/mediation</small></h3>
             <p class="marked"></p>
 
-            <p class="marked">This operation can be used to delete an existing tier. The only supported tier level is &#x60;api&#x60; tiers.
-&#x60;DELETE https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Low&#x60;
-
-**IMPORTANT:**
-* This is only effective when Advanced Throttling is disabled in the Server. If enabled, we need to use Admin REST API for throttling tiers modification related operations.
+            <p class="marked">This operation provides you a list of available mediation policies of an API.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
-                <code>apim:tier_manage</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:tier_manage' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
+                <code>apim:api_view</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:api_view' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
 
-            <div class="pointer" data-toggle="collapse" data-target="#request-tiersTierLevelTierNameDelete">
+            <div class="pointer" data-toggle="collapse" data-target="#request-apisApiIdPoliciesMediationGet">
                 <h4 class="section-heading">
                     Request
                         <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
                 </h4>
             </div>
 
-                <div id="request-tiersTierLevelTierNameDelete"class="pre collapse in"><code class="json">DELETE https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Low
-Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8
-</code></div>
+                <div id="request-apisApiIdPoliciesMediationGet"class="pre collapse in"><code class="json">GET https://127.0.0.1:9443/api/am/publisher/v0.11/apis/40082986-6488-4b86-801a-b0b069d4588c/policies/mediation
+Authorization: Bearer fb2a0784-f60c-3276-8fde-5b0f70e61ecc</code></div>
 
-            <div class="pointer" data-toggle="collapse" data-target="#response-tiersTierLevelTierNameDelete">
+            <div class="pointer" data-toggle="collapse" data-target="#response-apisApiIdPoliciesMediationGet">
                 <h4 class="section-heading">
                     Response
                         <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
                 </h4>
             </div>
-                <div id="response-tiersTierLevelTierNameDelete" class="pre collapse in"><code class="json">HTTP/1.1 200 OK</code></div>
-
-            <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8&quot; -X DELETE &quot;https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Low&quot;</code></div>
-
-            <h4 class="section-heading" id="scroll-to">Parameters</h4>
-            <table class="table table-hover">
-                <colgroup>
-                    <col style="width: 10%;"/>
-                    <col style="width: 20%;"/>
-                    <col style="width: 40%;"/>
-                    <col style="width: 10%;"/>
-                    <col style="width: 20%;"/>
-                </colgroup>
-                <thead>
-                <tr class="active">
-                    <th>Type</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Schema</th>
-                    <th>Default</th>
-                </tr>
-                </thead>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
-                            <span class="param-in">Path </span>
-                            
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>tierName</p>
-                            <p class="param-required">
-                                required
-                                
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">Tier name
-</p>
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
-                            <span class="param-in">Path </span>
-                            
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>tierLevel</p>
-                            <p class="param-required">
-                                required
-                                
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">List API or Application or Resource type tiers.
-</p>
-                                <p><b>Accepted values: </b></p>
-
-<code>api</code>
-
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
-                            
-                            <span class="param-in">Header </span>
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>If-Match</p>
-                            <p class="param-required">
-                                
-                                optional
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
-</p>
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
-                            
-                            <span class="param-in">Header </span>
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>If-Unmodified-Since</p>
-                            <p class="param-required">
-                                
-                                optional
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
-</p>
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-            </table>
-
-            <h4 class="section-heading">Responses</h4>
-
-            <table class="table table-hover">
-                <colgroup>
-                    <col style="width: 15%;"/>
-                    <col style="width: 70%;"/>
-                    <col style="width: 15%;"/>
-                </colgroup>
-                <thead>
-                <tr class="active">
-                    <th>HTTP Code</th>
-                    <th>Description</th>
-                    <th>Schema</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="parameter"><p class="marked">200</p></td>
-                        <td class="parameter"><p class="marked">OK. Resource successfully deleted. </p></td>
-                        <td class="parameter">
-                            <span class="parameter">
-                                    
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter"><p class="marked">404</p></td>
-                        <td class="parameter"><p class="marked">Not Found. Resource to be deleted does not exist. </p></td>
-                        <td class="parameter">
-                            <span class="parameter">
-                                    <a href="#!/models#Error">Error</a>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter"><p class="marked">412</p></td>
-                        <td class="parameter"><p class="marked">Precondition Failed. The request has not been performed because one of the preconditions is not met. </p></td>
-                        <td class="parameter">
-                            <span class="parameter">
-                                    <a href="#!/models#Error">Error</a>
-                            </span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <hr/>
-            <h3 class="operation-heading"><a name="tiersTierLevelTierNameGet"></a>Get details of a tier <br><small>GET https://apis.wso2.com/api/am/publisher/v0.11/tiers/{tierLevel}/{tierName}</small></h3>
-            <p class="marked"></p>
-
-            <p class="marked">This operation can be used to retrieve details of a single tier by specifying the tier level and tier name.
-Note that the scope of the API is mandatory while retreiving the access token with the following cURL command : &#x60;curl -k -d \&quot;grant_type&#x3D;password&amp;username&#x3D;username&amp;password&#x3D;password&amp;scope&#x3D;apim:tier_view\&quot; -H \&quot;Authorization: Basic &lt;token&gt;\&quot; https://127.0.0.1:8243/token&#x60;.
-You will receive the access token as the response, for example &#x60;&quot;access_token&quot;:&quot;8644c013-7ff1-3217-b150-d7b92cae6be7&quot;&#x60;.
-</p>
-
-            <h4 class="section-heading">OAuth 2.0 Scope</h4>
-                <code>apim:tier_view</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:tier_view' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
-
-            <div class="pointer" data-toggle="collapse" data-target="#request-tiersTierLevelTierNameGet">
-                <h4 class="section-heading">
-                    Request
-                        <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-                </h4>
-            </div>
-
-                <div id="request-tiersTierLevelTierNameGet"class="pre collapse in"><code class="json">GET https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Bronze
-Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8
-</code></div>
-
-            <div class="pointer" data-toggle="collapse" data-target="#response-tiersTierLevelTierNameGet">
-                <h4 class="section-heading">
-                    Response
-                        <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
-                </h4>
-            </div>
-                <div id="response-tiersTierLevelTierNameGet" class="pre collapse in"><code class="json">HTTP/1.1 200 OK
+                <div id="response-apisApiIdPoliciesMediationGet" class="pre collapse in"><code class="json">HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-   &quot;unitTime&quot;: 60000,
-   &quot;tierPlan&quot;: &quot;FREE&quot;,
-   &quot;tierLevel&quot;: &quot;api&quot;,
-   &quot;stopOnQuotaReach&quot;: true,
-   &quot;requestCount&quot;: 1,
-   &quot;description&quot;: &quot;Allows 1 request(s) per minute.&quot;,
-   &quot;name&quot;: &quot;Bronze&quot;,
-   &quot;attributes&quot;: {}
+   &quot;count&quot;: 1,
+   &quot;next&quot;: null,
+   &quot;previous&quot;: null,
+   &quot;list&quot;: [   {
+      &quot;name&quot;: &quot;add_custom_header_fault&quot;,
+      &quot;id&quot;: &quot;6460d7e6-4272-4e3a-9879-437228d83123&quot;,
+      &quot;type&quot;: &quot;fault&quot;
+   }]
 }</code></div>
 
             <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8&quot; https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Bronze</code></div>
+                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer fb2a0784-f60c-3276-8fde-5b0f70e61ecc&quot; https://127.0.0.1:9443/api/am/publisher/v0.11/apis/40082986-6488-4b86-801a-b0b069d4588c/policies/mediation</code></div>
 
             <h4 class="section-heading" id="scroll-to">Parameters</h4>
             <table class="table table-hover">
@@ -291,14 +72,16 @@ Content-Type: application/json
                             
                         </td>
                         <td class="param-name">
-                            <p>tierName</p>
+                            <p>apiId</p>
                             <p class="param-required">
                                 required
                                 
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Tier name
+                            <p class="param-description marked">**API ID** consisting of the **UUID** of the API.
+The combination of the provider of the API, name of the API and the version is also accepted as a valid API ID.
+Should be formatted as **provider-name-version**.
 </p>
                         </td>
                         <td>
@@ -313,29 +96,76 @@ Content-Type: application/json
                     <tr>
                         <td class="parameter">
                             
+                            <span class="param-in">Query </span>
                             
-                            <span class="param-in">Path </span>
                             
                             
                         </td>
                         <td class="param-name">
-                            <p>tierLevel</p>
+                            <p>limit</p>
                             <p class="param-required">
-                                required
                                 
+                                optional
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">List API or Application or Resource type tiers.
+                            <p class="param-description marked">Maximum size of resource array to return.
 </p>
-                                <p><b>Accepted values: </b></p>
-
-<code>api</code>
-
-<code>application</code>
-
-<code>resource</code>
-
+                        </td>
+                        <td>
+                            <span class="param-type">
+                                Integer
+                            </span>
+                        </td>
+                        <td>
+                            <p class="marked">25</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="parameter">
+                            
+                            <span class="param-in">Query </span>
+                            
+                            
+                            
+                        </td>
+                        <td class="param-name">
+                            <p>offset</p>
+                            <p class="param-required">
+                                
+                                optional
+                            </p>
+                        </td>
+                        <td>
+                            <p class="param-description marked">Starting point within the complete list of items qualified.
+</p>
+                        </td>
+                        <td>
+                            <span class="param-type">
+                                Integer
+                            </span>
+                        </td>
+                        <td>
+                            <p class="marked">0</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="parameter">
+                            
+                            <span class="param-in">Query </span>
+                            
+                            
+                            
+                        </td>
+                        <td class="param-name">
+                            <p>query</p>
+                            <p class="param-required">
+                                
+                                optional
+                            </p>
+                        </td>
+                        <td>
+                            <p class="param-description marked">-Not supported yet-</p>
                         </td>
                         <td>
                             <span class="param-type">
@@ -403,35 +233,6 @@ variant of the resourec.
                             <p class="marked"></p>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
-                            
-                            <span class="param-in">Header </span>
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>If-Modified-Since</p>
-                            <p class="param-required">
-                                
-                                optional
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header of the
-formerly retrieved variant of the resource.
-</p>
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
             </table>
 
             <h4 class="section-heading">Responses</h4>
@@ -452,10 +253,10 @@ formerly retrieved variant of the resource.
                 <tbody>
                     <tr>
                         <td class="parameter"><p class="marked">200</p></td>
-                        <td class="parameter"><p class="marked">OK. Tier returned </p></td>
+                        <td class="parameter"><p class="marked">OK. List of qualifying APIs is returned. </p></td>
                         <td class="parameter">
                             <span class="parameter">
-                                    <a href="#!/models#Tier">Tier</a>
+                                    <a href="#!/models#mediationList">mediationList</a>
                             </span>
                         </td>
                     </tr>
@@ -469,17 +270,8 @@ formerly retrieved variant of the resource.
                         </td>
                     </tr>
                     <tr>
-                        <td class="parameter"><p class="marked">404</p></td>
-                        <td class="parameter"><p class="marked">Not Found. Requested Tier does not exist. </p></td>
-                        <td class="parameter">
-                            <span class="parameter">
-                                    <a href="#!/models#Error">Error</a>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
                         <td class="parameter"><p class="marked">406</p></td>
-                        <td class="parameter"><p class="marked">Not Acceptable. The requested media type is not supported. </p></td>
+                        <td class="parameter"><p class="marked">Not Acceptable. The requested media type is not supported </p></td>
                         <td class="parameter">
                             <span class="parameter">
                                     <a href="#!/models#Error">Error</a>
@@ -489,72 +281,51 @@ formerly retrieved variant of the resource.
                 </tbody>
             </table>
             <hr/>
-            <h3 class="operation-heading"><a name="tiersTierLevelTierNamePut"></a>Update a Tier <br><small>PUT https://apis.wso2.com/api/am/publisher/v0.11/tiers/{tierLevel}/{tierName}</small></h3>
+            <h3 class="operation-heading"><a name="apisApiIdPoliciesMediationPost"></a>Add an API specific mediation policy <br><small>POST https://apis.wso2.com/api/am/publisher/v0.11/apis/{apiId}/policies/mediation</small></h3>
             <p class="marked"></p>
 
-            <p class="marked">This operation can be used to update an existing tier. The only supported tier level is &#x60;api&#x60; tiers.
-&#x60;PUT https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Low&#x60;
-
-**IMPORTANT:**
-* This is only effective when Advanced Throttling is disabled in the Server. If enabled, we need to use Admin REST API for throttling tiers modification related operations.
+            <p class="marked">This operation can be used to add an API specifc mediation policy.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
-                <code>apim:tier_manage</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:tier_manage' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
+                <code>apim:api_create</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:api_create' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
 
-            <div class="pointer" data-toggle="collapse" data-target="#request-tiersTierLevelTierNamePut">
+            <div class="pointer" data-toggle="collapse" data-target="#request-apisApiIdPoliciesMediationPost">
                 <h4 class="section-heading">
                     Request
                         <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
                 </h4>
             </div>
 
-                <div id="request-tiersTierLevelTierNamePut"class="pre collapse in"><code class="json">PUT https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Low
-Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8
+                <div id="request-apisApiIdPoliciesMediationPost"class="pre collapse in"><code class="json">POST https://127.0.0.1:9443/api/am/publisher/v0.11/apis/40082986-6488-4b86-801a-b0b069d4588c/policies/mediation
 Content-Type: application/json
+Authorization: Bearer 6cea3696-0151-3282-bf79-a0c4db6f308a
 
 {
-   &quot;unitTime&quot;: 60000,
-   &quot;tierPlan&quot;: &quot;FREE&quot;,
-   &quot;tierLevel&quot;: &quot;api&quot;,
-   &quot;stopOnQuotaReach&quot;: true,
-   &quot;requestCount&quot;: 10,
-   &quot;description&quot;: &quot;Allows 10 request(s) per minute.&quot;,
-   &quot;name&quot;: &quot;Low&quot;,
-   &quot;attributes&quot;:    {
-      &quot;a&quot;: &quot;30&quot;,
-      &quot;b&quot;: &quot;10&quot;,
-      &quot;c&quot;: &quot;20&quot;
-   }
-}
-</code></div>
+   &quot;name&quot;: &quot;add_custom_header_fault&quot;,
+   &quot;type&quot;: &quot;fault&quot;,
+   &quot;config&quot;: &quot;&lt;sequence xmlns&#x3D;\&quot;http://ws.apache.org/ns/synapse\&quot; name&#x3D;\&quot;add_custom_header_fault\&quot;&gt;\n    &lt;property name&#x3D;\&quot;CustomHeader\&quot; scope&#x3D;\&quot;transport\&quot; value&#x3D;\&quot;example\&quot;/&gt;\n&lt;\/sequence&gt;\n&quot;
+}</code></div>
 
-            <div class="pointer" data-toggle="collapse" data-target="#response-tiersTierLevelTierNamePut">
+            <div class="pointer" data-toggle="collapse" data-target="#response-apisApiIdPoliciesMediationPost">
                 <h4 class="section-heading">
                     Response
                         <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
                 </h4>
             </div>
-                <div id="response-tiersTierLevelTierNamePut" class="pre collapse in"><code class="json">HTTP/1.1 200 OK
+                <div id="response-apisApiIdPoliciesMediationPost" class="pre collapse in"><code class="json">HTTP/1.1 201 Created
+Location: https://127.0.0.1:9443/api/am/publisher/v0.11/registry/resource/_system/governance/apimgt/applicationdata/provider/admin/hello/1.0.0/fault/add_custom_header_fault.xml
 Content-Type: application/json
 
-{
-   &quot;unitTime&quot;: 60000,
-   &quot;tierPlan&quot;: &quot;FREE&quot;,
-   &quot;tierLevel&quot;: &quot;api&quot;,
-   &quot;stopOnQuotaReach&quot;: true,
-   &quot;requestCount&quot;: 10,
-   &quot;description&quot;: &quot;Allows 10 request(s) per minute.&quot;,
-   &quot;name&quot;: &quot;Low&quot;,
-   &quot;attributes&quot;:    {
-      &quot;b&quot;: &quot;10&quot;,
-      &quot;c&quot;: &quot;20&quot;,
-      &quot;a&quot;: &quot;30&quot;
-   }
+{  
+   &quot;id&quot;:&quot;624b9f7d-bfaf-484b-94cc-e84491f5d725&quot;,
+   &quot;name&quot;:&quot;add_custom_header_fault&quot;,
+   &quot;type&quot;:&quot;fault&quot;,
+   &quot;config&quot;:&quot;&lt;sequence xmlns&#x3D;\&quot;http://ws.apache.org/ns/synapse\&quot; name&#x3D;\&quot;add_custom_header_fault\&quot;&gt;\n    &lt;property name&#x3D;\&quot;CustomHeader\&quot; scope&#x3D;\&quot;transport\&quot; value&#x3D;\&quot;example\&quot;/&gt;\n&lt;/sequence&gt;\n&quot;
 }</code></div>
 
             <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8&quot; -H &quot;Content-Type: application/json&quot; -X PUT -d @data.json &quot;https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/api/Low&quot;</code></div>
+                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer 6cea3696-0151-3282-bf79-a0c4db6f308a&quot; -H &quot;Content-Type: application/json&quot; -X POST -d @data.json &quot;https://127.0.0.1:9443/api/am/publisher/v0.11/apis/40082986-6488-4b86-801a-b0b069d4588c/policies/mediation&quot;</code></div>
 
             <h4 class="section-heading" id="scroll-to">Parameters</h4>
             <table class="table table-hover">
@@ -578,34 +349,6 @@ Content-Type: application/json
                         <td class="parameter">
                             
                             
-                            <span class="param-in">Path </span>
-                            
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>tierName</p>
-                            <p class="param-required">
-                                required
-                                
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">Tier name
-</p>
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
                             
                             
                             <span class="param-in">Body </span>
@@ -618,13 +361,12 @@ Content-Type: application/json
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Tier object that needs to be modified
-</p>
+                            <p class="param-description marked">mediation policy to upload</p>
                         </td>
                         <td>
                             <span class="param-type">
-                                Tier
-                                    (<a href="#!/models#Tier">Tier</a>)
+                                Mediation
+                                    (<a href="#!/models#Mediation">Mediation</a>)
                             </span>
                         </td>
                         <td>
@@ -640,19 +382,17 @@ Content-Type: application/json
                             
                         </td>
                         <td class="param-name">
-                            <p>tierLevel</p>
+                            <p>apiId</p>
                             <p class="param-required">
                                 required
                                 
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">List API or Application or Resource type tiers.
+                            <p class="param-description marked">**API ID** consisting of the **UUID** of the API.
+The combination of the provider of the API, name of the API and the version is also accepted as a valid API ID.
+Should be formatted as **provider-name-version**.
 </p>
-                                <p><b>Accepted values: </b></p>
-
-<code>api</code>
-
                         </td>
                         <td>
                             <span class="param-type">
@@ -767,10 +507,10 @@ Content-Type: application/json
                 <tbody>
                     <tr>
                         <td class="parameter"><p class="marked">200</p></td>
-                        <td class="parameter"><p class="marked">OK. Subscription updated. </p></td>
+                        <td class="parameter"><p class="marked">OK. mediation policy uploaded </p></td>
                         <td class="parameter">
                             <span class="parameter">
-                                    <a href="#!/models#Tier">Tier</a>
+                                    <a href="#!/models#Mediation">Mediation</a>
                             </span>
                         </td>
                     </tr>
@@ -804,41 +544,106 @@ Content-Type: application/json
                 </tbody>
             </table>
             <hr/>
-            <h3 class="operation-heading"><a name="tiersUpdatePermissionPost"></a>Update tier permission <br><small>POST https://apis.wso2.com/api/am/publisher/v0.11/tiers/update-permission</small></h3>
+            <h3 class="operation-heading"><a name="policiesMediationGet"></a>Get all global level mediation policies
+ <br><small>GET https://apis.wso2.com/api/am/publisher/v0.11/policies/mediation</small></h3>
             <p class="marked"></p>
 
-            <p class="marked">This operation can be used to update tier permissions which controls access for the particular tier based on the subscribers&#39; roles.
+            <p class="marked">This operation provides you a list of available all global level mediation policies.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
-                <code>apim:tier_manage</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:tier_manage' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
+                <code>apim:mediation_policy_view</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:mediation_policy_view' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
 
-            <div class="pointer" data-toggle="collapse" data-target="#request-tiersUpdatePermissionPost">
+            <div class="pointer" data-toggle="collapse" data-target="#request-policiesMediationGet">
                 <h4 class="section-heading">
                     Request
                         <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
                 </h4>
             </div>
 
-                <div id="request-tiersUpdatePermissionPost"class="pre collapse in"><code class="json">POST https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/update-permission?tierName&#x3D;Bronze&amp;tierLevel&#x3D;api
+                <div id="request-policiesMediationGet"class="pre collapse in"><code class="json">GET https://127.0.0.1:9443/api/am/publisher/v0.11/policies/mediation
 Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8
-Content-Type: application/json
+</code></div>
 
-{
-    &quot;permissionType&quot;:&quot;deny&quot;,
-    &quot;roles&quot;: [&quot;Internal/everyone&quot;,&quot;admin&quot;]
-}</code></div>
-
-            <div class="pointer" data-toggle="collapse" data-target="#response-tiersUpdatePermissionPost">
+            <div class="pointer" data-toggle="collapse" data-target="#response-policiesMediationGet">
                 <h4 class="section-heading">
                     Response
                         <span class="glyphicon glyphicon-collapse-down" aria-hidden="true"></span>
                 </h4>
             </div>
-                <div id="response-tiersUpdatePermissionPost" class="pre collapse in"><code class="json">HTTP/1.1 200 OK</code></div>
+                <div id="response-policiesMediationGet" class="pre collapse in"><code class="json">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+   &quot;count&quot;: 10,
+   &quot;next&quot;: null,
+   &quot;previous&quot;: null,
+   &quot;list&quot;:    [
+            {
+         &quot;name&quot;: &quot;debug_json_fault&quot;,
+         &quot;id&quot;: &quot;563de8f3-dd1d-4ec7-afc2-d158c663ed34&quot;,
+         &quot;type&quot;: &quot;fault&quot;
+      },
+            {
+         &quot;name&quot;: &quot;json_fault&quot;,
+         &quot;id&quot;: &quot;f9c36f4d-a2b6-41e7-b311-d358a47916be&quot;,
+         &quot;type&quot;: &quot;fault&quot;
+      },
+            {
+         &quot;name&quot;: &quot;json_to_xml_in_message&quot;,
+         &quot;id&quot;: &quot;3921225b-7918-4b95-a851-22c4e4e3e911&quot;,
+         &quot;type&quot;: &quot;in&quot;
+      },
+            {
+         &quot;name&quot;: &quot;debug_in_flow&quot;,
+         &quot;id&quot;: &quot;2bc15f93-4455-4763-89b8-83600fb9d731&quot;,
+         &quot;type&quot;: &quot;in&quot;
+      },
+            {
+         &quot;name&quot;: &quot;log_in_message&quot;,
+         &quot;id&quot;: &quot;4d287cca-76ab-44ca-b22e-919fc27c50e3&quot;,
+         &quot;type&quot;: &quot;in&quot;
+      },
+            {
+         &quot;name&quot;: &quot;preserve_accept_header&quot;,
+         &quot;id&quot;: &quot;3776b215-b3bc-40b6-bdcb-06efa7de64be&quot;,
+         &quot;type&quot;: &quot;in&quot;
+      },
+            {
+         &quot;name&quot;: &quot;xml_to_json_in_message&quot;,
+         &quot;id&quot;: &quot;50ac2002-769e-4f90-8549-6d0248dff7d2&quot;,
+         &quot;type&quot;: &quot;in&quot;
+      },
+            {
+         &quot;name&quot;: &quot;xml_to_json_out_message&quot;,
+         &quot;id&quot;: &quot;2af75853-ed75-4d25-81aa-0ebbeca691ea&quot;,
+         &quot;type&quot;: &quot;out&quot;
+      },
+            {
+         &quot;name&quot;: &quot;json_to_xml_out_message&quot;,
+         &quot;id&quot;: &quot;d9fa3ffc-f6b6-4171-ab97-eb44196cb66e&quot;,
+         &quot;type&quot;: &quot;out&quot;
+      },
+            {
+         &quot;name&quot;: &quot;debug_out_flow&quot;,
+         &quot;id&quot;: &quot;260b7701-4071-46bd-9b66-900ac6fffed6&quot;,
+         &quot;type&quot;: &quot;out&quot;
+      },
+            {
+         &quot;name&quot;: &quot;apply_accept_header&quot;,
+         &quot;id&quot;: &quot;15c17c2f-33e3-4c37-a262-04dfa49983a4&quot;,
+         &quot;type&quot;: &quot;out&quot;
+      },
+            {
+         &quot;name&quot;: &quot;log_out_message&quot;,
+         &quot;id&quot;: &quot;d37dca41-c048-492a-82cf-9a2292c6fff0&quot;,
+         &quot;type&quot;: &quot;out&quot;
+      }
+   ]
+}</code></div>
 
             <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8&quot; -H &quot;Content-Type: application/json&quot; -X POST -d @data.json &quot;https://127.0.0.1:9443/api/am/publisher/v0.11/tiers/update-permission?tierName&#x3D;Bronze&amp;tierLevel&#x3D;api&quot;</code></div>
+                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8&quot; https://127.0.0.1:9443/api/am/publisher/v0.11/policies/mediation</code></div>
 
             <h4 class="section-heading" id="scroll-to">Parameters</h4>
             <table class="table table-hover">
@@ -867,23 +672,23 @@ Content-Type: application/json
                             
                         </td>
                         <td class="param-name">
-                            <p>tierName</p>
+                            <p>limit</p>
                             <p class="param-required">
-                                required
                                 
+                                optional
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Name of the tier
+                            <p class="param-description marked">Maximum size of resource array to return.
 </p>
                         </td>
                         <td>
                             <span class="param-type">
-                                String
+                                Integer
                             </span>
                         </td>
                         <td>
-                            <p class="marked"></p>
+                            <p class="marked">25</p>
                         </td>
                     </tr>
                     <tr>
@@ -895,23 +700,42 @@ Content-Type: application/json
                             
                         </td>
                         <td class="param-name">
-                            <p>tierLevel</p>
+                            <p>offset</p>
                             <p class="param-required">
-                                required
                                 
+                                optional
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">List API or Application or Resource type tiers.
+                            <p class="param-description marked">Starting point within the complete list of items qualified.
 </p>
-                                <p><b>Accepted values: </b></p>
-
-<code>api</code>
-
-<code>application</code>
-
-<code>resource</code>
-
+                        </td>
+                        <td>
+                            <span class="param-type">
+                                Integer
+                            </span>
+                        </td>
+                        <td>
+                            <p class="marked">0</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="parameter">
+                            
+                            <span class="param-in">Query </span>
+                            
+                            
+                            
+                        </td>
+                        <td class="param-name">
+                            <p>query</p>
+                            <p class="param-required">
+                                
+                                optional
+                            </p>
+                        </td>
+                        <td>
+                            <p class="param-description marked">-Not supported yet-</p>
                         </td>
                         <td>
                             <span class="param-type">
@@ -931,14 +755,14 @@ Content-Type: application/json
                             
                         </td>
                         <td class="param-name">
-                            <p>If-Match</p>
+                            <p>Accept</p>
                             <p class="param-required">
                                 
                                 optional
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Media types acceptable for the response. Default is application/json.
 </p>
                         </td>
                         <td>
@@ -947,7 +771,7 @@ Content-Type: application/json
                             </span>
                         </td>
                         <td>
-                            <p class="marked"></p>
+                            <p class="marked">application/json</p>
                         </td>
                     </tr>
                     <tr>
@@ -959,47 +783,20 @@ Content-Type: application/json
                             
                         </td>
                         <td class="param-name">
-                            <p>If-Unmodified-Since</p>
+                            <p>If-None-Match</p>
                             <p class="param-required">
                                 
                                 optional
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
+variant of the resourec.
 </p>
                         </td>
                         <td>
                             <span class="param-type">
                                 String
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter">
-                            
-                            
-                            
-                            
-                            <span class="param-in">Body </span>
-                        </td>
-                        <td class="param-name">
-                            <p>permissions</p>
-                            <p class="param-required">
-                                
-                                optional
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked"></p>
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                TierPermission
-                                    (<a href="#!/models#TierPermission">TierPermission</a>)
                             </span>
                         </td>
                         <td>
@@ -1026,43 +823,25 @@ Content-Type: application/json
                 <tbody>
                     <tr>
                         <td class="parameter"><p class="marked">200</p></td>
-                        <td class="parameter"><p class="marked">OK. Successfully updated tier permissions </p></td>
+                        <td class="parameter"><p class="marked">OK. List of mediation policies is returned. </p></td>
                         <td class="parameter">
                             <span class="parameter">
-                                    <a href="#!/models#Tier">Tier</a>
+                                    <a href="#!/models#mediationList">mediationList</a>
                             </span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="parameter"><p class="marked">400</p></td>
-                        <td class="parameter"><p class="marked">Bad Request. Invalid request or validation error. </p></td>
+                        <td class="parameter"><p class="marked">304</p></td>
+                        <td class="parameter"><p class="marked">Not Modified. Empty body because the client has already the latest version of the requested resource (Will be supported in future). </p></td>
                         <td class="parameter">
                             <span class="parameter">
-                                    <a href="#!/models#Error">Error</a>
+                                    
                             </span>
                         </td>
                     </tr>
                     <tr>
-                        <td class="parameter"><p class="marked">403</p></td>
-                        <td class="parameter"><p class="marked">Forbidden. The request must be conditional but no condition has been specified. </p></td>
-                        <td class="parameter">
-                            <span class="parameter">
-                                    <a href="#!/models#Error">Error</a>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter"><p class="marked">404</p></td>
-                        <td class="parameter"><p class="marked">Not Found. Requested tier does not exist. </p></td>
-                        <td class="parameter">
-                            <span class="parameter">
-                                    <a href="#!/models#Error">Error</a>
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="parameter"><p class="marked">412</p></td>
-                        <td class="parameter"><p class="marked">Precondition Failed. The request has not been performed because one of the preconditions is not met. </p></td>
+                        <td class="parameter"><p class="marked">406</p></td>
+                        <td class="parameter"><p class="marked">Not Acceptable. The requested media type is not supported </p></td>
                         <td class="parameter">
                             <span class="parameter">
                                     <a href="#!/models#Error">Error</a>

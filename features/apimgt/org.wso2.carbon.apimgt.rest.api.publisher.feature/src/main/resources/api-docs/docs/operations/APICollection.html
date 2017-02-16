@@ -2,7 +2,7 @@
     <h1><a name="API (Collection)"></a>API (Collection)</h1>
 
             <hr/>
-            <h3 class="operation-heading"><a name="apisGet"></a>Retrieve/Search APIs 
+            <h3 class="operation-heading"><a name="apisGet"></a>Retrieve/Search APIs
  <br><small>GET https://apis.wso2.com/api/am/publisher/v0.11/apis</small></h3>
             <p class="marked"></p>
 
@@ -168,8 +168,8 @@ Eg.
 Supported attribute modifiers are [**version, context, status,
 description, subcontext, doc, provider**]
 
-If no advanced attribute modifier has been specified, search will match the
-given query string against API Name.
+If no advanced attribute modifier has been specified,  the API names containing
+the search term will be returned as a result.
 </p>
                         </td>
                         <td>
@@ -320,6 +320,7 @@ Authorization: Bearer ae4eae22-3f65-387b-a171-d37eaa366fa8
    &quot;cacheTimeout&quot;: 300,
    &quot;destinationStatsEnabled&quot;: false,
    &quot;isDefaultVersion&quot;: false,
+   &quot;type&quot;: &quot;HTTP&quot;,
    &quot;transport&quot;:    [
       &quot;http&quot;,
       &quot;https&quot;
@@ -394,6 +395,7 @@ Content-Type: application/json
    &quot;cacheTimeout&quot;: 300,
    &quot;destinationStatsEnabled&quot;: null,
    &quot;isDefaultVersion&quot;: false,
+   &quot;type&quot;: &quot;HTTP&quot;,
    &quot;transport&quot;:    [
       &quot;http&quot;,
       &quot;https&quot;
