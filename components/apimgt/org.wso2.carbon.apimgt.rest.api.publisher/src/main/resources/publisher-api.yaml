@@ -2773,7 +2773,7 @@ parameters:
     in: header
     description: |
       Validator for conditional requests; based on the ETag of the formerly retrieved
-      variant of the resourec.
+      variant of the resource (Will be supported in future).
     type : string
 
 # The HTTP If-Modified-Since header
@@ -2783,7 +2783,7 @@ parameters:
     in: header
     description: |
       Validator for conditional requests; based on Last Modified header of the
-      formerly retrieved variant of the resource.
+      formerly retrieved variant of the resource (Will be supported in future).
     type: string
 
 # The HTTP If-Match header
@@ -2792,7 +2792,7 @@ parameters:
     name: If-Match
     in: header
     description: |
-      Validator for conditional requests; based on ETag.
+      Validator for conditional requests; based on ETag (Will be supported in future).
     type: string
 
 # The HTTP If-Unmodified-Since header
@@ -2801,7 +2801,7 @@ parameters:
     name: If-Unmodified-Since
     in: header
     description: |
-      Validator for conditional requests; based on Last Modified header.
+      Validator for conditional requests; based on Last Modified header (Will be supported in future).
     type: string
 
 
