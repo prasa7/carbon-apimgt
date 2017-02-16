@@ -8,7 +8,7 @@ info:
   description: |
     This specifies a **RESTful API** for WSO2 **API Manager** - Store.
     
-    Please see [full swagger definition](https://raw.githubusercontent.com/wso2/carbon-apimgt/v6.0.4/components/apimgt/org.wso2.carbon.apimgt.rest.api.store/src/main/resources/store-api.yaml) of the API which is written using [swagger 2.0](http://swagger.io/) specification.
+    Please see [full swagger definition](https://raw.githubusercontent.com/wso2/carbon-apimgt/v6.1.66/components/apimgt/org.wso2.carbon.apimgt.rest.api.store/src/main/resources/store-api.yaml) of the API which is written using [swagger 2.0](http://swagger.io/) specification.
   contact:
     name: "WSO2"
     url: "http://wso2.com/products/api-manager/"
@@ -183,7 +183,7 @@ paths:
               type: string
             ETag:
               description: |
-                Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).
+                Entity Tag of the response resource. Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -195,7 +195,7 @@ paths:
         304:
           description: |
             Not Modified.
-            Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+            Empty body because the client has already the latest version of the requested resource.
         404:
           description: |
             Not Found.
@@ -248,7 +248,7 @@ paths:
               type: string
             ETag:
               description: |
-                Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).
+                Entity Tag of the response resource. Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -258,7 +258,7 @@ paths:
         304:
           description: |
             Not Modified.
-            Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+            Empty body because the client has already the latest version of the requested resource.
         404:
           description: |
             Not Found.
@@ -281,11 +281,16 @@ paths:
       x-wso2-request: |
         GET https://127.0.0.1:9443/api/am/store/v0.11/apis/generate-sdk
       x-wso2-curl: "curl https://127.0.0.1:9443/api/am/store/v0.11/apis/generate-sdk"
-      x-wso2-response: "HTTP/1.1 200 OK \n Content-Disposition: attachment; filename=\"PizzaShackAPI_1.0.0_java.zip\"  \n Date: Wed, 12 Oct 2016 11:10:49 GMT \n Content-Type: application/zip \n Transfer-Encoding: chunked \n Server: WSO2 Carbon Server"
+      x-wso2-response: "HTTP/1.1 200 OK \nContent-Disposition: attachment; filename=\"PizzaShackAPI_1.0.0_java.zip\"\nContent-Type: application/zip\n\n[zip content]"
       summary: |
         Generate SDK for an API
       description: |
         This operation can be used to generate SDK for an API by providing the id of the API along with the preferred language.
+        
+        `X-WSO2-Tenant` header can be used to retrive the generated SDK of an API that belongs to a different tenant domain. If not specified super tenant will be used. If Authorization header is present in the request, the user's tenant associated with the access token will be used.
+        
+        **NOTE:**
+        * This operation does not require an Authorization header by default. But in order to generate a restricted API's SDK, you need to provide Authorization header.
       parameters:
         - $ref: '#/parameters/apiId-Q'
         - $ref: '#/parameters/language'
@@ -431,7 +436,7 @@ paths:
             ETag:
               description: |
                 Entity Tag of the response resource.
-                Used by caches, or in conditional requests (Will be supported in future).
+                Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -441,7 +446,7 @@ paths:
         304:
           description: |
             Not Modified.
-            Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+            Empty body because the client has already the latest version of the requested resource.
         404:
           description: |
             Not Found.
@@ -511,7 +516,7 @@ paths:
               ETag:
                 description: |
                   Entity Tag of the response resource.
-                  Used by caches, or in conditional requests (Will be supported in future).
+                  Used by caches, or in conditional requests.
                 type: string
               Last-Modified:
                 description: |
@@ -530,7 +535,7 @@ paths:
           304:
             description: |
               Not Modified.
-              Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+              Empty body because the client has already the latest version of the requested resource.
           404:
             description: |
               Not Found.
@@ -561,6 +566,8 @@ paths:
       description: |
         This operation can be used to download a thumbnail image of an API.
         
+        `X-WSO2-Tenant` header can be used to retrive a thumbnail of an API that belongs to a different tenant domain. If not specified super tenant will be used. If Authorization header is present in the request, the user's tenant associated with the access token will be used.
+        
         **NOTE:**
         * This operation does not require an Authorization header by default. But in order to see a restricted API's thumbnail, you need to provide Authorization header.        
       parameters:
@@ -584,7 +591,7 @@ paths:
             ETag:
               description: |
                 Entity Tag of the response resource.
-                Used by caches, or in conditional requests (Will be supported in future).
+                Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -594,7 +601,7 @@ paths:
         304:
           description: |
             Not Modified.
-            Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+            Empty body because the client has already the latest version of the requested resource.
         404:
           description: |
             Not Found.
@@ -784,7 +791,7 @@ paths:
               type: string
             ETag:
               description: |
-                Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).
+                Entity Tag of the response resource. Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -794,7 +801,7 @@ paths:
         304:
           description: |
             Not Modified.
-            Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+            Empty body because the client has already the latest version of the requested resource.
         404:
           description: |
             Not Found.
@@ -852,7 +859,7 @@ paths:
               type: string
             ETag:
               description: |
-                Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).
+                Entity Tag of the response resource. Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -874,7 +881,7 @@ paths:
         412:
           description: |
             Precondition Failed.
-            The request has not been performed because one of the preconditions is not met (Will be supported in future).
+            The request has not been performed because one of the preconditions is not met.
           schema:
             $ref: '#/definitions/Error'
 
@@ -912,7 +919,7 @@ paths:
         412:
           description: |
             Precondition Failed.
-            The request has not been performed because one of the preconditions is not met (Will be supported in future).
+            The request has not been performed because one of the preconditions is not met.
           schema:
             $ref: '#/definitions/Error'
 
@@ -1147,7 +1154,7 @@ paths:
               type: string
             ETag:
               description: |
-                Entity Tag of the response resource. Used by caches, or in conditional requests (Will be supported in future).
+                Entity Tag of the response resource. Used by caches, or in conditional requests.
               type: string
             Last-Modified:
               description: |
@@ -1156,7 +1163,7 @@ paths:
         '304':
           description: |
             Not Modified.
-            Empty body because the client has already the latest version of the requested resource (Will be supported in future).
+            Empty body because the client has already the latest version of the requested resource.
         '404':
           description: |
             Not Found.
@@ -1197,7 +1204,7 @@ paths:
         412:
           description: |
             Precondition Failed.
-            The request has not been performed because one of the preconditions is not met (Will be supported in future).
+            The request has not been performed because one of the preconditions is not met.
           schema:
             $ref: '#/definitions/Error'
 
@@ -1218,6 +1225,8 @@ paths:
         Get available tiers
       description: |
         This operation can be used to retrieve all the tiers available for the provided tier level. Tier level should be specified as a path parameter and should be one of `api` and `application`.
+        
+        `X-WSO2-Tenant` header can be used to retrive tiers that belongs to a different tenant domain. If not specified super tenant will be used. If Authorization header is present in the request, the user's tenant associated with the access token will be used.
         
         **NOTE**:
         * API tiers are the ones that is available during subscription of an application to an API. Hence they are also called subscription tiers and are same as the subscription policies in Admin REST API.
@@ -1276,6 +1285,8 @@ paths:
         Get details of a tier
       description: |
         This operation can be used to retrieve details of a single tier by specifying the tier level and tier name.
+        
+        `X-WSO2-Tenant` header can be used to retrive tiers that belongs to a different tenant domain. If not specified super tenant will be used. If Authorization header is present in the request, the user's tenant associated with the access token will be used.
       parameters:
         - $ref: '#/parameters/tierName'
         - $ref: '#/parameters/tierLevel'
@@ -1341,6 +1352,11 @@ paths:
         Get all tags
       description: |
         This operation can be used to retrieve a list of tags that are already added to APIs.
+        
+        `X-WSO2-Tenant` header can be used to retrive tags that belongs to a different tenant domain. If not specified super tenant will be used. If Authorization header is present in the request, the user's tenant associated with the access token will be used.
+        
+        **NOTE:**
+        * This operation does not require an Authorization header by default. But in order to see a restricted API's tags, you need to provide Authorization header.
       parameters:
         - $ref: '#/parameters/limit'
         - $ref: '#/parameters/offset'
@@ -1551,7 +1567,7 @@ parameters:
     in: header
     description: |
       Validator for conditional requests; based on the ETag of the formerly retrieved
-      variant of the resourec.
+      variant of the resource.
     type : string
 
 # The HTTP If-Modified-Since header
@@ -1561,7 +1577,7 @@ parameters:
     in: header
     description: |
       Validator for conditional requests; based on Last Modified header of the
-      formerly retrieved variant of the resource.
+      formerly retrieved variant of the resource (Will be supported in future). 
     type: string
 
 # The HTTP If-Match header
@@ -1579,7 +1595,7 @@ parameters:
     name: If-Unmodified-Since
     in: header
     description: |
-      Validator for conditional requests; based on Last Modified header.
+      Validator for conditional requests; based on Last Modified header (Will be supported in future).
     type: string
 
 ######################################################
