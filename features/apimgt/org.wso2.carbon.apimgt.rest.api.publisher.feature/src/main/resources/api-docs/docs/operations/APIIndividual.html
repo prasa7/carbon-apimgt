@@ -97,7 +97,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -125,7 +125,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -237,6 +237,7 @@ Content-Type: application/json
    &quot;cacheTimeout&quot;: 300,
    &quot;destinationStatsEnabled&quot;: null,
    &quot;isDefaultVersion&quot;: false,
+   &quot;type&quot;: &quot;HTTP&quot;,
    &quot;transport&quot;:    [
       &quot;http&quot;,
       &quot;https&quot;
@@ -384,7 +385,7 @@ Should be formatted as **provider-name-version**.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
-variant of the resourec.
+variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -413,7 +414,7 @@ variant of the resourec.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on Last Modified header of the
-formerly retrieved variant of the resource.
+formerly retrieved variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -517,6 +518,7 @@ Content-Type: application/json
    &quot;cacheTimeout&quot;: 300,
    &quot;destinationStatsEnabled&quot;: null,
    &quot;isDefaultVersion&quot;: false,
+   &quot;type&quot;: &quot;HTTP&quot;,
    &quot;transport&quot;:    [
       &quot;https&quot;
    ],
@@ -590,6 +592,7 @@ Content-Type: application/json
    &quot;cacheTimeout&quot;: 300,
    &quot;destinationStatsEnabled&quot;: null,
    &quot;isDefaultVersion&quot;: false,
+   &quot;type&quot;: &quot;HTTP&quot;,
    &quot;transport&quot;: [&quot;https&quot;],
    &quot;tags&quot;:    [
       &quot;chicken&quot;,
@@ -765,7 +768,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -793,7 +796,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1016,7 +1019,7 @@ Should be formatted as **provider-name-version**.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
-variant of the resourec.
+variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1045,7 +1048,7 @@ variant of the resourec.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on Last Modified header of the
-formerly retrieved variant of the resource.
+formerly retrieved variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1292,7 +1295,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1320,7 +1323,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1525,7 +1528,7 @@ Should be formatted as **provider-name-version**.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
-variant of the resourec.
+variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1554,7 +1557,7 @@ variant of the resourec.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on Last Modified header of the
-formerly retrieved variant of the resource.
+formerly retrieved variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1790,7 +1793,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -1818,7 +1821,7 @@ Should be formatted as **provider-name-version**.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -2043,7 +2046,7 @@ format.
 
 Supported checklist items are as follows.
 1. **Deprecate Old Versions**: Setting this to true will deprecate older versions of a particular API when it is promoted to Published state from Created state.
-2. **Requires Re-Subscription**: If you set this to true, users need to re subscribe to the API although they may have subscribed to an older version.
+2. **Require Re-Subscription**: If you set this to true, users need to re subscribe to the API although they may have subscribed to an older version.
 </p>
                         </td>
                         <td>
@@ -2071,7 +2074,7 @@ Supported checklist items are as follows.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -2099,7 +2102,7 @@ Supported checklist items are as follows.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -2212,6 +2215,7 @@ Content-Type: application/json
    &quot;cacheTimeout&quot;: 300,
    &quot;destinationStatsEnabled&quot;: null,
    &quot;isDefaultVersion&quot;: false,
+   &quot;type&quot;: &quot;HTTP&quot;,
    &quot;transport&quot;: [&quot;https&quot;],
    &quot;tags&quot;:    [
       &quot;chicken&quot;,

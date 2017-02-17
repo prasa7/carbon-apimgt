@@ -2,10 +2,10 @@
     <h1><a name="Subscription Policies (Individual)"></a>Subscription Policies (Individual)</h1>
 
             <hr/>
-            <h3 class="operation-heading"><a name="throttlingPoliciesSubscriptionPolicyIdDelete"></a>Delete a Subscription level throttle policy <br><small>DELETE https://apis.wso2.com/api/am/admin/v0.11/throttling/policies/subscription/{policyId}</small></h3>
+            <h3 class="operation-heading"><a name="throttlingPoliciesSubscriptionPolicyIdDelete"></a>Delete a Subscription Policy <br><small>DELETE https://apis.wso2.com/api/am/admin/v0.11/throttling/policies/subscription/{policyId}</small></h3>
             <p class="marked"></p>
 
-            <p class="marked">This operation can be used to delete a Subscription level throttle policy specifying the id of the policy as a path paramter.
+            <p class="marked">This operation can be used to delete a subscription-level throttling policy specifying the Id of the policy as a path paramter.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
@@ -18,7 +18,7 @@
                 </h4>
             </div>
 
-                <div id="request-throttlingPoliciesSubscriptionPolicyIdDelete"class="pre collapse in"><code class="json">DELETE https://localhost:9443/api/am/admin/v0.11/throttling/policies/subscription/3cc8902e-f7c7-49dc-987b-b146e9bd8ee8
+                <div id="request-throttlingPoliciesSubscriptionPolicyIdDelete"class="pre collapse in"><code class="json">DELETE https://127.0.0.1:9443/api/am/admin/v0.11/throttling/policies/subscription/3cc8902e-f7c7-49dc-987b-b146e9bd8ee8
 Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122
 Content-Type: application/json
 </code></div>
@@ -32,7 +32,7 @@ Content-Type: application/json
                 <div id="response-throttlingPoliciesSubscriptionPolicyIdDelete" class="pre collapse in"><code class="json">HTTP/1.1 200 OK</code></div>
 
             <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -X DELETE -H &quot;Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122&quot; -H &quot;Content-Type: application/json&quot; https://localhost:9443/api/am/admin/v0.11/throttling/policies/subscription/3cc8902e-f7c7-49dc-987b-b146e9bd8ee8</code></div>
+                <div class="pre"><code class="bash">curl -k -X DELETE -H &quot;Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122&quot; -H &quot;Content-Type: application/json&quot; https://127.0.0.1:9443/api/am/admin/v0.11/throttling/policies/subscription/3cc8902e-f7c7-49dc-987b-b146e9bd8ee8</code></div>
 
             <h4 class="section-heading" id="scroll-to">Parameters</h4>
             <table class="table table-hover">
@@ -96,7 +96,7 @@ Content-Type: application/json
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -124,7 +124,7 @@ Content-Type: application/json
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -184,10 +184,10 @@ Content-Type: application/json
                 </tbody>
             </table>
             <hr/>
-            <h3 class="operation-heading"><a name="throttlingPoliciesSubscriptionPolicyIdGet"></a>Retrieve a Subscription Policy <br><small>GET https://apis.wso2.com/api/am/admin/v0.11/throttling/policies/subscription/{policyId}</small></h3>
+            <h3 class="operation-heading"><a name="throttlingPoliciesSubscriptionPolicyIdGet"></a>Get a Subscription Policy <br><small>GET https://apis.wso2.com/api/am/admin/v0.11/throttling/policies/subscription/{policyId}</small></h3>
             <p class="marked"></p>
 
-            <p class="marked">This operation can be used to retrieve a single Subscription Policy providing the id of policy as a path parameter.
+            <p class="marked">Retrieve a single subscription-level throttling policy. We should provide the Id of the policy as a path parameter.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
@@ -200,7 +200,7 @@ Content-Type: application/json
                 </h4>
             </div>
 
-                <div id="request-throttlingPoliciesSubscriptionPolicyIdGet"class="pre collapse in"><code class="json">GET https://localhost:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476
+                <div id="request-throttlingPoliciesSubscriptionPolicyIdGet"class="pre collapse in"><code class="json">GET https://127.0.0.1:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476
 Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122
 </code></div>
 
@@ -229,12 +229,12 @@ Content-Type: application/json
   &quot;rateLimitTimeUnit&quot;: &quot;NA&quot;,
   &quot;customAttributes&quot;: [
     {
-      &quot;name&quot;: &quot;attr1&quot;,
-      &quot;value&quot;: &quot;123&quot;
+      &quot;name&quot;: &quot;customAttr1&quot;,
+      &quot;value&quot;: &quot;value1&quot;
     },
     {
-      &quot;name&quot;: &quot;attr2&quot;,
-      &quot;value&quot;: &quot;12&quot;
+      &quot;name&quot;: &quot;customAttr2&quot;,
+      &quot;value&quot;: &quot;value2&quot;
     }
   ],
   &quot;stopOnQuotaReach&quot;: true,
@@ -242,7 +242,7 @@ Content-Type: application/json
 }</code></div>
 
             <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122&quot; https://localhost:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476</code></div>
+                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122&quot; https://127.0.0.1:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476</code></div>
 
             <h4 class="section-heading" id="scroll-to">Parameters</h4>
             <table class="table table-hover">
@@ -307,7 +307,7 @@ Content-Type: application/json
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
-variant of the resourec.
+variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -336,7 +336,7 @@ variant of the resourec.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on Last Modified header of the
-formerly retrieved variant of the resource.
+formerly retrieved variant of the resource (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -405,10 +405,10 @@ formerly retrieved variant of the resource.
                 </tbody>
             </table>
             <hr/>
-            <h3 class="operation-heading"><a name="throttlingPoliciesSubscriptionPolicyIdPut"></a>Update a Subscription level throttle policy <br><small>PUT https://apis.wso2.com/api/am/admin/v0.11/throttling/policies/subscription/{policyId}</small></h3>
+            <h3 class="operation-heading"><a name="throttlingPoliciesSubscriptionPolicyIdPut"></a>Update a Subscription Policy <br><small>PUT https://apis.wso2.com/api/am/admin/v0.11/throttling/policies/subscription/{policyId}</small></h3>
             <p class="marked"></p>
 
-            <p class="marked">This operation can be used to update a Subscription level throttle policy.
+            <p class="marked">Updates an existing subscription-level throttling policy.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
@@ -421,7 +421,7 @@ formerly retrieved variant of the resource.
                 </h4>
             </div>
 
-                <div id="request-throttlingPoliciesSubscriptionPolicyIdPut"class="pre collapse in"><code class="json">PUT https://localhost:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476
+                <div id="request-throttlingPoliciesSubscriptionPolicyIdPut"class="pre collapse in"><code class="json">PUT https://127.0.0.1:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476
 Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122
 Content-Type: application/json
 
@@ -440,12 +440,12 @@ Content-Type: application/json
     &quot;rateLimitTimeUnit&quot;: &quot;NA&quot;,
     &quot;customAttributes&quot;:          [
                    {
-          &quot;name&quot;: &quot;attr&quot;,
-          &quot;value&quot;: &quot;123&quot;
+          &quot;name&quot;: &quot;customAttr0&quot;,
+          &quot;value&quot;: &quot;value1&quot;
        },
                    {
-          &quot;name&quot;: &quot;attr1&quot;,
-          &quot;value&quot;: &quot;456&quot;
+          &quot;name&quot;: &quot;customAttr1&quot;,
+          &quot;value&quot;: &quot;value1&quot;
        }
     ],
     &quot;stopOnQuotaReach&quot;: true,
@@ -477,12 +477,12 @@ Content-Type: application/json
   &quot;rateLimitTimeUnit&quot;: &quot;NA&quot;,
   &quot;customAttributes&quot;: [
     {
-      &quot;name&quot;: &quot;attr&quot;,
-      &quot;value&quot;: &quot;123&quot;
+      &quot;name&quot;: &quot;customAttr0&quot;,
+      &quot;value&quot;: &quot;value1&quot;
     },
     {
-      &quot;name&quot;: &quot;attr1&quot;,
-      &quot;value&quot;: &quot;456&quot;
+      &quot;name&quot;: &quot;customAttr1&quot;,
+      &quot;value&quot;: &quot;value1&quot;
     }
   ],
   &quot;stopOnQuotaReach&quot;: true,
@@ -490,7 +490,7 @@ Content-Type: application/json
 }</code></div>
 
             <h4 class="section-heading">Sample CURL</h4>
-                <div class="pre"><code class="bash">curl -k -X PUT -H &quot;Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122&quot; -H &quot;Content-Type: application/json&quot; https://localhost:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476 -d @data.json</code></div>
+                <div class="pre"><code class="bash">curl -k -X PUT -H &quot;Authorization: Bearer 0d63e133-7ad6-3aeb-9ca9-9299e0708122&quot; -H &quot;Content-Type: application/json&quot; https://127.0.0.1:9443/api/am/admin/v0.11/throttling/policies/subscription/6dd9fc11-bbe1-4daf-aee5-06a4d0e44476 -d @data.json</code></div>
 
             <h4 class="section-heading" id="scroll-to">Parameters</h4>
             <table class="table table-hover">
@@ -611,7 +611,7 @@ Content-Type: application/json
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on ETag.
+                            <p class="param-description marked">Validator for conditional requests; based on ETag (Will be supported in future).
 </p>
                         </td>
                         <td>
@@ -639,7 +639,7 @@ Content-Type: application/json
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header.
+                            <p class="param-description marked">Validator for conditional requests; based on Last Modified header (Will be supported in future).
 </p>
                         </td>
                         <td>
