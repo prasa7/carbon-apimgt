@@ -1314,7 +1314,7 @@ paths:
   '/apis/{apiId}/policies/mediation':
 
   #-----------------------------------------------------------------------------------------
-  # Retrieving the list of all global mediation sequences under a given search condition
+  # Retrieving the list of all API specific mediation sequences under a given search condition
   #-----------------------------------------------------------------------------------------
       get:
         x-scope: apim:api_view
@@ -1336,7 +1336,7 @@ paths:
           - $ref : "#/parameters/Accept"
           - $ref : "#/parameters/If-None-Match"
         tags:
-          - Mediation Policies (Collection)
+          - Mediation Policy (Collection)
         responses:
           200:
             description: |
@@ -1364,7 +1364,7 @@ paths:
               $ref: '#/definitions/Error'
 
 #----------------------------------------------------------------------------
-# Upload a global mediation policy
+# Upload an API specific mediation policy
 #----------------------------------------------------------------------------
       post:
         x-scope: apim:api_create
@@ -1386,7 +1386,7 @@ paths:
           - $ref: '#/parameters/If-Match'
           - $ref: '#/parameters/If-Unmodified-Since'
         tags:
-          - Mediation Policies (Collection)
+          - Mediation Policy (Collection)
         responses:
           200:
             description: |
@@ -1433,12 +1433,12 @@ paths:
               $ref: '#/definitions/Error'
 
 ######################################################
-# The "Individual global mediation sequence" resource
+# The "Individual API specific mediation sequence" resource
 ######################################################
   /apis/{apiId}/policies/mediation/{mediationPolicyId}:
 
 #-----------------------------------------------------
-# Retrieve a particular globle mediation squence
+# Retrieve a particular API specific mediation squence
 #-----------------------------------------------------
       get:
         x-scope: apim:api_view
@@ -1455,12 +1455,12 @@ paths:
           - $ref: '#/parameters/If-None-Match'
           - $ref: '#/parameters/If-Modified-Since'
         tags:
-          - Mediation Policies (Individual)
+          - Mediation Policy (Individual)
         responses:
           200:
             description: |
               OK.
-              Mediation Sequence returned.
+              Mediation policy returned.
             schema:
               $ref: '#/definitions/Mediation'
             headers:
@@ -1512,7 +1512,7 @@ paths:
           - $ref: '#/parameters/If-Match'
           - $ref: '#/parameters/If-Unmodified-Since'
         tags:
-          - Mediation Policies (Individual)
+          - Mediation Policy (Individual)
         responses:
           200:
             description: |
@@ -1562,7 +1562,7 @@ paths:
           - $ref: '#/parameters/If-Match'
           - $ref: '#/parameters/If-Unmodified-Since'
         tags:
-          - Mediation Policies (Individual)
+          - Mediation Policy (Individual)
         responses:
           200:
             description: |
@@ -2504,7 +2504,7 @@ paths:
         - $ref : "#/parameters/Accept"
         - $ref : "#/parameters/If-None-Match"
       tags:
-        - Mediation Policies (Collection)
+        - Mediation Policy (Collection)
       responses:
         200:
           description: |
