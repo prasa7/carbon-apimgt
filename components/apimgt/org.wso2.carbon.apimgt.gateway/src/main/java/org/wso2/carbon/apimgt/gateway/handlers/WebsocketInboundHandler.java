@@ -56,7 +56,7 @@ import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
     private static final Log log = LogFactory.getLog(WebsocketInboundHandler.class);
     private static volatile ThrottleDataPublisher throttleDataPublisher = null;
-    private static String tenantDomain;
+    private String tenantDomain;
     private static APIMgtUsageDataPublisher usageDataPublisher;
     private String uri;
     private String version;
@@ -101,19 +101,16 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
 		if (msg instanceof FullHttpRequest) {
 			FullHttpRequest req = (FullHttpRequest) msg;
 			uri = req.getUri();
-			tenantDomain = MultitenantUtils.getTenantDomainFromUrl(req.getUri());
-
-			if (tenantDomain.equals(req.getUri())) {
-				tenantDomain = MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+			if (req.getUri().contains("/t/"))  {
+				tenantDomain = MultitenantUtils.getTenantDomainFromUrl(req.getUri());
 			} else {
-				req.setUri(req.getUri().replaceFirst("/", "-"));
-				msg = req;
+				tenantDomain = MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 			}
 
             String useragent = req.headers().get(HttpHeaders.USER_AGENT);
             String authorization = req.headers().get(HttpHeaders.AUTHORIZATION);
 
-            // '-' is used for empty values to avoid possible erros in DAS side.
+            // '-' is used for empty values to avoid possible errors in DAS side.
             // Requeired headers are stored one by one as validateOAuthHeader()
             // removes some of the headers from the request
             useragent = useragent != null ? useragent : "-";
@@ -121,8 +118,16 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
             headers.add(HttpHeaders.USER_AGENT, useragent);
 
             if (validateOAuthHeader(req)) {
-                req.setUri(uri);
+
+	            if (!MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+		            // carbon-mediation only support websocket invocation from super tenant APIs.
+		            // This is a workaround to mimic the the invocation came from super tenant.
+		            req.setUri(req.getUri().replaceFirst("/", "-"));
+		            msg = req;
+	            }
                 ctx.fireChannelRead(msg);
+
+	            req.setUri(uri); // Setting back original URI from the request.
 
                 // publish google analytics data
                 GoogleAnalyticsData.DataBuilder gaData = new GoogleAnalyticsData.DataBuilder(null, null, null, null)
