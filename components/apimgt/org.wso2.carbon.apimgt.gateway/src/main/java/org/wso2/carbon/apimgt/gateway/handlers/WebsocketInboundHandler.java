@@ -84,7 +84,7 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
 	 * @param url
 	 * @return version String
 	 */
-	private String getversionFromUrl(final String url) {
+	private String getVersionFromUrl(final String url) {
 		return url.replaceFirst(".*/([^/?]+).*", "$1");
 	}
 
@@ -118,7 +118,6 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
 			headers.add(HttpHeaders.USER_AGENT, useragent);
 
 			if (validateOAuthHeader(req)) {
-
 				if (!MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
 					// carbon-mediation only support websocket invocation from super tenant APIs.
 					// This is a workaround to mimic the the invocation came from super tenant.
@@ -165,14 +164,13 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
 	 *
 	 * @param req Full Http Request
 	 * @return true if the access token is valid
-	 * @throws APIManagementException
 	 */
 	private boolean validateOAuthHeader(FullHttpRequest req)
 			throws APIManagementException, APISecurityException {
 		try {
 			PrivilegedCarbonContext.startTenantFlow();
 			PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(tenantDomain, true);
-			version = getversionFromUrl(uri);
+			version = getVersionFromUrl(uri);
 			APIKeyValidationInfoDTO info;
 			if (!req.headers().contains(HttpHeaders.AUTHORIZATION)) {
 				log.error("No Authorization Header Present");
