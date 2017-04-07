@@ -121,7 +121,8 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
 				if (!MultitenantConstants.SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
 					// carbon-mediation only support websocket invocation from super tenant APIs.
 					// This is a workaround to mimic the the invocation came from super tenant.
-					req.setUri(req.getUri().replaceFirst("/", "-"));
+					String modifiedUri = uri.replaceFirst("/t/", "-t/");
+					req.setUri(modifiedUri);
 					msg = req;
 				}
 				ctx.fireChannelRead(msg);
