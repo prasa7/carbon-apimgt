@@ -474,8 +474,8 @@ public class PolicyDAOImpl implements PolicyDAO {
                             .COLUMN_HEADER_FIELD_NAME));
                     headerCondition.setValue(resultSet.getString(APIMgtConstants.ThrottlePolicyConstants
                             .COLUMN_HEADER_FIELD_VALUE));
-                    headerCondition.setInvertCondition(resultSet.getBoolean(APIMgtConstants.ThrottlePolicyConstants
-                            .COLUMN_IS_HEADER_FIELD_MAPPING));
+                    headerCondition.setInvertCondition(resultSet
+                            .getBoolean(APIMgtConstants.ThrottlePolicyConstants.COLUMN_IS_HEADER_FIELD_MAPPING));
                     conditions.add(headerCondition);
                 }
             }
@@ -916,9 +916,8 @@ public class PolicyDAOImpl implements PolicyDAO {
     private static void updateSubscriptionPolicy(String uuid, Connection connection, String name, String displayName,
             String description, String quotaType, int quota, String quotaUnit, int unitTime, String timeUnit)
             throws SQLException {
-        final String query =
-                "UPDATE AM_SUBSCRIPTION_POLICY SET NAME = ?, DISPLAY_NAME = ?, DESCRIPTION = ?, QUOTA_TYPE = ?, "
-                        + "QUOTA = ?, QUOTA_UNIT = ?, UNIT_TIME = ?, TIME_UNIT = ? WHERE UUID = ?";
+        final String query = "UPDATE AM_SUBSCRIPTION_POLICY SET NAME = ?, DISPLAY_NAME = ?, DESCRIPTION = ?, "
+                + "QUOTA_TYPE = ?, QUOTA = ?, QUOTA_UNIT = ?, UNIT_TIME = ?, TIME_UNIT = ? WHERE UUID = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, name);
