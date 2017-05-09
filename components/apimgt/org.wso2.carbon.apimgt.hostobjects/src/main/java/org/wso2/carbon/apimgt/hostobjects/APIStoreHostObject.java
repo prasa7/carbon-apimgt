@@ -1629,16 +1629,17 @@ public class APIStoreHostObject extends ScriptableObject {
         String tenantDomain;
         boolean retuenAPItags = false;
         String state = null;
-        
-        Boolean displayAPIsWithMultipleStatus = APIUtil.isAllowDisplayAPIsWithMultipleStatus();
-               
-        
         if (args[0] != null) {
             tenantDomain = (String) args[0];
+            PrivilegedCarbonContext.startTenantFlow();
+            PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(tenantDomain, true);
         } else {
             tenantDomain = MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
+            PrivilegedCarbonContext.startTenantFlow();
+            PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(MultitenantConstants.SUPER_TENANT_DOMAIN_NAME, true);
         }
-            
+
+        Boolean displayAPIsWithMultipleStatus = APIUtil.isAllowDisplayAPIsWithMultipleStatus();
         int start = Integer.parseInt((String) args[1]);
         int end = Integer.parseInt((String) args[2]);
         
