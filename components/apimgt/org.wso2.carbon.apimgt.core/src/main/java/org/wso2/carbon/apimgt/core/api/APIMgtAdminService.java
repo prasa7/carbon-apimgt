@@ -24,6 +24,7 @@ import org.wso2.carbon.apimgt.core.exception.APIManagementException;
 import org.wso2.carbon.apimgt.core.models.APISummary;
 import org.wso2.carbon.apimgt.core.models.Label;
 import org.wso2.carbon.apimgt.core.models.SubscriptionValidationData;
+import org.wso2.carbon.apimgt.core.models.policy.APIPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.Policy;
 
 import java.util.List;
@@ -152,4 +153,12 @@ public interface APIMgtAdminService {
      */
     String getAPIGatewayServiceConfig(String apiId) throws APIConfigRetrievalException;
 
+
+    /**
+     * Get a List of policies of a particular level
+     *
+     * @return List of Policy objects of the given level.
+     * @throws APIManagementException If failed to get policies.
+     */
+    List<APIPolicy> getAllAdvancePolicies() throws APIManagementException;
 }

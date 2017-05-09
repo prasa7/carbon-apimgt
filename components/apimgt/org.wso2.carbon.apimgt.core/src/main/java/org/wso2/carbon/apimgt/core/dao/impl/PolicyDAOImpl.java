@@ -794,6 +794,29 @@ public class PolicyDAOImpl implements PolicyDAO {
         return EntityDAO.getLastUpdatedTimeOfResourceByName(AM_SUBSCRIPTION_POLICY_TABLE_NAME, policyName);
     }
 
+    @Override public List<APIPolicy> getAllAdvancePolicies() throws SQLException {
+        List<APIPolicy> policyList = new ArrayList<>();
+        String sqlQuery = "SELECT * from AM_API_POLICY";
+
+        try (Connection connection = DAOUtil.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sqlQuery)) {
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    APIPolicy apiPolicy = new APIPolicy(
+                            resultSet.getString(APIMgtConstants.ThrottlePolicyConstants.COLUMN_NAME));
+                    apiPolicy.setUuid(resultSet.getString(APIMgtConstants.ThrottlePolicyConstants.COLUMN_UUID));
+                    setCommonPolicyDetails(apiPolicy, resultSet);
+                    apiPolicy.setUserLevel(
+                            resultSet.getString(APIMgtConstants.ThrottlePolicyConstants.COLUMN_APPLICABLE_LEVEL));
+                    apiPolicy.setPipelines(getPipelines(apiPolicy.getUuid(), connection));
+
+                    policyList.add(apiPolicy);
+                }
+            }
+        }
+        return policyList;
+    }
+
     static void initDefaultPolicies() throws APIMgtDAOException {
         try (Connection connection = DAOUtil.getConnection()) {
             try {

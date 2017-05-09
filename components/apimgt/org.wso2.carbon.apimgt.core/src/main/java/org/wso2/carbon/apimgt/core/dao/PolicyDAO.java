@@ -21,10 +21,12 @@
 package org.wso2.carbon.apimgt.core.dao;
 
 import org.wso2.carbon.apimgt.core.exception.APIMgtDAOException;
+import org.wso2.carbon.apimgt.core.models.policy.APIPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.ApplicationPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.Policy;
 import org.wso2.carbon.apimgt.core.models.policy.SubscriptionPolicy;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -153,4 +155,12 @@ public interface PolicyDAO {
      */
     String getLastUpdatedTimeOfSubscriptionPolicy(String policyName)
             throws APIMgtDAOException;
+
+    /**
+     * Gets all the Policies belongs to a level
+     *
+     * @return {@link List} List Policies belongs to the provided level
+     * @throws SQLException If failed to get Policies
+     */
+    List<APIPolicy> getAllAdvancePolicies() throws SQLException;
 }
