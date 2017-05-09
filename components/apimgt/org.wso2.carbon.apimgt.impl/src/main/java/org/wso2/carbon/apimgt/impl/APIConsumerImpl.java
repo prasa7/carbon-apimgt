@@ -394,11 +394,16 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
     @Deprecated
     public Map<String,Object> getAllPaginatedPublishedAPIs(String tenantDomain,int start,int end)
             throws APIManagementException {
-        if(tenantDomain != null) {
-            PrivilegedCarbonContext.startTenantFlow();
-            PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(tenantDomain, true);
+        Boolean displayAPIsWithMultipleStatus = false;
+        try {
+            if (tenantDomain != null) {
+                PrivilegedCarbonContext.startTenantFlow();
+                PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(tenantDomain, true);
+            }
+            displayAPIsWithMultipleStatus = APIUtil.isAllowDisplayAPIsWithMultipleStatus();
+        }finally {
+            PrivilegedCarbonContext.endTenantFlow();
         }
-    	Boolean displayAPIsWithMultipleStatus = APIUtil.isAllowDisplayAPIsWithMultipleStatus();
     	Map<String, List<String>> listMap = new HashMap<String, List<String>>();
         //Check the api-manager.xml config file entry <DisplayAllAPIs> value is false
         if (!displayAPIsWithMultipleStatus) {
@@ -675,9 +680,13 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
     @Deprecated
 	public Map<String, Object> getAllPaginatedAPIsByStatus(String tenantDomain,
 			int start, int end, final String apiStatus, boolean returnAPITags) throws APIManagementException {
-        if(tenantDomain != null) {
-            PrivilegedCarbonContext.startTenantFlow();
-            PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(tenantDomain, true);
+        try {
+            if (tenantDomain != null) {
+                PrivilegedCarbonContext.startTenantFlow();
+                PrivilegedCarbonContext.getThreadLocalCarbonContext().setTenantDomain(tenantDomain, true);
+            }
+        }finally {
+            PrivilegedCarbonContext.endTenantFlow();
         }
     	Boolean displayAPIsWithMultipleStatus = APIUtil.isAllowDisplayAPIsWithMultipleStatus();
     	Map<String, List<String>> listMap = new HashMap<String, List<String>>();
