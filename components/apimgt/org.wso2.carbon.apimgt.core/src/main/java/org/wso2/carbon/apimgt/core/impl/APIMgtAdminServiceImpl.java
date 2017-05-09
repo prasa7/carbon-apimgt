@@ -17,9 +17,10 @@ import org.wso2.carbon.apimgt.core.models.APISummary;
 import org.wso2.carbon.apimgt.core.models.Label;
 import org.wso2.carbon.apimgt.core.models.SubscriptionValidationData;
 import org.wso2.carbon.apimgt.core.models.policy.APIPolicy;
+import org.wso2.carbon.apimgt.core.models.policy.ApplicationPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.Policy;
+import org.wso2.carbon.apimgt.core.models.policy.SubscriptionPolicy;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -207,7 +208,27 @@ public class APIMgtAdminServiceImpl implements APIMgtAdminService {
     @Override public List<APIPolicy> getAllAdvancePolicies() throws APIManagementException {
         try {
             return policyDAO.getAllAdvancePolicies();
-        } catch (SQLException e) {
+        } catch (APIMgtDAOException e) {
+            String errorMessage = "Couldn't retrieve advance policies.";
+            log.error(errorMessage, e);
+            throw new APIConfigRetrievalException(errorMessage, ExceptionCodes.APIMGT_DAO_EXCEPTION);
+        }
+    }
+
+    @Override public List<ApplicationPolicy> getAllApplicationPolicies() throws APIManagementException {
+        try {
+            return policyDAO.getAllApplicationPolicies();
+        } catch (APIMgtDAOException e) {
+            String errorMessage = "Couldn't retrieve advance policies.";
+            log.error(errorMessage, e);
+            throw new APIConfigRetrievalException(errorMessage, ExceptionCodes.APIMGT_DAO_EXCEPTION);
+        }
+    }
+
+    @Override public List<SubscriptionPolicy> getAllSubscriptionPolicies() throws APIManagementException {
+        try {
+            return policyDAO.getAllSubscriptionPolicies();
+        } catch (APIMgtDAOException e) {
             String errorMessage = "Couldn't retrieve advance policies.";
             log.error(errorMessage, e);
             throw new APIConfigRetrievalException(errorMessage, ExceptionCodes.APIMGT_DAO_EXCEPTION);

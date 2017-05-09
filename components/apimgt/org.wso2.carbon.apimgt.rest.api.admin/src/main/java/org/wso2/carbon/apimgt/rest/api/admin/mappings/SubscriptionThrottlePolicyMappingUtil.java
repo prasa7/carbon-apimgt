@@ -26,6 +26,7 @@ import org.wso2.carbon.apimgt.core.models.policy.SubscriptionPolicy;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.CustomAttributeDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.SubscriptionThrottlePolicyDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.SubscriptionThrottlePolicyListDTO;
+import org.wso2.carbon.apimgt.rest.api.admin.exceptions.SubscriptionThrottlePolicyException;
 import org.wso2.carbon.apimgt.rest.api.admin.exceptions.UnsupportedThrottleLimitTypeException;
 import org.wso2.carbon.apimgt.rest.api.common.RestApiConstants;
 
@@ -44,11 +45,10 @@ public class SubscriptionThrottlePolicyMappingUtil {
      *
      * @param subscriptionPolicies Array of Subscription Policies
      * @return A List DTO of converted Subscription Policies
-     * @throws UnsupportedThrottleLimitTypeException
-     * @throws ParseException
+     * @throws SubscriptionThrottlePolicyException
      */
     public static SubscriptionThrottlePolicyListDTO fromSubscriptionPolicyArrayToListDTO(
-            SubscriptionPolicy[] subscriptionPolicies) throws UnsupportedThrottleLimitTypeException, ParseException {
+            List<SubscriptionPolicy> subscriptionPolicies) throws SubscriptionThrottlePolicyException {
         SubscriptionThrottlePolicyListDTO listDTO = new SubscriptionThrottlePolicyListDTO();
         List<SubscriptionThrottlePolicyDTO> subscriptionPolicyDTOList = new ArrayList<>();
         if (subscriptionPolicies != null) {
@@ -67,37 +67,40 @@ public class SubscriptionThrottlePolicyMappingUtil {
      *
      * @param subscriptionPolicy Subscription Policy model object
      * @return Converted Subscription policy REST API DTO object
-     * @throws UnsupportedThrottleLimitTypeException
-     * @throws ParseException
+     * @throws SubscriptionThrottlePolicyException
      */
     public static SubscriptionThrottlePolicyDTO fromSubscriptionThrottlePolicyToDTO(
-            SubscriptionPolicy subscriptionPolicy) throws UnsupportedThrottleLimitTypeException, ParseException {
-        SubscriptionThrottlePolicyDTO policyDTO = new SubscriptionThrottlePolicyDTO();
-        policyDTO = CommonThrottleMappingUtil.updateFieldsFromToPolicyToDTO(subscriptionPolicy, policyDTO);
-        policyDTO.setBillingPlan(subscriptionPolicy.getBillingPlan());
-        policyDTO.setRateLimitCount(subscriptionPolicy.getRateLimitCount());
-        policyDTO.setRateLimitTimeUnit(subscriptionPolicy.getRateLimitTimeUnit());
-        policyDTO.setStopOnQuotaReach(subscriptionPolicy.isStopOnQuotaReach());
+            SubscriptionPolicy subscriptionPolicy)
+            throws SubscriptionThrottlePolicyException {
+        try {
+            SubscriptionThrottlePolicyDTO policyDTO = new SubscriptionThrottlePolicyDTO();
+            policyDTO = CommonThrottleMappingUtil.updateFieldsFromToPolicyToDTO(subscriptionPolicy, policyDTO);
+            policyDTO.setBillingPlan(subscriptionPolicy.getBillingPlan());
+            policyDTO.setRateLimitCount(subscriptionPolicy.getRateLimitCount());
+            policyDTO.setRateLimitTimeUnit(subscriptionPolicy.getRateLimitTimeUnit());
+            policyDTO.setStopOnQuotaReach(subscriptionPolicy.isStopOnQuotaReach());
 
-        String customAttributes = subscriptionPolicy.getCustomAttributes();
-        if (customAttributes != null) {
-            List<CustomAttributeDTO> customAttributeDTOs = new ArrayList<>();
-            JSONParser parser = new JSONParser();
-            JSONArray attributeArray = (JSONArray) parser.parse(subscriptionPolicy.getCustomAttributes());
-            for (Object attributeObj : attributeArray) {
-                JSONObject attribute = (JSONObject) attributeObj;
-                CustomAttributeDTO customAttributeDTO = CommonThrottleMappingUtil
-                        .getCustomAttribute(attribute.get(RestApiConstants.THROTTLING_CUSTOM_ATTRIBUTE_NAME).toString(),
-                                attribute.get(RestApiConstants.THROTTLING_CUSTOM_ATTRIBUTE_VALUE).toString());
-                customAttributeDTOs.add(customAttributeDTO);
+            String customAttributes = subscriptionPolicy.getCustomAttributes();
+            if (customAttributes != null) {
+                List<CustomAttributeDTO> customAttributeDTOs = new ArrayList<>();
+                JSONParser parser = new JSONParser();
+                JSONArray attributeArray = (JSONArray) parser.parse(subscriptionPolicy.getCustomAttributes());
+                for (Object attributeObj : attributeArray) {
+                    JSONObject attribute = (JSONObject) attributeObj;
+                    CustomAttributeDTO customAttributeDTO = CommonThrottleMappingUtil.getCustomAttribute(
+                            attribute.get(RestApiConstants.THROTTLING_CUSTOM_ATTRIBUTE_NAME).toString(),
+                            attribute.get(RestApiConstants.THROTTLING_CUSTOM_ATTRIBUTE_VALUE).toString());
+                    customAttributeDTOs.add(customAttributeDTO);
+                }
+                policyDTO.setCustomAttributes(customAttributeDTOs);
             }
-            policyDTO.setCustomAttributes(customAttributeDTOs);
+            if (subscriptionPolicy.getDefaultQuotaPolicy() != null) {
+                policyDTO.setDefaultLimit(CommonThrottleMappingUtil.fromQuotaPolicyToDTO(subscriptionPolicy.getDefaultQuotaPolicy()));
+            }
+            return policyDTO;
+        } catch (ParseException | UnsupportedThrottleLimitTypeException e) {
+            throw new SubscriptionThrottlePolicyException(e.getMessage(), e);
         }
-        if (subscriptionPolicy.getDefaultQuotaPolicy() != null) {
-            policyDTO.setDefaultLimit(
-                    CommonThrottleMappingUtil.fromQuotaPolicyToDTO(subscriptionPolicy.getDefaultQuotaPolicy()));
-        }
-        return policyDTO;
     }
 
     /**

@@ -26,7 +26,6 @@ import org.wso2.carbon.apimgt.core.models.policy.ApplicationPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.Policy;
 import org.wso2.carbon.apimgt.core.models.policy.SubscriptionPolicy;
 
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -157,10 +156,26 @@ public interface PolicyDAO {
             throws APIMgtDAOException;
 
     /**
-     * Gets all the Policies belongs to a level
+     * Gets all the Advance Policies.
      *
      * @return {@link List} List Policies belongs to the provided level
-     * @throws SQLException If failed to get Policies
+     * @throws APIMgtDAOException If failed to get Policies
      */
-    List<APIPolicy> getAllAdvancePolicies() throws SQLException;
+    List<APIPolicy> getAllAdvancePolicies() throws APIMgtDAOException;
+
+    /**
+     * Gets all the Application Policies.
+     *
+     * @return {@link List} List Policies belongs to the provided level
+     * @throws APIMgtDAOException If failed to get Policies
+     */
+    List<ApplicationPolicy> getAllApplicationPolicies() throws APIMgtDAOException;
+
+    /**
+     * Gets all the Subscription Policies.
+     *
+     * @return {@link List} List Policies belongs to the provided level
+     * @throws APIMgtDAOException If failed to get Policies
+     */
+    List<SubscriptionPolicy> getAllSubscriptionPolicies() throws APIMgtDAOException;
 }

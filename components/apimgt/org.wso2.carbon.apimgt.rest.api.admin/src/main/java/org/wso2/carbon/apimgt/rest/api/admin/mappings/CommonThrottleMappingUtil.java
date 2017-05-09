@@ -18,8 +18,9 @@
 
 package org.wso2.carbon.apimgt.rest.api.admin.mappings;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.wso2.carbon.apimgt.core.models.policy.APIPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.BandwidthLimit;
 import org.wso2.carbon.apimgt.core.models.policy.Condition;
 import org.wso2.carbon.apimgt.core.models.policy.HeaderCondition;
@@ -32,6 +33,7 @@ import org.wso2.carbon.apimgt.core.models.policy.PolicyConstants;
 import org.wso2.carbon.apimgt.core.models.policy.QueryParameterCondition;
 import org.wso2.carbon.apimgt.core.models.policy.QuotaPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.RequestCountLimit;
+import org.wso2.carbon.apimgt.rest.api.admin.dto.AdvancedThrottlePolicyDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.BandwidthLimitDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.ConditionalGroupDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.CustomAttributeDTO;
@@ -55,7 +57,7 @@ import java.util.List;
  */
 public class CommonThrottleMappingUtil {
 
-    private static final Log log = LogFactory.getLog(CommonThrottleMappingUtil.class);
+    private static final Logger log = LoggerFactory.getLogger(CommonThrottleMappingUtil.class);
 
     /**
      * Converts a list of Conditional Group DTOs into a list of Pipeline objects

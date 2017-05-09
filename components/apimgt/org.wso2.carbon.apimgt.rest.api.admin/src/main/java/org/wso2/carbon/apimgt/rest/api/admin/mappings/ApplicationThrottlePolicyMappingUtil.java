@@ -18,6 +18,7 @@
 
 package org.wso2.carbon.apimgt.rest.api.admin.mappings;
 
+import org.wso2.carbon.apimgt.rest.api.admin.exceptions.UnsupportedThrottleConditionTypeException;
 import org.wso2.carbon.apimgt.rest.api.admin.exceptions.UnsupportedThrottleLimitTypeException;
 import org.wso2.carbon.apimgt.core.models.policy.ApplicationPolicy;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.ApplicationThrottlePolicyDTO;
@@ -39,8 +40,8 @@ public class ApplicationThrottlePolicyMappingUtil {
      * @return A List DTO of converted Application Policies
      * @throws UnsupportedThrottleLimitTypeException
      */
-    public static ApplicationThrottlePolicyListDTO fromApplicationPolicyArrayToListDTO(
-            ApplicationPolicy[] appPolicies) throws UnsupportedThrottleLimitTypeException {
+    public static ApplicationThrottlePolicyListDTO fromApplicationPolicyArrayToListDTO( List<ApplicationPolicy> appPolicies)
+            throws UnsupportedThrottleLimitTypeException, UnsupportedThrottleConditionTypeException {
         ApplicationThrottlePolicyListDTO listDTO = new ApplicationThrottlePolicyListDTO();
         List<ApplicationThrottlePolicyDTO> appPolicyDTOList = new ArrayList<>();
         if (appPolicies != null) {
@@ -62,7 +63,7 @@ public class ApplicationThrottlePolicyMappingUtil {
      * @throws UnsupportedThrottleLimitTypeException
      */
     public static ApplicationThrottlePolicyDTO fromApplicationThrottlePolicyToDTO(ApplicationPolicy appPolicy)
-            throws UnsupportedThrottleLimitTypeException {
+            throws UnsupportedThrottleLimitTypeException, UnsupportedThrottleConditionTypeException {
         ApplicationThrottlePolicyDTO policyDTO = new ApplicationThrottlePolicyDTO();
         policyDTO = CommonThrottleMappingUtil.updateFieldsFromToPolicyToDTO(appPolicy, policyDTO);
         if (appPolicy.getDefaultQuotaPolicy() != null) {

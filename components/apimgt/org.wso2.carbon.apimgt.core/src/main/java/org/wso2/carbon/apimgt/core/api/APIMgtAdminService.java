@@ -25,7 +25,9 @@ import org.wso2.carbon.apimgt.core.models.APISummary;
 import org.wso2.carbon.apimgt.core.models.Label;
 import org.wso2.carbon.apimgt.core.models.SubscriptionValidationData;
 import org.wso2.carbon.apimgt.core.models.policy.APIPolicy;
+import org.wso2.carbon.apimgt.core.models.policy.ApplicationPolicy;
 import org.wso2.carbon.apimgt.core.models.policy.Policy;
+import org.wso2.carbon.apimgt.core.models.policy.SubscriptionPolicy;
 
 import java.util.List;
 
@@ -155,10 +157,26 @@ public interface APIMgtAdminService {
 
 
     /**
-     * Get a List of policies of a particular level
+     * Get a List of Advance policies.
      *
      * @return List of Policy objects of the given level.
      * @throws APIManagementException If failed to get policies.
      */
     List<APIPolicy> getAllAdvancePolicies() throws APIManagementException;
+
+    /**
+     * Get a List of Advance policies.
+     *
+     * @return List of Policy objects of the given level.
+     * @throws APIManagementException If failed to get policies.
+     */
+    List<ApplicationPolicy> getAllApplicationPolicies() throws APIManagementException;
+
+    /**
+     * Get a List of Advance policies.
+     *
+     * @return List of Policy objects of the given level.
+     * @throws APIManagementException If failed to get policies.
+     */
+    List<SubscriptionPolicy> getAllSubscriptionPolicies() throws APIManagementException;
 }
