@@ -36,7 +36,7 @@ public class AdvancedThrottlePolicyDTO extends ThrottlePolicyDTO  {
     return defaultLimit;
   }
 
-  public void dsetDefaultLimit(ThrottleLimitDTO defaultLimit) {
+  public void setDefaultLimit(ThrottleLimitDTO defaultLimit) {
     this.defaultLimit = defaultLimit;
   }
 
