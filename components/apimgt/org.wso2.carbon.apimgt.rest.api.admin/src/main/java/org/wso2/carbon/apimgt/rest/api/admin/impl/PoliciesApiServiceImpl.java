@@ -16,17 +16,18 @@ import org.wso2.carbon.apimgt.rest.api.admin.dto.ApplicationThrottlePolicyDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.ApplicationThrottlePolicyListDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.SubscriptionThrottlePolicyDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.dto.SubscriptionThrottlePolicyListDTO;
+import org.wso2.carbon.apimgt.rest.api.admin.dto.ThrottlePolicyDTO;
 import org.wso2.carbon.apimgt.rest.api.admin.mappings.AdvancedThrottlePolicyMappingUtil;
 import org.wso2.carbon.apimgt.rest.api.admin.mappings.ApplicationThrottlePolicyMappingUtil;
 import org.wso2.carbon.apimgt.rest.api.admin.mappings.SubscriptionThrottlePolicyMappingUtil;
 import org.wso2.carbon.apimgt.rest.api.common.util.RestApiUtil;
 import org.wso2.msf4j.Request;
 
-import javax.ws.rs.core.Response;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ws.rs.core.Response;
+
 
 public class PoliciesApiServiceImpl extends PoliciesApiService {
 
@@ -132,8 +133,7 @@ public class PoliciesApiServiceImpl extends PoliciesApiService {
         if (log.isDebugEnabled()) {
             log.info("Received Advance Policy POST request " + body + " with tierLevel = " + tierLevel);
         }
-//        return createPolicy(tierLevel, body);
-        return null;
+        return createPolicy(tierLevel, body);
     }
 
     /**
@@ -236,8 +236,7 @@ public class PoliciesApiServiceImpl extends PoliciesApiService {
         if (log.isDebugEnabled()) {
             log.info("Received Advance Policy POST request " + body + " with tierLevel = " + tierLevel);
         }
-//        return createPolicy(tierLevel, body);
-        return null;
+        return createPolicy(tierLevel, body);
     }
 
     /**
@@ -341,8 +340,7 @@ public class PoliciesApiServiceImpl extends PoliciesApiService {
         if (log.isDebugEnabled()) {
             log.info("Received Advance Policy POST request " + body + " with tierLevel = " + tierLevel);
         }
-//        return createPolicy(tierLevel, body);
-        return null;
+        return createPolicy(tierLevel, body);
     }
 
 //    private Response getPolicyByUuid(String policyId, String tierLevel) {
@@ -372,19 +370,42 @@ public class PoliciesApiServiceImpl extends PoliciesApiService {
 //        }
 //    }
 //
-//    private Response createPolicy(String tierLevel, Thro body) {
-//        try {
-//            APIMgtAdminService apiMgtAdminService = RestApiUtil.getAPIMgtAdminService();
-//            Policy policy = PolicyMappingUtil.toPolicy(tierLevel, body);
-//            apiMgtAdminService.addPolicy(tierLevel, policy);
-//            return Response.status(Response.Status.CREATED).entity(policy).build();
-//        } catch (APIManagementException e) {
-//            String errorMessage = "Error occurred while adding Policy ";
-//            org.wso2.carbon.apimgt.rest.api.common.dto.ErrorDTO errorDTO = RestApiUtil.getErrorDTO(e.getErrorHandler());
-//            log.error(errorMessage, e);
-//            return Response.status(e.getErrorHandler().getHttpStatusCode()).entity(errorDTO).build();
-//        }
-//    }
+
+    /**
+     * Creating throttle policy and passing it to DAO to add to the database
+     * @param tierLevel level of the throttle policy to be added
+     * @param body  body (data) of the throttle policy
+     * @return Response of success or failure of adding policy
+     */
+    private Response createPolicy(String tierLevel, ThrottlePolicyDTO body) {
+        try {
+            APIMgtAdminService apiMgtAdminService = RestApiUtil.getAPIMgtAdminService();
+            if (body instanceof AdvancedThrottlePolicyDTO) {
+                APIPolicy policy = AdvancedThrottlePolicyMappingUtil.fromAdvancedPolicyDTOToPolicy(
+                        (AdvancedThrottlePolicyDTO) body);
+                apiMgtAdminService.addPolicy(tierLevel, policy);
+                return Response.status(Response.Status.CREATED).entity(policy).build();
+            } else if (body instanceof ApplicationThrottlePolicyDTO) {
+                ApplicationPolicy policy = ApplicationThrottlePolicyMappingUtil
+                        .fromApplicationThrottlePolicyDTOToModel((ApplicationThrottlePolicyDTO) body);
+                apiMgtAdminService.addPolicy(tierLevel, policy);
+                return Response.status(Response.Status.CREATED).entity(policy).build();
+            } else if (body instanceof SubscriptionThrottlePolicyDTO) {
+                SubscriptionPolicy policy = SubscriptionThrottlePolicyMappingUtil
+                        .fromSubscriptionThrottlePolicyDTOToModel((SubscriptionThrottlePolicyDTO) body);
+                apiMgtAdminService.addPolicy(tierLevel, policy);
+                return Response.status(Response.Status.CREATED).entity(policy).build();
+            }
+            //todo: handle return if not matching for any category
+            return null;
+
+        } catch (APIManagementException e) {
+            String errorMessage = "Error occurred while adding Policy ";
+            org.wso2.carbon.apimgt.rest.api.common.dto.ErrorDTO errorDTO = RestApiUtil.getErrorDTO(e.getErrorHandler());
+            log.error(errorMessage, e);
+            return Response.status(e.getErrorHandler().getHttpStatusCode()).entity(errorDTO).build();
+        }
+    }
 //
 //    private Response updatePolicy(String policyId, String tierLevel, TierDTO body) {
 //        try {
@@ -401,6 +422,13 @@ public class PoliciesApiServiceImpl extends PoliciesApiService {
 //        }
 //    }
 //
+
+    /**
+     * Delete throttle policy
+     * @param policyId uuid of the throttle policy to be deleted
+     * @param tierLevel level of the throttle policy to be deleted
+     * @return Response indicating success or failure of the deletion
+     */
     private Response deletePolicy(String policyId, String tierLevel) {
         try {
             APIMgtAdminService apiMgtAdminService = RestApiUtil.getAPIMgtAdminService();
