@@ -19,12 +19,22 @@ package org.wso2.carbon.apimgt.keymgt.issuers;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.opensaml.saml2.core.Assertion;
+import org.opensaml.saml2.core.Attribute;
+import org.opensaml.saml2.core.AttributeStatement;
+import org.opensaml.xml.XMLObject;
+import org.opensaml.xml.schema.XSString;
+import org.opensaml.xml.schema.impl.XSAnyImpl;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.impl.APIConstants;
 import org.wso2.carbon.apimgt.impl.dao.ApiMgtDAO;
 import org.wso2.carbon.apimgt.impl.utils.APIUtil;
+import org.wso2.carbon.apimgt.keymgt.handlers.ResourceConstants;
 import org.wso2.carbon.apimgt.keymgt.util.APIKeyMgtDataHolder;
+import org.wso2.carbon.apimgt.keymgt.util.APIKeyMgtUtil;
+import org.wso2.carbon.core.security.AuthenticatorsConfiguration;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
+import org.wso2.carbon.identity.oauth.common.GrantType;
 import org.wso2.carbon.identity.oauth2.token.OAuthTokenReqMessageContext;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.api.UserStoreManager;
@@ -65,6 +75,7 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
         String username = tokReqMsgCtx.getAuthorizedUser().getUserName();
         String endUsernameWithDomain = UserCoreUtil.addDomainToName(username,
                 tokReqMsgCtx.getAuthorizedUser().getUserStoreDomain());
+        String isSAML2Enabled = System.getProperty(ResourceConstants.SAML2_ASSERTION_ENABLED);
         List<String> reqScopeList = Arrays.asList(requestedScopes);
         Map<String, String> restAPIScopesOfCurrentTenant;
         try {
@@ -115,8 +126,14 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
                     tenantId = IdentityTenantUtil.getTenantIdOfUser(username);
                 }
                 userStoreManager = realmService.getTenantUserRealm(tenantId).getUserStoreManager();
-                userRoles = userStoreManager.getRoleListOfUser(MultitenantUtils.
-                        getTenantAwareUsername(endUsernameWithDomain));
+                if (isSAML2Enabled != null && ResourceConstants.CHECK_TRUE.equalsIgnoreCase(isSAML2Enabled)) {
+                    Assertion assertion = (Assertion) tokReqMsgCtx.getProperty(ResourceConstants.SAML2_ASSERTION);
+                    userRoles = APIKeyMgtUtil.getRolesFromAssertion(assertion);
+                } else {
+                    userRoles = userStoreManager.getRoleListOfUser(MultitenantUtils.
+                            getTenantAwareUsername(endUsernameWithDomain));
+                }
+
             } catch (UserStoreException e) {
                 //Log and return since we do not want to stop issuing the token in case of scope validation failures.
                 log.error("Error when getting the tenant's UserStoreManager or when getting roles of user ", e);
