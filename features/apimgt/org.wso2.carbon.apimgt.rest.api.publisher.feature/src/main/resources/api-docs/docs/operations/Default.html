@@ -1,28 +1,22 @@
 <div class="main-content">
-    <h1><a name="API (Collection)"></a>API (Collection)</h1>
+    <h1><a name="default"></a>default</h1>
 
     
         
             <hr/>
-            <h3 class="operation-heading"><a name="apisGet"></a>Retrieve/Search APIs
- <br><small>GET https://apis.wso2.com/api/am/store/v0.11/apis</small></h3>
+            <h3 class="operation-heading"><a name="apisGet"></a>Get all APIs
+ <br><small>GET https://apis.wso2.com/api/am/publisher/v0.9/apis</small></h3>
             <p class="marked"></p>
 
             <p class="marked">This operation provides you a list of available APIs qualifying under a given search condition.
 
-Each retrieved API is represented with a minimal amount of attributes. If you want to get complete details of an API, you need to use **Get details of an API** operation.
-
-This operation supports retriving APIs of other tenants. The required tenant domain need to be specified as a header `X-WSO2-Tenant`. If not specified super tenant&#39;s APIs will be retrieved. If you used an Authorization header, the user&#39;s tenant associated with the access token will be used.
-
-**NOTE:**
-* By default, this operation retrieves Published APIs. In order to retrieve Prototyped APIs, you need to use **query** parameter and specify **status:PROTOTYPED**.
-* This operation does not require an Authorization header by default. But if it is provided, it will be validated and checked for permissions of the user, hence you may be able to see APIs which are restricted for special permissions/roles.
+Each retrieved API is represented with a minimal amount of attributes. If you want to get complete details of an API, you need to use **Get API details** operation.
 </p>
 
             <h4 class="section-heading">OAuth 2.0 Scope</h4>
             
+                <code>apim:api_view</code><span class="label label-primary" data-toggle="tooltip" title="This resource is secured with an OAuth 2.0 scope. You need to provide an access token which has 'apim:api_view' scope using Authorization header. Please see 'Getting Started' section for more information." style="margin-left: 10px">i</span>
             
-                <p>Not required</p>
             
 
             <div class="pointer" data-toggle="collapse" data-target="#request-apisGet">
@@ -35,8 +29,8 @@ This operation supports retriving APIs of other tenants. The required tenant dom
             </div>
 
             
-                <div id="request-apisGet"class="pre collapse in"><code class="json">GET https://127.0.0.1:9443/api/am/store/v0.11/apis
-</code></div>
+                <div id="request-apisGet"class="pre collapse in"><code class="json">GET https://127.0.0.1:9443/api/am/publisher/v0.9/apis
+Authorization: Bearer b0982cd2aacd463ff5f63cd5ebe58f4a</code></div>
             
             
 
@@ -58,40 +52,31 @@ Content-Type: application/json
             {
          &quot;provider&quot;: &quot;admin&quot;,
          &quot;version&quot;: &quot;1.0.0&quot;,
-         &quot;description&quot;: &quot;This API provide Account Status Validation.&quot;,
-         &quot;status&quot;: &quot;PUBLISHED&quot;,
+         &quot;description&quot;: &quot;This sample API provides Account Status Validation&quot;,
          &quot;name&quot;: &quot;AccountVal&quot;,
-         &quot;context&quot;: &quot;/account/1.0.0&quot;,
-         &quot;id&quot;: &quot;2e81f147-c8a8-4f68-b4f0-69e0e7510b01&quot;
+         &quot;context&quot;: &quot;/account&quot;,
+         &quot;id&quot;: &quot;2e81f147-c8a8-4f68-b4f0-69e0e7510b01&quot;,
+         &quot;status&quot;: &quot;PUBLISHED&quot;
       },
             {
          &quot;provider&quot;: &quot;admin&quot;,
          &quot;version&quot;: &quot;1.0.0&quot;,
          &quot;description&quot;: null,
-         &quot;status&quot;: &quot;PUBLISHED&quot;,
          &quot;name&quot;: &quot;api1&quot;,
-         &quot;context&quot;: &quot;/api1/1.0.0&quot;,
-         &quot;id&quot;: &quot;3e22d2fb-277a-4e9e-8c7e-1c0f7f73960e&quot;
-      },
-            {
-         &quot;provider&quot;: &quot;admin&quot;,
-         &quot;version&quot;: &quot;2.0.0&quot;,
-         &quot;description&quot;: &quot;Verify a phone number&quot;,
-         &quot;status&quot;: &quot;PUBLISHED&quot;,
-         &quot;name&quot;: &quot;PhoneVerification&quot;,
-         &quot;context&quot;: &quot;/phoneverify/2.0.0&quot;,
-         &quot;id&quot;: &quot;c43a325c-260b-4302-81cb-768eafaa3aed&quot;
+         &quot;context&quot;: &quot;/api1&quot;,
+         &quot;id&quot;: &quot;3e22d2fb-277a-4e9e-8c7e-1c0f7f73960e&quot;,
+         &quot;status&quot;: &quot;PUBLISHED&quot;
       }
    ],
-   &quot;count&quot;: 3,
-   &quot;next&quot;: &quot;&quot;
+   &quot;next&quot;: &quot;&quot;,
+   &quot;count&quot;: 2
 }</code></div>
             
             
 
             <h4 class="section-heading">Sample CURL</h4>
             
-                <div class="pre"><code class="bash">curl https://127.0.0.1:9443/api/am/store/v0.11/apis</code></div>
+                <div class="pre"><code class="bash">curl -k -H &quot;Authorization: Bearer b0982cd2aacd463ff5f63cd5ebe58f4a&quot; https://127.0.0.1:9443/api/am/publisher/v0.9/apis</code></div>
             
             
 
@@ -179,38 +164,6 @@ Content-Type: application/json
                     <tr>
                         <td class="parameter">
                             
-                            
-                            
-                            <span class="param-in">Header </span>
-                            
-                        </td>
-                        <td class="param-name">
-                            <p>X-WSO2-Tenant</p>
-                            <p class="param-required">
-                                
-                                optional
-                            </p>
-                        </td>
-                        <td>
-                            <p class="param-description marked">For cross-tenant invocations, this is used to specify the tenant domain, where the resource need to be
-  retirieved from.
-</p>
-                            
-                        </td>
-                        <td>
-                            <span class="param-type">
-                                String
-                                
-                            </span>
-                        </td>
-                        <td>
-                            <p class="marked"></p>
-                        </td>
-                    </tr>
-                
-                    <tr>
-                        <td class="parameter">
-                            
                             <span class="param-in">Query </span>
                             
                             
@@ -237,10 +190,10 @@ Eg.
 &quot;provider:wso2*&quot; will match an API if the provider of the API starts with &quot;wso2&quot;.
 
 Supported attribute modifiers are [**version, context, status,
-description, subcontext, doc, provider, tag**]
+description, subcontext, doc, provider**]
 
-If no advanced attribute modifier has been specified, search will match the
-given query string against API Name.
+If no advanced attribute modifier has been specified, the API names containing 
+the search term will be returned as a result.
 </p>
                             
                         </td>
@@ -271,7 +224,7 @@ given query string against API Name.
                             </p>
                         </td>
                         <td>
-                            <p class="param-description marked">Media types acceptable for the response. Default is application/json.
+                            <p class="param-description marked">Media types acceptable for the response. Default is JSON.
 </p>
                             
                         </td>
@@ -282,7 +235,7 @@ given query string against API Name.
                             </span>
                         </td>
                         <td>
-                            <p class="marked">application/json</p>
+                            <p class="marked">JSON</p>
                         </td>
                     </tr>
                 
@@ -303,7 +256,7 @@ given query string against API Name.
                         </td>
                         <td>
                             <p class="param-description marked">Validator for conditional requests; based on the ETag of the formerly retrieved
-variant of the resource.
+variant of the resourec.
 </p>
                             
                         </td>
@@ -352,7 +305,7 @@ variant of the resource.
                 
                     <tr>
                         <td class="parameter"><p class="marked">304</p></td>
-                        <td class="parameter"><p class="marked">Not Modified.\nEmpty body because the client has already the latest version of the requested resource (Will be supported in future).\n</p></td>
+                        <td class="parameter"><p class="marked">Not Modified.\nEmpty body because the client has already the latest version of the requested resource.\n</p></td>
                         <td class="parameter">
                             <span class="parameter">
                                 
