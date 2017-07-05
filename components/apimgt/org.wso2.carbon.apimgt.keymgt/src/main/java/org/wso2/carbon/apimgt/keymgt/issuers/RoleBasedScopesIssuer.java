@@ -28,6 +28,7 @@ import org.wso2.carbon.apimgt.keymgt.handlers.ResourceConstants;
 import org.wso2.carbon.apimgt.keymgt.util.APIKeyMgtDataHolder;
 import org.wso2.carbon.apimgt.keymgt.util.APIKeyMgtUtil;
 import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
+import org.wso2.carbon.identity.oauth.common.GrantType;
 import org.wso2.carbon.identity.oauth2.token.OAuthTokenReqMessageContext;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.user.api.UserStoreManager;
@@ -71,6 +72,7 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
         String isSAML2Enabled = System.getProperty(ResourceConstants.SAML2_ASSERTION_ENABLED);
         List<String> reqScopeList = Arrays.asList(requestedScopes);
         Map<String, String> restAPIScopesOfCurrentTenant;
+
         try {
             Map<String, String> appScopes;
             ApiMgtDAO apiMgtDAO = ApiMgtDAO.getInstance();
@@ -84,7 +86,7 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
                     .get(tenantDomain);
             if (restAPIScopesOfCurrentTenant!= null) {
                 appScopes.putAll(restAPIScopesOfCurrentTenant);
-            }else {
+            } else {
                 restAPIScopesOfCurrentTenant = APIUtil
                         .getRESTAPIScopesFromConfig(APIUtil.getTenantRESTAPIScopesConfig(tenantDomain));
                 //call load tenant config for rest API.
@@ -94,6 +96,7 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
                         .getCache("REST_API_SCOPE_CACHE")
                         .put(tenantDomain, restAPIScopesOfCurrentTenant);
             }
+
             //If no scopes can be found in the context of the application
             if (appScopes.isEmpty()) {
                 if (log.isDebugEnabled()) {
@@ -118,8 +121,13 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
                 if (tenantId == 0 || tenantId == -1) {
                     tenantId = IdentityTenantUtil.getTenantIdOfUser(username);
                 }
+
+                String grantType = tokReqMsgCtx.getOauth2AccessTokenReqDTO().getGrantType();
                 userStoreManager = realmService.getTenantUserRealm(tenantId).getUserStoreManager();
-                if (isSAML2Enabled != null && ResourceConstants.CHECK_TRUE.equalsIgnoreCase(isSAML2Enabled)) {
+
+                // If GrantType is SAML20_BEAERER and SAML2_ASSERTION_ENABLED is true,
+                // use user roles from assertion otherwise use roles from userstore.
+                if (GrantType.SAML20_BEARER.toString().equals(grantType) && Boolean.parseBoolean(isSAML2Enabled)) {
                     Assertion assertion = (Assertion) tokReqMsgCtx.getProperty(ResourceConstants.SAML2_ASSERTION);
                     userRoles = APIKeyMgtUtil.getRolesFromAssertion(assertion);
                 } else {

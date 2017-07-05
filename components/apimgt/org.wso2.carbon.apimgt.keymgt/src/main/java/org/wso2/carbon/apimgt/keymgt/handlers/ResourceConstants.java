@@ -27,7 +27,6 @@ public final class ResourceConstants {
     public static final String RESOURCE_PATH = "resource";
     public static final String RESOURCE_VERB = "httpVerb";
     public static final String KEY_DOMAIN = "clientDomain";
-    public static final String CHECK_TRUE = "true";
     public static final String SAML2_ASSERTION_ENABLED = "wso2.saml2.assertion";
     public static final String SAML2_ASSERTION = "SAML2Assertion";
     public static final String SAML2_SSO_AUTHENTICATOR_NAME = "SAML2SSOAuthenticator";
