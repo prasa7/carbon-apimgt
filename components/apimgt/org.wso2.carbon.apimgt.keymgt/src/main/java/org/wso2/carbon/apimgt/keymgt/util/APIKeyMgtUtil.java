@@ -213,10 +213,10 @@ public class APIKeyMgtUtil {
     }
 
     /**
-     * Get the username from the SAML2 Assertion
+     * Get the role list from the SAML2 Assertion
      *
      * @param assertion SAML2 assertion
-     * @return username
+     * @return Role list from the assertion
      */
     public static String[] getRolesFromAssertion(Assertion assertion) {
         List<String> roles = new ArrayList<String>();
