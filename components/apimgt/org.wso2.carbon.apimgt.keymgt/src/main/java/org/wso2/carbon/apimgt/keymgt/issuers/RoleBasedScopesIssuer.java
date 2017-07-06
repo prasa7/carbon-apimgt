@@ -36,11 +36,11 @@ import org.wso2.carbon.user.core.service.RealmService;
 import org.wso2.carbon.user.core.util.UserCoreUtil;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
-import javax.cache.Caching;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import javax.cache.Caching;
 
 /**
  * This class represents the functions related to an scope issuer which
@@ -69,7 +69,6 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
         String username = tokReqMsgCtx.getAuthorizedUser().getUserName();
         String endUsernameWithDomain = UserCoreUtil.addDomainToName(username,
                 tokReqMsgCtx.getAuthorizedUser().getUserStoreDomain());
-        String isSAML2Enabled = System.getProperty(ResourceConstants.SAML2_ASSERTION_ENABLED);
         List<String> reqScopeList = Arrays.asList(requestedScopes);
         Map<String, String> restAPIScopesOfCurrentTenant;
 
@@ -125,8 +124,9 @@ public class RoleBasedScopesIssuer extends AbstractScopesIssuer {
                 String grantType = tokReqMsgCtx.getOauth2AccessTokenReqDTO().getGrantType();
                 userStoreManager = realmService.getTenantUserRealm(tenantId).getUserStoreManager();
 
-                // If GrantType is SAML20_BEAERER and SAML2_ASSERTION_ENABLED is true,
+                // If GrantType is SAML20_BEARER and CHECK_ROLES_FROM_SAML_ASSERTION is true,
                 // use user roles from assertion otherwise use roles from userstore.
+                String isSAML2Enabled = System.getProperty(ResourceConstants.CHECK_ROLES_FROM_SAML_ASSERTION);
                 if (GrantType.SAML20_BEARER.toString().equals(grantType) && Boolean.parseBoolean(isSAML2Enabled)) {
                     Assertion assertion = (Assertion) tokReqMsgCtx.getProperty(ResourceConstants.SAML2_ASSERTION);
                     userRoles = APIKeyMgtUtil.getRolesFromAssertion(assertion);

@@ -30,9 +30,9 @@ public class ExtendedSAML2BearerGrantHandler extends SAML2BearerGrantHandler {
 
     @Override
     public boolean validateScope(OAuthTokenReqMessageContext tokReqMsgCtx) {
-        String isSAML2Enabled = System.getProperty(ResourceConstants.SAML2_ASSERTION_ENABLED);
+        String isSAML2Enabled = System.getProperty(ResourceConstants.CHECK_ROLES_FROM_SAML_ASSERTION);
 
-        // set user as federated only if SAML2_ASSERTION_ENABLED system property is set
+        // set user as federated only if CHECK_ROLES_FROM_SAML_ASSERTION system property is set
         if (Boolean.parseBoolean(isSAML2Enabled)) {
             AuthenticatedUser authenticatedUser = tokReqMsgCtx.getAuthorizedUser();
             authenticatedUser.setUserStoreDomain("FEDERATED");
