@@ -767,7 +767,7 @@ paths:
       description: |
         This operation is used to change the lifecycle of an API. Eg: Publish an API which is in `CREATED` state. In order to change the lifecycle, we need to provide the lifecycle `action` as a query parameter.
 
-        For example, to Publish an API, `action` should be `Publish`.
+        For example, to Publish an API, `action` should be `Publish`. Note that the `Re-publish` action is available only after calling `Block`.
 
         Some actions supports providing additional paramters which should be provided as `lifecycleChecklist` parameter. Please see parameters table for more information.
       parameters:
@@ -1156,6 +1156,8 @@ paths:
 
           1. **Inline type**:
              The content of the document will be retrieved in `text/plain` content type
+             
+             _Sample cURL_ : `curl -k -H "Authorization:Bearer 579f0af4-37be-35c7-81a4-f1f1e9ee7c51" -F inlineContent=@"docs.txt" -X POST "https://127.0.0.1:9443/api/am/publisher/v0.11/apis/995a4972-3178-4b17-a374-756e0e19127c/documents/43c2bcce-60e7-405f-bc36-e39c0c5e189e/content`
           2. **FILE type**:
              The file will be downloaded with the related content type (eg. `application/pdf`)
           3. **URL type**:
@@ -2595,7 +2597,7 @@ parameters:
     name: apiId
     in: path
     description: |
-      **API ID** consisting of the **UUID** of the API.
+      **API ID** consisting of the **UUID** of the API. Using the **UUID** in the API call is recommended.
       The combination of the provider of the API, name of the API and the version is also accepted as a valid API ID.
       Should be formatted as **provider-name-version**.
     required: true
@@ -2607,7 +2609,7 @@ parameters:
     name: apiId
     in: query
     description: |
-      **API ID** consisting of the **UUID** of the API.
+      **API ID** consisting of the **UUID** of the API. Using the **UUID** in the API call is recommended.
       The combination of the provider of the API, name of the API and the version is also accepted as a valid API I.
       Should be formatted as **provider-name-version**.
     required: true
