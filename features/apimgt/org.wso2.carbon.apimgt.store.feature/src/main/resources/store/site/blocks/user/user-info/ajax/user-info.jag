@@ -9,7 +9,6 @@ var log = new Log();
     response.contentType = "application/json; charset=UTF-8";
     response.addHeader('Pragma', 'No-cache');
     response.addHeader('Cache-control', 'no-cache');
-    var ssoEnabled = site.ssoConfiguration.enabled;
     var mod, obj, password, allFieldsValues, result, username,
             msg = require("/site/conf/ui-messages.jag"),
             action = request.getParameter("action"),showWorkflowTip,
