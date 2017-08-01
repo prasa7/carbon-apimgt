@@ -49,6 +49,8 @@ import org.wso2.carbon.ganalytics.publisher.GoogleAnalyticsData;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
+import java.net.InetSocketAddress;
+
 /**
  * This is a handler which is actually embedded to the netty pipeline which does operations such as
  * authentication and throttling for the websocket handshake and subsequent websocket frames.
@@ -146,7 +148,7 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
             }
         } else if (msg instanceof WebSocketFrame) {
             boolean isThrottledOut = doThrottle(ctx, (WebSocketFrame) msg);
-            String clientIp = ctx.channel().remoteAddress().toString();
+            String clientIp = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
 
             if (isThrottledOut) {
                 ctx.fireChannelRead(msg);
@@ -262,8 +264,7 @@ public class WebsocketInboundHandler extends ChannelInboundHandlerAdapter {
         String resourceLevelThrottleKey = apiLevelThrottleKey;
         String subscriptionLevelThrottleKey = appId + ":" + apiContext + ":" + apiVersion;
         String messageId = UIDGenerator.generateURNString();
-        String remoteIP = ctx.channel().remoteAddress().toString();
-        remoteIP = remoteIP.substring(1, remoteIP.indexOf(":"));
+        String remoteIP = ((InetSocketAddress) ctx.channel().remoteAddress()).getAddress().getHostAddress();
         JSONObject jsonObMap = new JSONObject();
         if (remoteIP != null && remoteIP.length() > 0) {
             jsonObMap.put(APIThrottleConstants.IP, APIUtil.ipToLong(remoteIP));
