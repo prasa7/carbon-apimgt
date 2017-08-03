@@ -480,7 +480,12 @@ $("#application-actions").each(function(){
                 return  value;            
               }
             },
-            { "data": "tier" },
+            { "data": "tier",
+              "render": function(tier, type, rec, meta){
+                tier = Handlebars.Utils.escapeExpression(tier)
+                return new Handlebars.SafeString(tier);  
+              }
+            },
             { "data": "status",
               "render": function(status, type, rec, meta){
                 var result;        
