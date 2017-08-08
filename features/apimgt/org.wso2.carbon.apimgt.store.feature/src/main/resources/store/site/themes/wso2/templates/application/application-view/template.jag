@@ -109,7 +109,7 @@ for(var i=0;i < outputs.tiers.length; i++){
   <% if(application.status == "APPROVED"){ %>
   <script language="javascript">
     var grant_types = <%= stringify(grant_types)%>;
-    var prodapp = <%= stringify(prodapp)%>;
+    var prodapp = jQuery.parseJSON('<%= encode.forJavaScript(stringify(prodapp))%>');
     var sandapp = <%= stringify(sandapp)%>;
 
     var enjoyhint_instance = null;
