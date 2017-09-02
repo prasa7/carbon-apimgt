@@ -730,6 +730,13 @@ public class ApisApiServiceImpl extends ApisApiService {
             body.setStatus(apiInfo.getStatus().getStatus());
             body.setType(APIDTO.TypeEnum.valueOf(apiInfo.getType()));
 
+            //Since there is separate API to change the thumbnail, set the existing thumbnail URL
+            //If user needs to remove the thumbnail url, this will give the flexibility to do it via an empty string value
+            String thumbnailUrl = body.getThumbnailUri();
+            if (!StringUtils.isWhitespace(thumbnailUrl)) {
+                body.setThumbnailUri(apiInfo.getThumbnailUrl());
+            }
+
             //validation for tiers
             List<String> tiersFromDTO = body.getTiers();
             if (tiersFromDTO == null || tiersFromDTO.isEmpty()) {
@@ -1270,6 +1277,20 @@ public class ApisApiServiceImpl extends ApisApiService {
             String thumbnailUrl = apiProvider.addResourceFile(thumbPath, apiImage);
             api.setThumbnailUrl(APIUtil.prependTenantPrefix(thumbnailUrl, api.getId().getProviderName()));
             APIUtil.setResourcePermissions(api.getId().getProviderName(), null, null, thumbPath);
+
+            //Creating URI templates due to available uri templates in returned api object only kept single template
+            //for multiple http methods
+            String apiSwaggerDefinition = apiProvider.getSwagger20Definition(api.getId());
+            if (!StringUtils.isEmpty(apiSwaggerDefinition)) {
+                APIDefinition definitionFromSwagger20 = new APIDefinitionFromSwagger20();
+                Set<URITemplate> uriTemplates = definitionFromSwagger20.getURITemplates(api, apiSwaggerDefinition);
+                api.setUriTemplates(uriTemplates);
+
+                // scopes
+                Set<Scope> scopes = definitionFromSwagger20.getScopes(apiSwaggerDefinition);
+                api.setScopes(scopes);
+            }
+
             apiProvider.updateAPI(api);
 
             String uriString = RestApiConstants.RESOURCE_PATH_THUMBNAIL
