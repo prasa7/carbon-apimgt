@@ -129,7 +129,7 @@
 
 														{{#*inline "endpoint"}}
 								                        <div class="form-group">
-								                            <label class="control-label col-xs-12 col-sm-3 col-md-3 col-lg-3" for="endpoint_type">{{#if name}}{{#if @first}}{{ name }} :<span class="requiredAstrix">*</span>
+								                            <label class="control-label col-xs-6 col-sm-2 col-md-2 col-lg-2" for="endpoint_type">{{#if name}}{{#if @first}}{{ name }} :
 								                            	{{#if type}}<a class="help_popup" help_data="{{type}}_help" data-trigger="hover" data-placement="bottom" title="endpoint_help">
 								                            		<span class="icon fw-stack fw-lg" style="font-size:6px">
 													                   <i class="fw fw-circle fw-stack-2x"></i>
@@ -205,14 +205,20 @@
 							                                </div>
 								                        </div>
                                                                   <%}%>
-								                        <br />
+                                                        <br />
+                                                        <div class="form-group">
+                                                            <label class="control-label col-xs-12 col-sm-3 col-md-4 col-lg-3">  Endpoint: <span class="requiredAstrix">*</span> <span class="text-muted"> (specify at least one) </span> </label>
+                                                        </div>
+                                                        <label class="control-label col-xs-12 col-sm-3 col-md-4 col-lg-3" />
+
+							                            <div class=" form-group col-xs-12 col-sm-7 col-md-7 col-lg-7" style="border: 1px solid #e2e2e2">
 								                        {{#each production_endpoints}}
 								                        	{{#if ../load_balance}}
-								                        		{{> endpoint this name="Production Endpoints" type="production_endpoints" label=(inc @index) invalid=../invalid}}
+								                        		{{> endpoint this name="Production " type="production_endpoints" label=(inc @index) invalid=../invalid}}
 								                        	{{else if ../failover}}
-								                        		{{> endpoint this name="Production Endpoints" type="production_endpoints" label="Primary" invalid=../invalid}}
+								                        		{{> endpoint this name="Production " type="production_endpoints" label="Primary" invalid=../invalid}}
 								                        	{{else}}
-								                        		{{> endpoint this name="Production Endpoint" type="production_endpoints" invalid=../invalid}}
+								                        		{{> endpoint this name="Production " type="production_endpoints" invalid=../invalid}}
 								                        	{{/if}}
 							                            {{/each}}
 
@@ -231,12 +237,12 @@
 
 								                        {{#each sandbox_endpoints}}
 								                        	{{#if ../load_balance}}
-								                        		{{> endpoint this name="Sandbox Endpoints" type="sandbox_endpoints" label=(inc @index)}}
+								                        		{{> endpoint this name="Sandbox " type="sandbox_endpoints" label=(inc @index)}}
 								                        	{{else if ../failover}}
-								                        		{{> endpoint this name="Sandbox Endpoints" type="sandbox_endpoints" label="Primary"}}
+								                        		{{> endpoint this name="Sandbox " type="sandbox_endpoints" label="Primary"}}
 								                        	{{else}}
-								                        		{{> endpoint this name="Sandbox Endpoint" type="sandbox_endpoints"}}
-								                        	{{/if}}								                        
+								                        		{{> endpoint this name="Sandbox " type="sandbox_endpoints"}}
+								                        	{{/if}}
 							                            {{/each}}
 
 							                       		{{#if load_balance }}
@@ -250,11 +256,13 @@
 							                            {{/if}}
 							                            {{#if failover }}
 							                            	{{> add_remove_ep ep_type="sandbox_failovers" }}
-							                            {{/if}}	
-							                            {{/if}}	
+							                            {{/if}}
+							                            {{/if}}
+                                                        </div>
+					                            {{#if load_balance}}
 
-							                            {{#if load_balance}}
-															<div class="form-group">
+														<div class="form-group">
+
 															    <label class="control-label col-xs-12 col-sm-3
 															    col-md-3 col-lg-3" for="algoCombo"> <%= i18n.localize("Algorithm")%>
 															        <a class="help_popup" help_data="test_help" data-trigger="hover" data-original-title="" title="">
