@@ -29,6 +29,7 @@ var GrantTypes = function (available) {
         "iwa:ntlm":"IWA-NTLM", 
         "client_credentials":"Client Credential", 
         "urn:ietf:params:oauth:grant-type:saml2-bearer":"SAML2",
+        "kerberos":"Kerberos"
     }
 
     this.available = {};
@@ -43,8 +44,11 @@ GrantTypes.prototype.getMap = function(selected){
         grants = selected.split(" ");
     var map = [];
     for(var grant in this.available){
+        var disabled = false;
+        if(grant == "authorization_code" || grant == "implicit")
+            disabled = true;
         var selected = grants.indexOf(grant) > -1;
-        map.push({ key: grant , name:this.available[grant], "selected" : selected});
+        map.push({ key: grant , name:this.available[grant], "selected" : selected, "disabled" : disabled});
     }
 
     return map;
@@ -120,6 +124,7 @@ GrantTypes.prototype.getMap = function(selected){
         this.element = $(element);
 
         this.app = options.app;
+        this.app.type = options.type;
         this.type = options.type;
         this.app.show_keys = ( $.cookie('OAuth_key_visibility') === 'true');
         this.grants = new GrantTypes(options.grant_types);
