@@ -20,6 +20,7 @@ package org.wso2.carbon.apimgt.impl.utils;
 import com.ibm.wsdl.extensions.http.HTTPAddressImpl;
 import com.ibm.wsdl.extensions.soap.SOAPAddressImpl;
 import com.ibm.wsdl.extensions.soap12.SOAP12AddressImpl;
+import com.ibm.wsdl.xml.WSDLReaderImpl;
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,6 +33,13 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.xml.sax.InputSource;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.net.URI;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.wsdl.Definition;
 import javax.wsdl.Port;
 import javax.wsdl.Service;
@@ -43,13 +51,6 @@ import javax.wsdl.xml.WSDLWriter;
 import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.net.URI;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 
 
@@ -150,6 +151,11 @@ public class APIMWSDLReader {
 			// switch off the verbose mode
 			wsdlReader.setFeature(JAVAX_WSDL_VERBOSE_MODE, false);
 			wsdlReader.setFeature("javax.wsdl.importDocuments", false);
+
+			if (wsdlReader instanceof WSDLReaderImpl) {
+				((WSDLReaderImpl)wsdlReader).setIgnoreSchemaContent(false);
+			}
+
 			Definition wsdlDefinition = wsdlReader.readWSDL(null, new InputSource(new ByteArrayInputStream(wsdl)));
 
 			// Update transports

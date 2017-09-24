@@ -1029,6 +1029,11 @@
                 <artifactId>org.wso2.carbon.apimgt.throttle.service.interceptors</artifactId>
                 <version>${carbon.apimgt.version}</version>
             </dependency>
+            <dependency>
+                <groupId>wsdl4j.wso2</groupId>
+                <artifactId>wsdl4j</artifactId>
+                <version>${wsdl4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -1184,6 +1189,7 @@
         <waffle-jna.version>1.6.wso2v2</waffle-jna.version>
         <commons-lang3.version>3.4.0.wso2v1</commons-lang3.version>
         <version.snake.yaml>1.17</version.snake.yaml>
+        <wsdl4j.version>1.6.2.wso2v4</wsdl4j.version>
     </properties>
 </project>
 
