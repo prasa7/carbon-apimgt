@@ -41,6 +41,12 @@ var log = new Log();
         if (action == "exit") {
             response.sendError(404);
         } else {
+            if(jagg.getUser() == null){
+        print({
+            error:true,
+            message:'timeout'
+        });
+    }else{
             var url = request.getRequestURL();
             var tenantDomain;
             var tenantID = -1234;
@@ -77,7 +83,7 @@ var log = new Log();
                 var apiUtil = new APIUtil();
                 var swaggerPath = apiUtil.getSwagger20DefinitionFilePath(apiNameVal, apiVersionVal, providerVal);
                 var registry = carbon.server.osgiService('org.wso2.carbon.registry.core.service.RegistryService').
-                getGovernanceUserRegistry("wso2.anonymous.user", tenantID);
+                getGovernanceUserRegistry(jagg.getUser(), tenantID);
                 url = swaggerPath + "swagger.json";
                 data = registry.get(url);
             } finally {
@@ -90,5 +96,6 @@ var log = new Log();
             print(JSON.stringify(jsonObj));
         }
     }
+}
 }());
 %>
