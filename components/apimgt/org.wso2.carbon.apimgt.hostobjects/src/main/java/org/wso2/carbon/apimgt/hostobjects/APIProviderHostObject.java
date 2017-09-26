@@ -4222,6 +4222,14 @@ public class APIProviderHostObject extends ScriptableObject {
                         System.setProperty("javax.net.ssl.trustStore", trustStorePath);
                         System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
 
+
+                        String keyStore = serverConfig.getFirstProperty("Security.KeyStore.Location");
+                        String keyStoreType = serverConfig.getFirstProperty("Security.KeyStore.Type");
+                        String keyStorePassword = serverConfig.getFirstProperty("Security.KeyStore.Password");
+                        System.setProperty("javax.net.ssl.keyStoreType"      , keyStoreType);
+                        System.setProperty("javax.net.ssl.keyStore"          , keyStore);
+                        System.setProperty("javax.net.ssl.keyStorePassword"  , keyStorePassword);
+
                         NativeObject headRequestResult = sendHttpHEADRequest(urlVal, invalidStatusCodesRegex);
                         headRequestResult.put("isContainUriTemplatesOnly", headRequestResult, isContainUriTemplatesOnly);
                         return headRequestResult;
