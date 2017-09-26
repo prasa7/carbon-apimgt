@@ -25,11 +25,13 @@ import org.apache.synapse.config.SynapseConfiguration;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.core.axis2.Axis2SynapseEnvironment;
 import org.apache.synapse.rest.RESTConstants;
+import org.wso2.carbon.apimgt.gateway.handlers.security.AuthenticationContext;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestUtils {
+    private static final String API_AUTH_CONTEXT = "__API_AUTH_CONTEXT";
 
     public static MessageContext getMessageContext(String context, String version, String apiKey) {
         MessageContext synCtx = getMessageContext(context, version);
@@ -54,5 +56,30 @@ public class TestUtils {
         return synCtx;
     }
 
-
+    public static MessageContext getMessageContextWithAuthContext(String context, String version) {
+        SynapseConfiguration synCfg = new SynapseConfiguration();
+        org.apache.axis2.context.MessageContext axisMsgCtx = new org.apache.axis2.context.MessageContext();
+        axisMsgCtx.setIncomingTransportName("http");
+        axisMsgCtx.setProperty(Constants.Configuration.TRANSPORT_IN_URL, "/test/1.0.0/search.atom");
+        AxisConfiguration axisConfig = new AxisConfiguration();
+        ConfigurationContext cfgCtx = new ConfigurationContext(axisConfig);
+        MessageContext synCtx = new Axis2MessageContext(axisMsgCtx, synCfg,
+                new Axis2SynapseEnvironment(cfgCtx, synCfg));
+        synCtx.setProperty(RESTConstants.REST_API_CONTEXT, context);
+        synCtx.setProperty(RESTConstants.SYNAPSE_REST_API_VERSION, version);
+        AuthenticationContext authenticationContext = new AuthenticationContext();
+        authenticationContext.setUsername("sanjeewa");
+        authenticationContext.setApiKey("123456789");
+        authenticationContext.setApplicationId("123");
+        authenticationContext.setApplicationName("test-app");
+        authenticationContext.setAuthenticated(true);
+        authenticationContext.setCallerToken("987654321");
+        authenticationContext.setTier("987654321");
+        Map map = new HashMap();
+        map.put("host","127.0.0.1");
+        ((Axis2MessageContext) synCtx).getAxis2MessageContext()
+                .setProperty(org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS, map);
+        synCtx.setProperty(API_AUTH_CONTEXT, authenticationContext);
+        return synCtx;
+    }
 }
