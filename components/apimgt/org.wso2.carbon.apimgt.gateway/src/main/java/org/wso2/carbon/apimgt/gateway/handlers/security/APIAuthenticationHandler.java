@@ -41,6 +41,7 @@ import org.wso2.carbon.apimgt.gateway.handlers.Utils;
 import org.wso2.carbon.apimgt.gateway.handlers.security.oauth.OAuthAuthenticator;
 import org.wso2.carbon.apimgt.gateway.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.impl.APIConstants;
+import org.wso2.carbon.apimgt.impl.APIManagerConfigurationService;
 import org.wso2.carbon.apimgt.impl.utils.APIUtil;
 import org.wso2.carbon.metrics.manager.MetricManager;
 import org.wso2.carbon.metrics.manager.Timer;
@@ -74,47 +75,53 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
 
     public void init(SynapseEnvironment synapseEnvironment) {
         this.synapseEnvironment = synapseEnvironment;
-		if (log.isDebugEnabled()) {
-			log.debug("Initializing API authentication handler instance");
-		}
-        if (ServiceReferenceHolder.getInstance().getApiManagerConfigurationService() != null){
+        if (log.isDebugEnabled()) {
+            log.debug("Initializing API authentication handler instance");
+        }
+        if (getApiManagerConfigurationService() != null) {
             initializeAuthenticator();
         }
     }
 
+    protected APIManagerConfigurationService getApiManagerConfigurationService() {
+        return ServiceReferenceHolder.getInstance().getApiManagerConfigurationService();
+    }
+
     public void destroy() {
-        if(authenticator != null) {
-        	authenticator.destroy();
+        if (authenticator != null) {
+            authenticator.destroy();
         } else {
-        	log.warn("Unable to destroy uninitialized authentication handler instance");
+            log.warn("Unable to destroy uninitialized authentication handler instance");
         }
     }
 
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "LEST_LOST_EXCEPTION_STACK_TRACE", justification = "The exception needs to thrown for fault sequence invocation")
-    private void initializeAuthenticator() {
+    protected void initializeAuthenticator() {
+        getAuthenticator().init(synapseEnvironment);
+    }
+
+    protected Authenticator getAuthenticator() {
         authenticator = new OAuthAuthenticator();
-        authenticator.init(synapseEnvironment);
+        return authenticator;
     }
 
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EXS_EXCEPTION_SOFTENING_RETURN_FALSE",
             justification = "Error is sent through payload")
     public boolean handleRequest(MessageContext messageContext) {
-        Timer timer = MetricManager.timer(org.wso2.carbon.metrics.manager.Level.INFO, MetricManager.name(
-                APIConstants.METRICS_PREFIX, this.getClass().getSimpleName()));
-        Timer.Context context = timer.start();
+        Timer.Context context = startMetricstimer();
         long startTime = System.nanoTime();
         long endTime;
         long difference;
 
         try {
-            if (APIUtil.isAnalyticsEnabled()) {
+            if (isAnalyticsEnabled()) {
                 long currentTime = System.currentTimeMillis();
                 messageContext.setProperty("api.ut.requestTime", Long.toString(currentTime));
             }
             if (authenticator == null) {
                 initializeAuthenticator();
             }
-            if (authenticator.authenticate(messageContext)) {
+            if (isAuthenticate(messageContext)) {
                 if (log.isDebugEnabled()) {
                     // We do the calculations only if the debug logs are enabled. Otherwise this would be an overhead
                     // to all the gateway calls that is happening.
@@ -151,11 +158,29 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         } finally {
             messageContext.setProperty(APIMgtGatewayConstants.SECURITY_LATENCY,
                     TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime));
-            context.stop();
+            stopMetricTimer(context);
 
         }
 
         return false;
+    }
+
+    protected void stopMetricTimer(Timer.Context context) {
+        context.stop();
+    }
+
+    protected Timer.Context startMetricstimer() {
+        Timer timer = MetricManager.timer(org.wso2.carbon.metrics.manager.Level.INFO, MetricManager.name(
+                APIConstants.METRICS_PREFIX, this.getClass().getSimpleName()));
+        return timer.start();
+    }
+
+    protected boolean isAuthenticate(MessageContext messageContext) throws APISecurityException {
+        return authenticator.authenticate(messageContext);
+    }
+
+    protected boolean isAnalyticsEnabled() {
+        return APIUtil.isAnalyticsEnabled();
     }
 
     public boolean handleResponse(MessageContext messageContext) {
@@ -192,7 +217,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         if (e.getErrorCode() == APISecurityConstants.API_AUTH_GENERAL_ERROR) {
             status = HttpStatus.SC_INTERNAL_SERVER_ERROR;
         } else if (e.getErrorCode() == APISecurityConstants.API_AUTH_INCORRECT_API_RESOURCE ||
-                   e.getErrorCode() == APISecurityConstants.API_AUTH_FORBIDDEN ||
+                e.getErrorCode() == APISecurityConstants.API_AUTH_FORBIDDEN ||
                 e.getErrorCode() == APISecurityConstants.INVALID_SCOPE) {
             status = HttpStatus.SC_FORBIDDEN;
         } else {
@@ -280,7 +305,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         return logMessage;
     }
 
-    private void setAPIParametersToMessageContext(MessageContext messageContext) {
+    protected void setAPIParametersToMessageContext(MessageContext messageContext) {
 
         AuthenticationContext authContext = APISecurityUtils.getAuthenticationContext(messageContext);
         org.apache.axis2.context.MessageContext axis2MsgContext =
