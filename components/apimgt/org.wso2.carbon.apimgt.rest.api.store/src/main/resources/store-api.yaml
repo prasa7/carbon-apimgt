@@ -1138,9 +1138,9 @@ paths:
             Subscription objects that should to be added
           required: true
           schema:
-            $ref: '#/definitions/Subscription'
+            type: array
             items:
-              type: array
+              $ref: '#/definitions/Subscription'
         - $ref: '#/parameters/Content-Type'
       tags:
         - Subscription (Multitple)
@@ -1718,6 +1718,9 @@ definitions:
       status:
         type: string
         example: PUBLISHED
+      thumbnailUri:
+        type: string
+        example: /apis/01234567-0123-0123-0123-012345678901/thumbnail
 
 #-----------------------------------------------------
 # The API resource
