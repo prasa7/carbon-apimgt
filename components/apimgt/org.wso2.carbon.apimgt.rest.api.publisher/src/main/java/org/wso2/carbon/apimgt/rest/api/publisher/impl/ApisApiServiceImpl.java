@@ -127,14 +127,10 @@ public class ApisApiServiceImpl extends ApisApiService {
                 }
             }
 
-            //We should send null as the provider, Otherwise searchAPIs will return all APIs of the provider
-            // instead of looking at type and query
-            //allMatchedApis = apiProvider.searchAPIs(searchContent, searchType, null);
-
             String username = RestApiUtil.getLoggedInUsername();
             String tenantDomain = MultitenantUtils.getTenantDomain(APIUtil.replaceEmailDomainBack(username));
             Map<String, Object> result = apiProvider.searchPaginatedAPIs(searchContent, tenantDomain,
-                    offset, limit, true);
+                    offset, limit, false);
             Set<API> apis = (Set<API>) result.get("apis");
             allMatchedApis.addAll(apis);
 
