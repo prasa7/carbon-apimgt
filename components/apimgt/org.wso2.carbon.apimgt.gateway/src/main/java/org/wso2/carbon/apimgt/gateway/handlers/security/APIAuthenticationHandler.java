@@ -101,14 +101,16 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
     }
 
     protected Authenticator getAuthenticator() {
-        authenticator = new OAuthAuthenticator();
+        if (authenticator == null) {
+            authenticator = new OAuthAuthenticator();
+        }
         return authenticator;
     }
 
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EXS_EXCEPTION_SOFTENING_RETURN_FALSE",
             justification = "Error is sent through payload")
     public boolean handleRequest(MessageContext messageContext) {
-        Timer.Context context = startMetricstimer();
+        Timer.Context context = startMetrictimer();
         long startTime = System.nanoTime();
         long endTime;
         long difference;
@@ -169,7 +171,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         context.stop();
     }
 
-    protected Timer.Context startMetricstimer() {
+    protected Timer.Context startMetrictimer() {
         Timer timer = MetricManager.timer(org.wso2.carbon.metrics.manager.Level.INFO, MetricManager.name(
                 APIConstants.METRICS_PREFIX, this.getClass().getSimpleName()));
         return timer.start();
@@ -225,7 +227,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
             Map<String, String> headers =
                     (Map) axis2MC.getProperty(org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS);
             if (headers != null) {
-                headers.put(HttpHeaders.WWW_AUTHENTICATE, authenticator.getChallengeString() +
+                headers.put(HttpHeaders.WWW_AUTHENTICATE, getAuthenticator().getChallengeString() +
                         ", error=\"invalid token\"" +
                         ", error_description=\"The access token expired\"");
                 axis2MC.setProperty(org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS, headers);
@@ -233,14 +235,26 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         }
 
         if (messageContext.isDoingPOX() || messageContext.isDoingGET()) {
-            Utils.setFaultPayload(messageContext, getFaultPayload(e));
+            setFaultPayload(messageContext, e);
         } else {
-            Utils.setSOAPFault(messageContext, "Client", "Authentication Failure", e.getMessage());
+            setSOAPFault(messageContext, e);
         }
+        sendFault(messageContext, status);
+    }
+
+    protected void setFaultPayload(MessageContext messageContext, APISecurityException e) {
+        Utils.setFaultPayload(messageContext, getFaultPayload(e));
+    }
+
+    protected void sendFault(MessageContext messageContext, int status) {
         Utils.sendFault(messageContext, status);
     }
 
-    private OMElement getFaultPayload(APISecurityException e) {
+    protected void setSOAPFault(MessageContext messageContext, APISecurityException e) {
+        Utils.setSOAPFault(messageContext, "Client", "Authentication Failure", e.getMessage());
+    }
+
+    protected OMElement getFaultPayload(APISecurityException e) {
         OMFactory fac = OMAbstractFactory.getOMFactory();
         OMNamespace ns = fac.createOMNamespace(APISecurityConstants.API_SECURITY_NS,
                 APISecurityConstants.API_SECURITY_NS_PREFIX);
@@ -307,7 +321,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
 
     protected void setAPIParametersToMessageContext(MessageContext messageContext) {
 
-        AuthenticationContext authContext = APISecurityUtils.getAuthenticationContext(messageContext);
+        AuthenticationContext authContext = getAuthenticationContext(messageContext);
         org.apache.axis2.context.MessageContext axis2MsgContext =
                 ((Axis2MessageContext) messageContext).getAxis2MessageContext();
 
@@ -360,6 +374,10 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         messageContext.setProperty(APIMgtGatewayConstants.API_PUBLISHER, apiPublisher);
         messageContext.setProperty(APIMgtGatewayConstants.APPLICATION_NAME, applicationName);
         messageContext.setProperty(APIMgtGatewayConstants.APPLICATION_ID, applicationId);
+    }
+
+    protected AuthenticationContext getAuthenticationContext(MessageContext messageContext) {
+        return APISecurityUtils.getAuthenticationContext(messageContext);
     }
 
     private String extractResource(MessageContext mc) {
