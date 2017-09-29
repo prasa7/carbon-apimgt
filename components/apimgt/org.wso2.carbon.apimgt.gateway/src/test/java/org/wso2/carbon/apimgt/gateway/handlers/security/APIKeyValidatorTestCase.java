@@ -73,7 +73,6 @@ public class APIKeyValidatorTestCase {
             assertNotNull(apiKeyValidator.findMatchingVerb(synCtx));
 //        todo    Mockito.when(synCtx.getProperty(RESTConstants.SYNAPSE_REST_API_VERSION_STRATEGY)).thenReturn("url");
 
-
         } catch (ResourceNotFoundException e) {
             assert true;
         } catch (APISecurityException e) {
@@ -97,7 +96,6 @@ public class APIKeyValidatorTestCase {
         } catch (APISecurityException e) {
             fail("APISecurityException is thrown " + e);
         }
-
 
         try {
             //Test for matching verb is Not found path
@@ -194,7 +192,6 @@ public class APIKeyValidatorTestCase {
                 return "carbon.super";
             }
         };
-
     }
 
     /*
@@ -213,7 +210,5 @@ public class APIKeyValidatorTestCase {
         APIKeyValidator apiKeyValidator = createAPIKeyValidator(true);
         Assert.assertNotNull(apiKeyValidator.getKeyValidationInfo(context, apiKey, apiVersion, authenticationScheme,
                 clientDomain, matchingResource, httpVerb, defaultVersionInvoked));
-
-
     }
 }

@@ -110,7 +110,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
     @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "EXS_EXCEPTION_SOFTENING_RETURN_FALSE",
             justification = "Error is sent through payload")
     public boolean handleRequest(MessageContext messageContext) {
-        Timer.Context context = startMetrictimer();
+        Timer.Context context = startMetricTimer();
         long startTime = System.nanoTime();
         long endTime;
         long difference;
@@ -171,7 +171,7 @@ public class APIAuthenticationHandler extends AbstractHandler implements Managed
         context.stop();
     }
 
-    protected Timer.Context startMetrictimer() {
+    protected Timer.Context startMetricTimer() {
         Timer timer = MetricManager.timer(org.wso2.carbon.metrics.manager.Level.INFO, MetricManager.name(
                 APIConstants.METRICS_PREFIX, this.getClass().getSimpleName()));
         return timer.start();

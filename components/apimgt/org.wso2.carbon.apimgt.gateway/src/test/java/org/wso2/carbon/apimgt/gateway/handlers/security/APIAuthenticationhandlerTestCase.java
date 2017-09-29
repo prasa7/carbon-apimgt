@@ -53,7 +53,7 @@ public class APIAuthenticationhandlerTestCase {
 
         APIAuthenticationHandler apiAuthenticationHandler = createAPIAuthenticationHandler();
         apiAuthenticationHandler.init(synapseEnvironment);
-        Assert.assertEquals(apiAuthenticationHandler.startMetrictimer(), null);
+        Assert.assertEquals(apiAuthenticationHandler.startMetricTimer(), null);
 
         Options options = Mockito.mock(Options.class);
         Mockito.when(options.getMessageId()).thenReturn("1");
@@ -79,7 +79,6 @@ public class APIAuthenticationhandlerTestCase {
         Assert.assertTrue(apiAuthenticationHandler.handleResponse(messageContext));
     }
 
-
     /*
     * This method will test handleRequest method when APISecurityException is thrown
     * */
@@ -91,7 +90,6 @@ public class APIAuthenticationhandlerTestCase {
         Mockito.when(((Axis2MessageContext) messageContext).getAxis2MessageContext()).thenReturn(axis2MsgCntxt);
         APIAuthenticationHandler apiAuthenticationHandler = createAPIAuthenticationHandlerForExceptionTest();
         apiAuthenticationHandler.init(synapseEnvironment);
-
 
         Options options = Mockito.mock(Options.class);
         Mockito.when(options.getMessageId()).thenReturn("1");
@@ -158,7 +156,6 @@ public class APIAuthenticationhandlerTestCase {
 
         apiAuthenticationHandler.init(synapseEnvironment);
         apiAuthenticationHandler.destroy();
-
     }
 
     /*
@@ -212,7 +209,7 @@ public class APIAuthenticationhandlerTestCase {
             }
 
             @Override
-            protected Timer.Context startMetrictimer() {
+            protected Timer.Context startMetricTimer() {
                 return null;
             }
         };
@@ -269,7 +266,7 @@ public class APIAuthenticationhandlerTestCase {
             }
 
             @Override
-            protected Timer.Context startMetrictimer() {
+            protected Timer.Context startMetricTimer() {
                 return null;
             }
 
@@ -289,6 +286,5 @@ public class APIAuthenticationhandlerTestCase {
             }
         };
     }
-
 }
 
