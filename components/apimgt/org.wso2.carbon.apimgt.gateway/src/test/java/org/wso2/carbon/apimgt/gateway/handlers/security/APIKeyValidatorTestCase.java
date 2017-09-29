@@ -40,6 +40,7 @@ import java.util.ArrayList;
 
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 /**
@@ -89,8 +90,10 @@ public class APIKeyValidatorTestCase {
         Mockito.when(synapseConfiguration.getAPI("abc")).thenReturn((api));
 
         try {
+            VerbInfoDTO verbInfoDTO = new VerbInfoDTO();
+            verbInfoDTO.setHttpVerb("get");
             //Test for matching verb is found path
-            assertNotNull(apiKeyValidator1.findMatchingVerb(synCtx));
+            assertEquals("", verbInfoDTO, apiKeyValidator1.findMatchingVerb(synCtx));
         } catch (ResourceNotFoundException e) {
             fail("ResourceNotFoundException exception is thrown " + e);
         } catch (APISecurityException e) {
@@ -119,9 +122,12 @@ public class APIKeyValidatorTestCase {
         String requestPath = "/";
         String httpMethod = "https";
 
+        VerbInfoDTO verbDTO = new VerbInfoDTO();
+        verbDTO.setHttpVerb("https");
+        verbDTO.setRequestKey("//1.0/:https");
         APIKeyValidator apiKeyValidator = createAPIKeyValidator(true);
 
-        Assert.assertNotNull(apiKeyValidator.getVerbInfoDTOFromAPIData(context, apiVersion, requestPath, httpMethod));
+        Assert.assertEquals("", verbDTO, apiKeyValidator.getVerbInfoDTOFromAPIData(context, apiVersion, requestPath, httpMethod));
 
     }
 
@@ -184,6 +190,7 @@ public class APIKeyValidatorTestCase {
             @Override
             protected APIKeyValidationInfoDTO doGetKeyValidationInfo(String context, String apiVersion, String apiKey, String authenticationScheme, String clientDomain, String matchingResource, String httpVerb) throws APISecurityException {
                 APIKeyValidationInfoDTO apiKeyValidationInfoDTO = Mockito.mock(APIKeyValidationInfoDTO.class);
+                Mockito.when(apiKeyValidationInfoDTO.getApiName()).thenReturn(apiKey);
                 return apiKeyValidationInfoDTO;
             }
 
@@ -200,15 +207,17 @@ public class APIKeyValidatorTestCase {
     @Test
     public void testGetKeyValidationInfo() throws Exception {
         String context = "/";
-        String apiKey = "key";
+        String apiKey = "abc";
         String apiVersion = "1.0";
         String authenticationScheme = "";
         String clientDomain = "abc.com";
         String matchingResource = "/menu";
         String httpVerb = "get";
         boolean defaultVersionInvoked = true;
-        APIKeyValidator apiKeyValidator = createAPIKeyValidator(true);
-        Assert.assertNotNull(apiKeyValidator.getKeyValidationInfo(context, apiKey, apiVersion, authenticationScheme,
-                clientDomain, matchingResource, httpVerb, defaultVersionInvoked));
+        APIKeyValidator apiKeyValidator = createAPIKeyValidator(false);
+        APIKeyValidationInfoDTO apiKeyValidationInfoDTO = new APIKeyValidationInfoDTO();
+        apiKeyValidationInfoDTO.setApiName(apiKey);
+        Assert.assertEquals(apiKeyValidationInfoDTO.getApiName(), apiKeyValidator.getKeyValidationInfo(context, apiKey, apiVersion, authenticationScheme,
+                clientDomain, matchingResource, httpVerb, defaultVersionInvoked).getApiName());
     }
 }
