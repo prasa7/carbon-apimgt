@@ -18,11 +18,21 @@
 
 package org.wso2.carbon.apimgt.hostobjects;
 
+import java.io.IOException;
 import java.util.Comparator;
 
 import org.apache.axis2.context.ConfigurationContext;
+import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpHost;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.mozilla.javascript.NativeObject;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.hostobjects.internal.HostObjectComponent;
@@ -46,6 +56,7 @@ import javax.cache.Caching;
 public class HostObjectUtils {
     private static final Log log = LogFactory.getLog(APIProviderHostObject.class);
     private static ConfigurationContextService configContextService = null;
+
 
     public static void setConfigContextService(ConfigurationContextService configContext) {
         HostObjectUtils.configContextService = configContext;
@@ -228,5 +239,77 @@ public class HostObjectUtils {
 
     protected static boolean isStatPublishingEnabled() {
             return APIUtil.isAnalyticsEnabled();
+    }
+
+    /**
+     * Validate the backend by sending HTTP HEAD
+     *
+     * @param urlVal - backend URL
+     * @param invalidStatusCodesRegex - Regex for the invalid status code
+     * @return - status of HTTP HEAD Request to backend
+     */
+    public static NativeObject sendHttpHEADRequest(String urlVal, String invalidStatusCodesRegex) {
+        boolean isConnectionError = true;
+        String response = null;
+
+        NativeObject data = new NativeObject();
+
+        HttpClient client = new DefaultHttpClient();
+        HttpHead head = new HttpHead(urlVal);
+        // extract the host name and add the Host http header for sanity
+        head.addHeader("Host", urlVal.replaceAll("https?://", "").replaceAll("(/.*)?", ""));
+        client.getParams().setParameter("http.socket.timeout", 4000);
+        client.getParams().setParameter("http.connection.timeout", 4000);
+
+
+        if (System.getProperty(APIConstants.HTTP_PROXY_HOST) != null &&
+                System.getProperty(APIConstants.HTTP_PROXY_PORT) != null) {
+            if (log.isDebugEnabled()) {
+                log.debug("Proxy configured, hence routing through configured proxy");
+            }
+            String proxyHost = System.getProperty(APIConstants.HTTP_PROXY_HOST);
+            String proxyPort = System.getProperty(APIConstants.HTTP_PROXY_PORT);
+            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+                    new HttpHost(proxyHost, Integer.parseInt(proxyPort)));
+        }
+
+        try {
+            //Change implementation to use http client as default http client do not work properly with mutual SSL.
+            org.apache.commons.httpclient.HttpClient clientnew = new org.apache.commons.httpclient.HttpClient();
+            HttpMethod method = new HeadMethod(urlVal);
+            int statusCodenew = clientnew.executeMethod(method);
+            //Previous implementation
+            // HttpResponse httpResponse = client.execute(head);
+            String statusCode = String.valueOf(statusCodenew);//String.valueOf(httpResponse.getStatusLine().getStatusCode());
+            String reasonPhrase = String.valueOf(statusCodenew);//String.valueOf(httpResponse.getStatusLine().getReasonPhrase());
+            //If the endpoint doesn't match the regex which specify the invalid status code, it will return success.
+            if (!statusCode.matches(invalidStatusCodesRegex)) {
+                if (log.isDebugEnabled() && statusCode.equals(String.valueOf(HttpStatus.SC_METHOD_NOT_ALLOWED))) {
+                    log.debug("Endpoint doesn't support HTTP HEAD");
+                }
+                response = "success";
+                isConnectionError = false;
+
+            } else {
+                //This forms the real backend response to be sent to the client
+                data.put("statusCode", data, statusCode);
+                data.put("reasonPhrase", data, reasonPhrase);
+                response = "";
+                isConnectionError = false;
+            }
+        } catch (IOException e) {
+            // sending a default error message.
+            log.error("Error occurred while connecting to backend : " + urlVal + ", reason : " + e.getMessage(), e);
+            String[] errorMsg = e.getMessage().split(": ");
+            if (errorMsg.length > 1) {
+                response = errorMsg[errorMsg.length - 1]; //This is to get final readable part of the error message in the exception and send to the client
+                isConnectionError = false;
+            }
+        } finally {
+            client.getConnectionManager().shutdown();
+        }
+        data.put("response", data, response);
+        data.put("isConnectionError", data, isConnectionError);
+        return data;
     }
 }

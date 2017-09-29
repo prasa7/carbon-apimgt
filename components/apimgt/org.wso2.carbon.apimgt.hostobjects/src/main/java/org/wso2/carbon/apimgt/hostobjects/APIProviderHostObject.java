@@ -28,7 +28,9 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ServiceContext;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -4230,12 +4232,12 @@ public class APIProviderHostObject extends ScriptableObject {
                         System.setProperty("javax.net.ssl.keyStore"          , keyStore);
                         System.setProperty("javax.net.ssl.keyStorePassword"  , keyStorePassword);
 
-                        NativeObject headRequestResult = sendHttpHEADRequest(urlVal, invalidStatusCodesRegex);
+                        NativeObject headRequestResult = HostObjectUtils.sendHttpHEADRequest(urlVal, invalidStatusCodesRegex);
                         headRequestResult.put("isContainUriTemplatesOnly", headRequestResult, isContainUriTemplatesOnly);
                         return headRequestResult;
 
                     } else if (url.getProtocol().matches("http")) {
-                        NativeObject headRequestResult = sendHttpHEADRequest(urlVal, invalidStatusCodesRegex);
+                        NativeObject headRequestResult = HostObjectUtils.sendHttpHEADRequest(urlVal, invalidStatusCodesRegex);
                         headRequestResult.put("isContainUriTemplatesOnly", headRequestResult, isContainUriTemplatesOnly);
                         return headRequestResult;
                     }
@@ -4804,73 +4806,7 @@ public class APIProviderHostObject extends ScriptableObject {
         return !isInvalid;
     }
 
-    /**
-     * Validate the backend by sending HTTP HEAD
-     *
-     * @param urlVal - backend URL
-     * @param invalidStatusCodesRegex - Regex for the invalid status code
-     * @return - status of HTTP HEAD Request to backend
-     */
-    private static NativeObject sendHttpHEADRequest(String urlVal, String invalidStatusCodesRegex) {
 
-        boolean isConnectionError = true;
-        String response = null;
-
-        NativeObject data = new NativeObject();
-
-        HttpClient client = new DefaultHttpClient();
-        HttpHead head = new HttpHead(urlVal);
-        // extract the host name and add the Host http header for sanity
-        head.addHeader("Host", urlVal.replaceAll("https?://", "").replaceAll("(/.*)?", ""));
-        client.getParams().setParameter("http.socket.timeout", 4000);
-        client.getParams().setParameter("http.connection.timeout", 4000);
-
-
-        if (System.getProperty(APIConstants.HTTP_PROXY_HOST) != null &&
-            System.getProperty(APIConstants.HTTP_PROXY_PORT) != null) {
-            if (log.isDebugEnabled()) {
-                log.debug("Proxy configured, hence routing through configured proxy");
-            }
-            String proxyHost = System.getProperty(APIConstants.HTTP_PROXY_HOST);
-            String proxyPort = System.getProperty(APIConstants.HTTP_PROXY_PORT);
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
-                        new HttpHost(proxyHost, Integer.parseInt(proxyPort)));
-        }
-
-        try {
-            HttpResponse httpResponse = client.execute(head);
-            String statusCode = String.valueOf(httpResponse.getStatusLine().getStatusCode());
-            String reasonPhrase = String.valueOf(httpResponse.getStatusLine().getReasonPhrase());
-            //If the endpoint doesn't match the regex which specify the invalid status code, it will return success.
-            if (!statusCode.matches(invalidStatusCodesRegex)) {
-                if (log.isDebugEnabled() && statusCode.equals(String.valueOf(HttpStatus.SC_METHOD_NOT_ALLOWED))) {
-                    log.debug("Endpoint doesn't support HTTP HEAD");
-                }
-                response = "success";
-                isConnectionError = false;
-
-            } else {
-                 //This forms the real backend response to be sent to the client
-                data.put("statusCode", data, statusCode);
-                data.put("reasonPhrase", data, reasonPhrase);
-                response = "";
-                isConnectionError = false;
-            }
-        } catch (IOException e) {
-            // sending a default error message.
-            log.error("Error occurred while connecting to backend : " + urlVal + ", reason : " + e.getMessage(), e);
-            String[] errorMsg = e.getMessage().split(": ");
-            if (errorMsg.length > 1) {
-                response = errorMsg[errorMsg.length - 1]; //This is to get final readable part of the error message in the exception and send to the client
-                isConnectionError = false;
-            }
-        } finally {
-            client.getConnectionManager().shutdown();
-        }
-        data.put("response", data, response);
-        data.put("isConnectionError", data, isConnectionError);
-        return data;
-    }
     /**
      * retrieves active tenant domains and return true or false to display private
      * visibility
