@@ -251,16 +251,16 @@ public class HostObjectUtils {
     public static NativeObject sendHttpHEADRequest(String urlVal, String invalidStatusCodesRegex) {
         boolean isConnectionError = true;
         String response = null;
-
         NativeObject data = new NativeObject();
-
-        HttpClient client = new DefaultHttpClient();
+        //HttpClient client = new DefaultHttpClient();
         HttpHead head = new HttpHead(urlVal);
+        //Change implementation to use http client as default http client do not work properly with mutual SSL.
+        org.apache.commons.httpclient.HttpClient clientnew = new org.apache.commons.httpclient.HttpClient();
         // extract the host name and add the Host http header for sanity
         head.addHeader("Host", urlVal.replaceAll("https?://", "").replaceAll("(/.*)?", ""));
-        client.getParams().setParameter("http.socket.timeout", 4000);
-        client.getParams().setParameter("http.connection.timeout", 4000);
-
+        clientnew.getParams().setParameter("http.socket.timeout", 4000);
+        clientnew.getParams().setParameter("http.connection.timeout", 4000);
+        HttpMethod method = new HeadMethod(urlVal);
 
         if (System.getProperty(APIConstants.HTTP_PROXY_HOST) != null &&
                 System.getProperty(APIConstants.HTTP_PROXY_PORT) != null) {
@@ -269,19 +269,16 @@ public class HostObjectUtils {
             }
             String proxyHost = System.getProperty(APIConstants.HTTP_PROXY_HOST);
             String proxyPort = System.getProperty(APIConstants.HTTP_PROXY_PORT);
-            client.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
+            clientnew.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
                     new HttpHost(proxyHost, Integer.parseInt(proxyPort)));
         }
 
         try {
-            //Change implementation to use http client as default http client do not work properly with mutual SSL.
-            org.apache.commons.httpclient.HttpClient clientnew = new org.apache.commons.httpclient.HttpClient();
-            HttpMethod method = new HeadMethod(urlVal);
-            int statusCodenew = clientnew.executeMethod(method);
+            int statusCodeNew = clientnew.executeMethod(method);
             //Previous implementation
             // HttpResponse httpResponse = client.execute(head);
-            String statusCode = String.valueOf(statusCodenew);//String.valueOf(httpResponse.getStatusLine().getStatusCode());
-            String reasonPhrase = String.valueOf(statusCodenew);//String.valueOf(httpResponse.getStatusLine().getReasonPhrase());
+            String statusCode = String.valueOf(statusCodeNew);//String.valueOf(httpResponse.getStatusLine().getStatusCode());
+            String reasonPhrase = String.valueOf(statusCodeNew);//String.valueOf(httpResponse.getStatusLine().getReasonPhrase());
             //If the endpoint doesn't match the regex which specify the invalid status code, it will return success.
             if (!statusCode.matches(invalidStatusCodesRegex)) {
                 if (log.isDebugEnabled() && statusCode.equals(String.valueOf(HttpStatus.SC_METHOD_NOT_ALLOWED))) {
@@ -306,7 +303,7 @@ public class HostObjectUtils {
                 isConnectionError = false;
             }
         } finally {
-            client.getConnectionManager().shutdown();
+            method.releaseConnection();
         }
         data.put("response", data, response);
         data.put("isConnectionError", data, isConnectionError);
