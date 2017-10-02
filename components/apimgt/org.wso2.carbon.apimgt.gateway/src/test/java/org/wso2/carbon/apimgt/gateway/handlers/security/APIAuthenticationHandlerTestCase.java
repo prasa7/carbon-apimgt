@@ -38,7 +38,7 @@ import java.util.TreeMap;
 * Test class for APIAuthenticationhandler
 * */
 
-public class APIAuthenticationhandlerTestCase {
+public class APIAuthenticationHandlerTestCase {
 
     /*
     * This method will test handleRequest method for it's happy path
