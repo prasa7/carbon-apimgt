@@ -16,25 +16,23 @@
 
 package org.wso2.carbon.apimgt.impl.template;
 
-import org.apache.velocity.VelocityContext;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.wso2.carbon.apimgt.api.model.API;
+import org.wso2.carbon.apimgt.impl.APIManagerConfiguration;
 
 /**
- * This is a utility class with a bunch of methods to help in Template
+ * Wrapper class for SecurityConfigContext
  */
-public class TemplateUtilContext extends ConfigContextDecorator {
+public class SecurityConfigContextWrapper extends SecurityConfigContext {
 
-    public TemplateUtilContext(ConfigContext context) {
-        super(context);
+    private APIManagerConfiguration apiManagerConfiguration;
+
+    public SecurityConfigContextWrapper(ConfigContext context, API api,
+                                        APIManagerConfiguration apiManagerConfiguration) {
+        super(context, api);
+        this.apiManagerConfiguration = apiManagerConfiguration;
     }
 
-    @Override
-    public VelocityContext getContext() {
-        VelocityContext context =  super.getContext();
-
-        context.put("util",this);
-
-        return context;
+    protected APIManagerConfiguration getApiManagerConfiguration() {
+        return apiManagerConfiguration;
     }
-
 }
