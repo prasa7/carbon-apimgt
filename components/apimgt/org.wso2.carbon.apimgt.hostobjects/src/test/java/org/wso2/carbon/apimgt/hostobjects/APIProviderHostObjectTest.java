@@ -44,10 +44,10 @@ public class APIProviderHostObjectTest {
                     + File.separator + "server" + File.separator + "client-truststore.jks";
 
     private static final String KEYSTORE_FILE_PATH_CLIENT =
-             "src" + File.separator + "test" + File.separator + "resources" + File.separator + "security"
+            "src" + File.separator + "test" + File.separator + "resources" + File.separator + "security"
                     + File.separator + "client" + File.separator + "wso2carbon.jks";
     private static final String TRUSTSTORE_FILE_PATH_CLIENT =
-             "src" + File.separator + "test" + File.separator + "resources" + File.separator + "security"
+            "src" + File.separator + "test" + File.separator + "resources" + File.separator + "security"
                     + File.separator + "client" + File.separator + "client-truststore.jks";
 
     public void testAPIProvider() {
@@ -76,21 +76,15 @@ public class APIProviderHostObjectTest {
                         .withBody("{success}")
                         .withHeader("Content-Type", "application/json")
                 ));
-
-        try {
-            APIProviderHostObject apiProviderHostObject = new APIProviderHostObject();
-            System.setProperty("javax.net.ssl.keyStoreType", "JKS");
-            System.setProperty("javax.net.ssl.keyStore", KEYSTORE_FILE_PATH_CLIENT);
-            System.setProperty("javax.net.ssl.keyStorePassword", "wso2carbon");
-            System.setProperty("javax.net.ssl.trustStore", TRUSTSTORE_FILE_PATH_CLIENT);
-            System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
-            org.mozilla.javascript.NativeObject obj =
-                    HostObjectUtils.sendHttpHEADRequest("https://localhost:8081/test",
-                            "404");
-            Assert.assertEquals("success", obj.get("response"));
-        } catch (APIManagementException e) {
-            e.printStackTrace();
-        }
+        System.setProperty("javax.net.ssl.keyStoreType", "JKS");
+        System.setProperty("javax.net.ssl.keyStore", KEYSTORE_FILE_PATH_CLIENT);
+        System.setProperty("javax.net.ssl.keyStorePassword", "wso2carbon");
+        System.setProperty("javax.net.ssl.trustStore", TRUSTSTORE_FILE_PATH_CLIENT);
+        System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+        org.mozilla.javascript.NativeObject obj =
+                HostObjectUtils.sendHttpHEADRequest("https://localhost:8081/test",
+                        "404");
+        Assert.assertEquals("success", obj.get("response"));
         wireMockRule.resetAll();
         wireMockRule.stop();
 
