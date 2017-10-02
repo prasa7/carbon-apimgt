@@ -17,7 +17,6 @@
 */
 package org.wso2.carbon.apimgt.hostobjects;
 
-import jdk.nashorn.internal.objects.NativeObject;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
