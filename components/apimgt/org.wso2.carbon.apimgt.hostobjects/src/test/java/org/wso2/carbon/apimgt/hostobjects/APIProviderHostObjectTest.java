@@ -17,6 +17,7 @@
 */
 package org.wso2.carbon.apimgt.hostobjects;
 
+import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Assert;
@@ -25,11 +26,16 @@ import org.junit.Test;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.wso2.carbon.apimgt.impl.APIConstants;
-
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
+
 import java.io.File;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.head;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
 
 /**
  * APIProvider Test Suite

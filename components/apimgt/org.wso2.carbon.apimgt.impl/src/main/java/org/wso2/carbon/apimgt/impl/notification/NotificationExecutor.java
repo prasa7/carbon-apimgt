@@ -54,8 +54,7 @@ public class NotificationExecutor{
         String notificationType = notificationDTO.getType();
 
         try {
-            registry = ServiceReferenceHolder.getInstance().getRegistryService().getConfigSystemRegistry
-                    (tenantId);
+            registry = getRegistry(tenantId);
             if (registry.resourceExists(APIConstants.API_TENANT_CONF_LOCATION)) {
                 Resource resource = registry.get(APIConstants.API_TENANT_CONF_LOCATION);
                 content = new String((byte[]) resource.getContent(), Charset.defaultCharset());
@@ -106,5 +105,10 @@ public class NotificationExecutor{
         } catch (ParseException e) {
             throw new NotificationException("Error while passing notification Configuration",e);
         }
+    }
+
+    protected Registry getRegistry(int tenantId) throws RegistryException {
+        return ServiceReferenceHolder.getInstance().getRegistryService().getConfigSystemRegistry
+                (tenantId);
     }
 }
