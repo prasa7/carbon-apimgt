@@ -766,6 +766,8 @@ public class SQLConstants {
     public static final String GET_PRODUCTION_KEYS_OF_APPLICATION_PREFIX =
             "   ICA.CONSUMER_KEY AS CONSUMER_KEY," +
             "   ICA.CONSUMER_SECRET AS CONSUMER_SECRET," +
+            "   ICA.GRANT_TYPES AS GRANT_TYPES," +
+            "   ICA.CALLBACK_URL AS CALLBACK_URL," +
             "   IAT.ACCESS_TOKEN AS ACCESS_TOKEN," +
             "   IAT.VALIDITY_PERIOD AS VALIDITY_PERIOD," +
             "   ISAT.TOKEN_SCOPE AS TOKEN_SCOPE," +
@@ -792,6 +794,8 @@ public class SQLConstants {
             " SELECT " +
             "   CONSUMER_KEY, " +
             "   CONSUMER_SECRET, " +
+            "   GRANT_TYPES, " +
+            "   CALLBACK_URL, " +
             "   ACCESS_TOKEN, " +
             "   VALIDITY_PERIOD, " +
             "   TOKEN_SCOPE, " +
@@ -801,6 +805,8 @@ public class SQLConstants {
             "   SELECT " +
             "       ICA.CONSUMER_KEY AS CONSUMER_KEY, " +
             "       ICA.CONSUMER_SECRET AS CONSUMER_SECRET, " +
+            "       ICA.GRANT_TYPES AS GRANT_TYPES, " +
+            "       ICA.CALLBACK_URL AS CALLBACK_URL, " +
             "       IAT.ACCESS_TOKEN AS ACCESS_TOKEN, " +
             "       IAT.VALIDITY_PERIOD AS VALIDITY_PERIOD, " +
             "       ISAT.TOKEN_SCOPE AS TOKEN_SCOPE, " +
@@ -826,6 +832,8 @@ public class SQLConstants {
     public static final String GET_SANDBOX_KEYS_OF_APPLICATION_PREFIX =
             "   ICA.CONSUMER_KEY AS CONSUMER_KEY," +
             "   ICA.CONSUMER_SECRET AS CONSUMER_SECRET," +
+            "   ICA.GRANT_TYPES AS GRANT_TYPES," +
+            "   ICA.CALLBACK_URL AS CALLBACK_URL," +
             "   IAT.ACCESS_TOKEN AS ACCESS_TOKEN," +
             "   IAT.VALIDITY_PERIOD AS VALIDITY_PERIOD," +
             "   ISAT.TOKEN_SCOPE AS TOKEN_SCOPE," +
@@ -851,6 +859,8 @@ public class SQLConstants {
             " SELECT " +
             "   ICA.CONSUMER_KEY AS CONSUMER_KEY," +
             "   ICA.CONSUMER_SECRET AS CONSUMER_SECRET," +
+            "   ICA.GRANT_TYPES AS GRANT_TYPES, " +
+            "   ICA.CALLBACK_URL AS CALLBACK_URL, " +
             "   IAT.ACCESS_TOKEN AS ACCESS_TOKEN," +
             "   IAT.VALIDITY_PERIOD AS VALIDITY_PERIOD," +
             "   ISAT.TOKEN_SCOPE AS TOKEN_SCOPE," +
