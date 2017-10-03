@@ -992,8 +992,18 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-jaxrs</artifactId>
                 <version>${swagger-jaxrs.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.reflections</groupId>
+                        <artifactId>reflections</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
-
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>${reflection.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-validator</artifactId>
@@ -1374,6 +1384,7 @@
         <jacoco.version>0.7.9</jacoco.version>
         <maven.surefire.plugin.version>2.18.1</maven.surefire.plugin.version>
         <wiremock.version>2.5.0</wiremock.version>
+        <reflection.version>0.9.11</reflection.version>
     </properties>
 </project>
 
