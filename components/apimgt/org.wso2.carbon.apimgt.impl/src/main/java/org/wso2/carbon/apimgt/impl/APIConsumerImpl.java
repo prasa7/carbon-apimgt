@@ -153,8 +153,7 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
     }
 
     private void readTagCacheConfigs() {
-        APIManagerConfiguration config = ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService().
-                getAPIManagerConfiguration();
+        APIManagerConfiguration config = getAPIManagerConfiguration();
         String enableTagCache = config.getFirstProperty(APIConstants.STORE_TAG_CACHE_DURATION);
         if (enableTagCache == null) {
             isTagCacheEnabled = false;
@@ -589,9 +588,8 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
             List<API> multiVersionedAPIs = new ArrayList<API>();
             Comparator<API> versionComparator = new APIVersionComparator();
             Boolean displayMultipleVersions = APIUtil.isAllowDisplayMultipleVersions();
-            String paginationLimit = ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService()
-                                                           .getAPIManagerConfiguration()
-                                                           .getFirstProperty(APIConstants.API_STORE_APIS_PER_PAGE);
+            String paginationLimit = getAPIManagerConfiguration().
+                    getFirstProperty(APIConstants.API_STORE_APIS_PER_PAGE);
 
             // If the Config exists use it to set the pagination limit
             final int maxPaginationLimit;
@@ -778,8 +776,7 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
             List<API> multiVersionedAPIs = new ArrayList<API>();
             Comparator<API> versionComparator = new APIVersionComparator();
             Boolean displayMultipleVersions = APIUtil.isAllowDisplayMultipleVersions();
-            String paginationLimit = ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService()
-                                                           .getAPIManagerConfiguration()
+            String paginationLimit = getAPIManagerConfiguration()
                                                            .getFirstProperty(APIConstants.API_STORE_APIS_PER_PAGE);
 
             // If the Config exists use it to set the pagination limit
@@ -1149,8 +1146,7 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
         SortedSet<API> recentlyAddedAPIs = new TreeSet<API>(new APINameComparator());
         SortedSet<API> recentlyAddedAPIsWithMultipleVersions = new TreeSet<API>(new APIVersionComparator());
         Registry userRegistry;
-        APIManagerConfiguration config = ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService()
-                .getAPIManagerConfiguration();
+        APIManagerConfiguration config = getAPIManagerConfiguration();
         boolean isRecentlyAddedAPICacheEnabled =
               Boolean.parseBoolean(config.getFirstProperty(APIConstants.API_STORE_RECENTLY_ADDED_API_CACHE_ENABLE));
 
@@ -3174,6 +3170,16 @@ class APIConsumerImpl extends AbstractAPIManager implements APIConsumer {
             }
         }
         return false;
+    }
+
+    /**
+     * Returns API manager configurations.
+     *
+     * @return APIManagerConfiguration object
+     */
+    protected APIManagerConfiguration getAPIManagerConfiguration() {
+        return ServiceReferenceHolder.getInstance().getAPIManagerConfigurationService()
+                .getAPIManagerConfiguration();
     }
 
 }
