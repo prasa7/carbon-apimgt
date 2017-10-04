@@ -81,9 +81,12 @@ public class RestAPIStoreUtils {
                     } else if (application.getSubscriber().getName().toLowerCase().equals(username.toLowerCase())) {
                         APIManagerConfiguration configuration = ServiceReferenceHolder.getInstance()
                                 .getAPIManagerConfigurationService().getAPIManagerConfiguration();
-                        if (Boolean.valueOf(
-                                configuration.getProperty(APIConstants.API_STORE_FORCE_CI_COMPARISIONS).get(0))) {
-                            return true;
+                        String comparisonConfig = configuration
+                                .getFirstProperty(APIConstants.API_STORE_FORCE_CI_COMPARISIONS);
+                        if (StringUtils.isNotEmpty(comparisonConfig)) {
+                            if (Boolean.valueOf(comparisonConfig)) {
+                                return true;
+                            }
                         }
                     }
                 }
