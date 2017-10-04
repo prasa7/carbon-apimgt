@@ -31,7 +31,11 @@ import org.wso2.carbon.apimgt.api.model.Documentation;
 import org.wso2.carbon.apimgt.api.model.SubscribedAPI;
 import org.wso2.carbon.apimgt.api.model.Tier;
 import org.wso2.carbon.apimgt.impl.APIConstants;
+import org.wso2.carbon.apimgt.impl.APIManagerConfiguration;
+import org.wso2.carbon.apimgt.impl.APIManagerConfigurationService;
+import org.wso2.carbon.apimgt.impl.APIManagerConfigurationServiceImpl;
 import org.wso2.carbon.apimgt.impl.APIManagerFactory;
+import org.wso2.carbon.apimgt.impl.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.impl.utils.APIUtil;
 import org.wso2.carbon.apimgt.rest.api.store.utils.mappings.APIMappingUtil;
 import org.wso2.carbon.apimgt.rest.api.util.RestApiConstants;
@@ -71,8 +75,17 @@ public class RestAPIStoreUtils {
             //if groupId is null or empty, it is not a shared app 
             if (StringUtils.isEmpty(application.getGroupId())) {
                 //if the application is not shared, its subscriber and the current logged in user must be same
-                if (application.getSubscriber() != null && application.getSubscriber().getName().equals(username)) {
-                    return true;
+                if (application.getSubscriber() != null) {
+                    if (application.getSubscriber().getName().equals(username)) {
+                        return true;
+                    } else if (application.getSubscriber().getName().toLowerCase().equals(username.toLowerCase())) {
+                        APIManagerConfiguration configuration = ServiceReferenceHolder.getInstance()
+                                .getAPIManagerConfigurationService().getAPIManagerConfiguration();
+                        if (Boolean.valueOf(
+                                configuration.getProperty(APIConstants.API_STORE_FORCE_CI_COMPARISIONS).get(0))) {
+                            return true;
+                        }
+                    }
                 }
             } else {
                 String userGroupId = RestApiUtil.getLoggedInUserGroupId();
