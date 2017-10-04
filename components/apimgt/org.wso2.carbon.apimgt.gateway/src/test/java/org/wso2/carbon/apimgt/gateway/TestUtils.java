@@ -29,6 +29,7 @@ import org.wso2.carbon.apimgt.gateway.handlers.security.AuthenticationContext;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class TestUtils {
     private static final String API_AUTH_CONTEXT = "__API_AUTH_CONTEXT";
@@ -74,9 +75,12 @@ public class TestUtils {
         authenticationContext.setApplicationName("test-app");
         authenticationContext.setAuthenticated(true);
         authenticationContext.setCallerToken("987654321");
-        authenticationContext.setTier("987654321");
-        Map map = new HashMap();
+        authenticationContext.setTier("Silver");
+        authenticationContext.setSpikeArrestLimit(600);
+        authenticationContext.setSubscriber("testSubscriber");
+        Map map = new TreeMap();
         map.put("host","127.0.0.1");
+        map.put("X-FORWARDED-FOR", "127.0.0.1");
         ((Axis2MessageContext) synCtx).getAxis2MessageContext()
                 .setProperty(org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS, map);
         synCtx.setProperty(API_AUTH_CONTEXT, authenticationContext);
