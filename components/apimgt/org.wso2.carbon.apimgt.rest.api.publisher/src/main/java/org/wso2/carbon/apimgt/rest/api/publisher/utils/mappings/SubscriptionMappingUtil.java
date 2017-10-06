@@ -50,12 +50,11 @@ public class SubscriptionMappingUtil {
         SubscriptionDTO subscriptionDTO = new SubscriptionDTO();
         subscriptionDTO.setSubscriptionId(subscription.getUUID());
         APIIdentifier apiId = subscription.getApiId();
-        APIIdentifier apiIdEmailReplacedBack = new APIIdentifier(APIUtil.replaceEmailDomainBack(URLEncoder.encode
-                (apiId.getProviderName(), RestApiConstants.CHARSET).replace(RestApiConstants.API_ID_DELIMITER,
-                RestApiConstants.URL_ENCODED_API_ID_DELIMITER)), URLEncoder.encode(apiId.getApiName(),
-                RestApiConstants.CHARSET).replace(RestApiConstants.API_ID_DELIMITER, RestApiConstants
-                .URL_ENCODED_API_ID_DELIMITER), URLEncoder.encode(apiId.getVersion(), RestApiConstants.CHARSET)
-                .replace(RestApiConstants.API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER));
+        APIIdentifier apiIdEmailReplacedBack = new APIIdentifier(APIUtil.replaceEmailDomainBack(apiId.getProviderName
+                ()).replace(RestApiConstants.API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER),
+                URLEncoder.encode(apiId.getApiName(), RestApiConstants.CHARSET).replace(RestApiConstants
+                        .API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER),apiId.getVersion().
+                replace(RestApiConstants.API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER));
         subscriptionDTO.setApiIdentifier(apiIdEmailReplacedBack.toString());
         subscriptionDTO.setApplicationId(subscription.getApplication().getUUID());
         subscriptionDTO.setStatus(SubscriptionDTO.StatusEnum.valueOf(subscription.getSubStatus()));
@@ -71,12 +70,15 @@ public class SubscriptionMappingUtil {
      * @return SubscriptionDTO corresponds to SubscribedAPI object
      */
     public static ExtendedSubscriptionDTO fromSubscriptionToExtendedSubscriptionDTO(SubscribedAPI subscription,
-            String workflowReferenceId) {
+            String workflowReferenceId) throws UnsupportedEncodingException {
         ExtendedSubscriptionDTO subscriptionDTO = new ExtendedSubscriptionDTO();
         subscriptionDTO.setSubscriptionId(subscription.getUUID());
         APIIdentifier apiId = subscription.getApiId();
-        APIIdentifier apiIdEmailReplacedBack = new APIIdentifier(
-                APIUtil.replaceEmailDomainBack(apiId.getProviderName()), apiId.getApiName(), apiId.getVersion());
+        APIIdentifier apiIdEmailReplacedBack = new APIIdentifier(APIUtil.replaceEmailDomainBack(apiId.getProviderName
+                ()).replace(RestApiConstants.API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER),
+                URLEncoder.encode(apiId.getApiName(), RestApiConstants.CHARSET).replace(RestApiConstants
+                        .API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER),apiId.getVersion().
+                replace(RestApiConstants.API_ID_DELIMITER, RestApiConstants.URL_ENCODED_API_ID_DELIMITER));
         subscriptionDTO.setApiIdentifier(apiIdEmailReplacedBack.toString());
         subscriptionDTO.setApplicationId(subscription.getApplication().getUUID());
         subscriptionDTO.setStatus(SubscriptionDTO.StatusEnum.valueOf(subscription.getSubStatus()));
