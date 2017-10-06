@@ -43,6 +43,7 @@ import org.wso2.carbon.apimgt.rest.api.util.utils.RestApiUtil;
 import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.utils.multitenancy.MultitenantUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -146,7 +147,7 @@ public class RestAPIStoreUtils {
         //this is just to check whether the user has access to the api or the api exists. 
         try {
             APIMappingUtil.getAPIIdentifierFromApiIdOrUUID(apiId, tenantDomain);
-        } catch (APIManagementException e) {
+        } catch (APIManagementException | UnsupportedEncodingException e) {
             if (RestApiUtil.isDueToAuthorizationFailure(e)) {
                 String message =
                         "user " + username + " failed to access the API " + apiId + " due to an authorization failure";
@@ -343,7 +344,7 @@ public class RestAPIStoreUtils {
             if (api != null) {
                 return api.getLastUpdated() != null ? String.valueOf(api.getLastUpdated().getTime()) : api.getCreatedTime();
             }
-        } catch (APIManagementException e) {
+        } catch (APIManagementException | UnsupportedEncodingException e) {
             if (RestApiUtil.isDueToAuthorizationFailure(e)) {
                 RestApiUtil.handleAuthorizationFailure(RestApiConstants.RESOURCE_API, apiId, e, log);
             } else if (RestApiUtil.isDueToResourceNotFound(e)) {
@@ -376,7 +377,7 @@ public class RestAPIStoreUtils {
                     return swaggerDefinitionTimeStamps.get("CREATED_TIME");
                 }
             }
-        } catch (APIManagementException e) {
+        } catch (APIManagementException | UnsupportedEncodingException e) {
             if (RestApiUtil.isDueToAuthorizationFailure(e)) {
                 RestApiUtil.handleAuthorizationFailure(RestApiConstants.RESOURCE_API, apiId, e, log);
             } else if (RestApiUtil.isDueToResourceNotFound(e)) {
@@ -399,7 +400,7 @@ public class RestAPIStoreUtils {
             String tenantDomain = RestApiUtil.getLoggedInUserTenantDomain();
             APIIdentifier apiIdentifier = getAPIIdentifierFromApiIdOrUUID(apiId, tenantDomain);
             return apiConsumer.getThumbnailLastUpdatedTime(apiIdentifier);
-        } catch (APIManagementException e) {
+        } catch (APIManagementException | UnsupportedEncodingException e) {
             if (RestApiUtil.isDueToResourceNotFound(e) || RestApiUtil.isDueToAuthorizationFailure(e)) {
                 RestApiUtil.handleResourceNotFoundError(RestApiConstants.RESOURCE_API, apiId, e, log);
             } else {
