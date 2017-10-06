@@ -202,7 +202,7 @@ public class SubscriptionsApiServiceImpl extends SubscriptionsApiService {
             } else {
                 RestApiUtil.handleResourceNotFoundError(RestApiConstants.RESOURCE_SUBSCRIPTION, subscriptionId, log);
             }
-        } catch (APIManagementException e) {
+        } catch (APIManagementException | UnsupportedEncodingException e) {
             String msg = "Error while getting the subscription " + subscriptionId;
             RestApiUtil.handleInternalServerError(msg, e, log);
         }
