@@ -83,10 +83,8 @@ public class RestAPIStoreUtils {
                                 .getAPIManagerConfigurationService().getAPIManagerConfiguration();
                         String comparisonConfig = configuration
                                 .getFirstProperty(APIConstants.API_STORE_FORCE_CI_COMPARISIONS);
-                        if (StringUtils.isNotEmpty(comparisonConfig)) {
-                            if (Boolean.valueOf(comparisonConfig)) {
-                                return true;
-                            }
+                        if (StringUtils.isNotEmpty(comparisonConfig) && Boolean.valueOf(comparisonConfig)) {
+                            return true;
                         }
                     }
                 }
