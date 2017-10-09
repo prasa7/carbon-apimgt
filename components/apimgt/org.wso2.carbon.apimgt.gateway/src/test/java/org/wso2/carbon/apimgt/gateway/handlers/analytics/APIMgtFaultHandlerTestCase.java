@@ -16,7 +16,7 @@
  *  under the License.
  */
 
-package org.wso2.carbon.apimgt.gateway.handlers.handlers;
+package org.wso2.carbon.apimgt.gateway.handlers.analytics;
 
 import org.apache.synapse.MessageContext;
 import org.junit.Assert;
