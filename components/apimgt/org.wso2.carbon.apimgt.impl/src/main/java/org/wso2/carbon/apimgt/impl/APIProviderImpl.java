@@ -4937,7 +4937,13 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
     
     protected Map<String, String> publishToGateway(API api, String tenantDomain) throws APIManagementException {
         APIGatewayManager gatewayManager = APIGatewayManager.getInstance();
-        return gatewayManager.publishToGateway(api, getAPITemplateBuilder(api), tenantDomain);
+        APITemplateBuilder builder = null;
+        try {
+            builder = getAPITemplateBuilder(api);
+        } catch (Exception e) {
+            handleException("Error while publishing to Gateway ", e);
+        }
+        return gatewayManager.publishToGateway(api, builder, tenantDomain);
     }
     
     protected Map<String, String> removeFromGateway(API api, String tenantDomain) {
