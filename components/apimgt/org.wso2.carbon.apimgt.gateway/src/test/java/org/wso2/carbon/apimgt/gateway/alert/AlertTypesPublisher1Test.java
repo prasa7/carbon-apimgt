@@ -51,6 +51,7 @@ public class AlertTypesPublisher1Test {
         alertTypesPublisher.skipEventReceiverConnection = false;
         alertTypesPublisher.saveAndPublishAlertTypesEvent("abc", "abc@de.com", "admin", "subscriber", "aa");
         alertTypesPublisher.saveAndPublishAlertTypesEvent("abc", "abc@de.com", "admin", "admin-dashboard", "aa");
+        alertTypesPublisher.saveAndPublishAlertTypesEvent("abc", "abc@de.com", "admin", "publisher", "aa");
     }
 
     @Test
@@ -75,16 +76,40 @@ public class AlertTypesPublisher1Test {
         alertTypesPublisher.skipEventReceiverConnection = false;
         Mockito.doThrow(SQLException.class).when(apiMgtDAO).addAlertTypesConfigInfo(userName, emailList,
                 checkedAlertList, agent);
-        try{
+        try {
             alertTypesPublisher.saveAndPublishAlertTypesEvent(checkedAlertList, emailList, userName, agent,
                     checkedAlertListValues);
-        }catch (Exception e){
-            if (e instanceof SQLException){
+        } catch (Exception e) {
+            if (e instanceof SQLException) {
                 Assert.assertTrue(true);
-            }else{
+            } else {
                 Assert.assertTrue(false);
             }
         }
     }
 
+    @Test
+    public void unSubscribe() throws Exception {
+        String userName = "admin@carbon.super";
+        String agent = "publisher";
+        APIManagerAnalyticsConfiguration apiManagerAnalyticsConfiguration = Mockito.mock
+                (APIManagerAnalyticsConfiguration.class);
+        PowerMockito.mockStatic(APIManagerAnalyticsConfiguration.class);
+        PowerMockito.mockStatic(DataPublisherUtil.class);
+        BDDMockito.given(APIManagerAnalyticsConfiguration.getInstance()).willReturn(apiManagerAnalyticsConfiguration);
+        BDDMockito.given(DataPublisherUtil.getApiManagerAnalyticsConfiguration()).willReturn
+                (apiManagerAnalyticsConfiguration);
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        Mockito.doNothing().when(apiMgtDAO).unSubscribeAlerts(userName, agent);
+        Mockito.doNothing().when(apiMgtDAO).unSubscribeAlerts(userName, "subscriber");
+        Mockito.doNothing().when(apiMgtDAO).unSubscribeAlerts(userName, "admin-dashboard");
+        APIMgtUsageDataPublisher apiMgtUsageDataPublisher = Mockito.mock(APIMgtUsageDataPublisher.class);
+        AlertTypesPublisher alertTypesPublisher = new AlertTypesPublisherWrapper(apiMgtDAO);
+        alertTypesPublisher.enabled = true;
+        alertTypesPublisher.skipEventReceiverConnection = false;
+        alertTypesPublisher.publisher = apiMgtUsageDataPublisher;
+        alertTypesPublisher.unSubscribe(userName, agent);
+        alertTypesPublisher.unSubscribe(userName, "subscriber");
+        alertTypesPublisher.unSubscribe(userName, "admin-dashboard");
+    }
 }
