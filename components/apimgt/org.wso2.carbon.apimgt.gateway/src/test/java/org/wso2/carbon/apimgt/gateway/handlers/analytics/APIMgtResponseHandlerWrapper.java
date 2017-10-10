@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,23 @@
  */
 package org.wso2.carbon.apimgt.gateway.handlers.analytics;
 
-
+import org.wso2.carbon.apimgt.impl.APIManagerAnalyticsConfiguration;
 import org.wso2.carbon.apimgt.usage.publisher.APIMgtUsageDataPublisher;
 
-public class APIMgtFaultHandlerWrapper extends APIMgtFaultHandler {
-    public APIMgtFaultHandlerWrapper(APIMgtUsageDataPublisher apiMgtUsageDataPublisher, boolean enabled, boolean
-            skipEventReceiverConnection) {
+public class APIMgtResponseHandlerWrapper extends APIMgtResponseHandler {
+    private APIManagerAnalyticsConfiguration apiManagerAnalyticsConfiguration;
+
+    public APIMgtResponseHandlerWrapper(APIMgtUsageDataPublisher apiMgtUsageDataPublisher, boolean enabled, boolean
+            skipEventReceiverConnection, APIManagerAnalyticsConfiguration apiManagerAnalyticsConfiguration) {
         this.enabled = enabled;
         this.skipEventReceiverConnection = skipEventReceiverConnection;
         this.publisher = apiMgtUsageDataPublisher;
+        this.apiManagerAnalyticsConfiguration = apiManagerAnalyticsConfiguration;
     }
 
+    @Override
+    protected APIManagerAnalyticsConfiguration getApiAnalyticsConfiguration() {
+        return apiManagerAnalyticsConfiguration;
+    }
 }
+
