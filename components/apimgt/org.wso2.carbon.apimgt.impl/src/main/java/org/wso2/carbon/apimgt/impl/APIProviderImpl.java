@@ -1771,7 +1771,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
      */
     public void createNewAPIVersion(API api, String newVersion) throws DuplicateAPIException, APIManagementException {
         String apiSourcePath = APIUtil.getAPIPath(api.getId());
-
+        
         String targetPath = APIConstants.API_LOCATION + RegistryConstants.PATH_SEPARATOR +
                             api.getId().getProviderName() +
                             RegistryConstants.PATH_SEPARATOR + api.getId().getApiName() +
@@ -1993,7 +1993,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
             int tenantId;
             String tenantDomain = MultitenantUtils.getTenantDomain(APIUtil.replaceEmailDomainBack(api.getId().getProviderName()));
             try {
-                tenantId = ServiceReferenceHolder.getInstance().getRealmService().getTenantManager().getTenantId(tenantDomain);
+                tenantId = getTenantId(tenantDomain);
             } catch (UserStoreException e) {
                 throw new APIManagementException("Error in retrieving Tenant Information while adding api :"
                         +api.getId().getApiName(),e);
@@ -2050,7 +2050,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
                             .NOTIFICATION_TYPE_NEW_VERSION);
                     notificationDTO.setTenantID(tenantId);
                     notificationDTO.setTenantDomain(tenantDomain);
-                    new NotificationExecutor().sendAsyncNotifications(notificationDTO);
+                    sendAsncNotification(notificationDTO);
 
                 }
             } catch (NotificationException e) {
@@ -2080,6 +2080,10 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
                 handleException("Error while rolling back the transaction for API: " + api.getId(), ex);
             }
         }
+    }
+
+    protected void sendAsncNotification(NotificationDTO notificationDTO) throws NotificationException {
+        new NotificationExecutor().sendAsyncNotifications(notificationDTO);        
     }
 
     /**
@@ -4949,5 +4953,9 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
     protected Map<String, String> removeFromGateway(API api, String tenantDomain) {
         APIGatewayManager gatewayManager = APIGatewayManager.getInstance();
         return gatewayManager.removeFromGateway(api, tenantDomain);
+    }
+    
+    protected int getTenantId(String tenantDomain) throws UserStoreException {
+        return ServiceReferenceHolder.getInstance().getRealmService().getTenantManager().getTenantId(tenantDomain);
     }
 }
