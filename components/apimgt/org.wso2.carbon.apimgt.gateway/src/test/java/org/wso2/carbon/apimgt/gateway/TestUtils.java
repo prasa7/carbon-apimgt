@@ -61,7 +61,7 @@ public class TestUtils {
         synCtx.setProperty(RESTConstants.REST_API_CONTEXT, context);
         synCtx.setProperty(RESTConstants.SYNAPSE_REST_API_VERSION, version);
         Map map = new TreeMap();
-        map.put(X_FORWARDED_FOR, "127.0.0.1");
+        map.put(X_FORWARDED_FOR, "127.0.0.1,1.10.0.4");
         ((Axis2MessageContext) synCtx).getAxis2MessageContext()
                 .setProperty(org.apache.axis2.context.MessageContext.TRANSPORT_HEADERS, map);
         return synCtx;
