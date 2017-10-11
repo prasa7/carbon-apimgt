@@ -19,17 +19,24 @@ package org.wso2.carbon.apimgt.gateway.handlers.security;
 */
 
 import org.apache.axis2.client.Options;
+import org.apache.axis2.engine.AxisConfiguration;
 import org.apache.synapse.MessageContext;
+import org.apache.synapse.config.SynapseConfiguration;
 import org.apache.synapse.core.SynapseEnvironment;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
 import org.apache.synapse.rest.RESTConstants;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.wso2.carbon.apimgt.gateway.APIMgtGatewayConstants;
 import org.wso2.carbon.apimgt.gateway.handlers.security.oauth.OAuthAuthenticator;
 import org.wso2.carbon.apimgt.impl.APIConstants;
 import org.wso2.carbon.apimgt.impl.APIManagerConfigurationService;
+import org.wso2.carbon.caching.impl.Util;
 import org.wso2.carbon.metrics.manager.Timer;
 
 import java.util.TreeMap;
@@ -37,7 +44,8 @@ import java.util.TreeMap;
 /*
 * Test class for APIAuthenticationhandler
 * */
-
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Util.class)
 public class APIAuthenticationHandlerTestCase {
 
     /*
@@ -153,7 +161,12 @@ public class APIAuthenticationHandlerTestCase {
         APIAuthenticationHandler apiAuthenticationHandler = new APIAuthenticationHandler();
         apiAuthenticationHandler.destroy();
         SynapseEnvironment synapseEnvironment = Mockito.mock(SynapseEnvironment.class);
-
+        SynapseConfiguration synapseConfiguration = Mockito.mock(SynapseConfiguration.class);
+        AxisConfiguration axisConfiguration = Mockito.mock(AxisConfiguration.class);
+        Mockito.when(synapseEnvironment.getSynapseConfiguration()).thenReturn(synapseConfiguration);
+        Mockito.when(synapseConfiguration.getAxisConfiguration()).thenReturn(axisConfiguration);
+        PowerMockito.mockStatic(Util.class);
+        PowerMockito.when(Util.getTenantDomain()).thenReturn("carbon.super");
         apiAuthenticationHandler.init(synapseEnvironment);
         apiAuthenticationHandler.destroy();
     }
