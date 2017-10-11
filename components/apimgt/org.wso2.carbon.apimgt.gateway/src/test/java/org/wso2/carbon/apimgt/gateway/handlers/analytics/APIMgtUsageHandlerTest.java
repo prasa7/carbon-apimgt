@@ -26,7 +26,6 @@ import org.wso2.carbon.apimgt.gateway.handlers.security.AuthenticationContext;
 import org.wso2.carbon.apimgt.impl.APIConstants;
 import org.wso2.carbon.apimgt.impl.APIManagerAnalyticsConfiguration;
 import org.wso2.carbon.apimgt.usage.publisher.APIMgtUsageDataPublisher;
-import sun.security.krb5.internal.AuthContext;
 
 import java.util.HashMap;
 import java.util.Map;
