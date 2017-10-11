@@ -65,7 +65,7 @@ public class APIConfigMediaTypeHandlerTest {
         BDDMockito.when(cacheManager.getCache(Mockito.anyString())).thenReturn(cache);
 
         Handler handler = new APIConfigMediaTypeHandler();
-        RequestContext requestContext =Mockito.mock(RequestContext.class);
+        RequestContext requestContext = Mockito.mock(RequestContext.class);
         handler.put(requestContext);
     }
 }
