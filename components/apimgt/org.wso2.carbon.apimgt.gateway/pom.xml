@@ -197,6 +197,14 @@
                 <artifactId>slf4j</artifactId>
             <version>1.5.10.wso2v1</version>
         </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+        </dependency>
 
     </dependencies>
 
