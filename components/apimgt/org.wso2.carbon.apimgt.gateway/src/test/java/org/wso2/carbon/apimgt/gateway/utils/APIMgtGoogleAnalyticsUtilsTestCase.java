@@ -114,7 +114,7 @@ public class APIMgtGoogleAnalyticsUtilsTestCase {
             PowerMockito.mockStatic(GoogleAnalyticsDataPublisher.class);
             PowerMockito.when(GoogleAnalyticsDataPublisher.buildPayloadString(data)).thenReturn("payload");
         } catch (RegistryException e) {
-            e.printStackTrace();
+            fail(e.getMessage());
         }
         apiMgtGoogleAnalyticsUtils.publishGATrackingData(dataBuilder, "ishara", "Autorization ishara");
 

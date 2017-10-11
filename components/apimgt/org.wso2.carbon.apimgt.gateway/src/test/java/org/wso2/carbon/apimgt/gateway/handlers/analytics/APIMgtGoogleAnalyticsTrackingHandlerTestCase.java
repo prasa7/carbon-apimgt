@@ -36,6 +36,8 @@ import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.util.TreeMap;
 
+import static junit.framework.Assert.fail;
+
 /**
  * Test class for APIMgtGoogleAnalyticsTrackingHandler
  */
@@ -79,7 +81,7 @@ public class APIMgtGoogleAnalyticsTrackingHandlerTestCase {
             Assert.assertTrue(apiMgtGoogleAnalyticsTrackingHandler.handleRequest(msgCtx));
 
         } catch (XMLStreamException e) {
-            e.printStackTrace();
+            fail(e.getMessage());
         }
 
 
@@ -104,7 +106,7 @@ public class APIMgtGoogleAnalyticsTrackingHandlerTestCase {
             Assert.assertTrue(apiMgtGoogleAnalyticsTrackingHandler.handleRequest(msgCtx));
 
         } catch (XMLStreamException e) {
-            e.printStackTrace();
+            fail(e.getMessage());
         }
         Mockito.when(entryvalue.getFirstChildWithName(new QName(
                 APIMgtUsagePublisherConstants.API_GOOGLE_ANALYTICS_TRACKING_ENABLED))).thenReturn(entryvalue);
