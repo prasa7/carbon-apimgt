@@ -138,6 +138,7 @@ import java.util.regex.Pattern;
  */
 public class ApiMgtDAO {
     private static final Log log = LogFactory.getLog(ApiMgtDAO.class);
+    private static ApiMgtDAO INSTANCE = null;
 
     private boolean forceCaseInsensitiveComparisons = false;
 
@@ -181,9 +182,9 @@ public class ApiMgtDAO {
      * The reason for writing it like this is to guarantee that only one instance would be created.
      * ref: Initialization-on-demand holder idiom
      */
-    private static class ApiMgtDAOHolder {
-        private static final ApiMgtDAO INSTANCE = new ApiMgtDAO();
-    }
+//    private static class ApiMgtDAOHolder {
+//        private static final ApiMgtDAO INSTANCE = new ApiMgtDAO();
+//    }
 
     /**
      * Method to get the instance of the ApiMgtDAO.
@@ -191,7 +192,11 @@ public class ApiMgtDAO {
      * @return {@link ApiMgtDAO} instance
      */
     public static ApiMgtDAO getInstance() {
-        return ApiMgtDAOHolder.INSTANCE;
+        if (INSTANCE == null) {
+            INSTANCE = new ApiMgtDAO();
+        }
+
+        return INSTANCE;
     }
 
     /**

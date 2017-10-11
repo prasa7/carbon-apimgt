@@ -20,17 +20,12 @@ package org.wso2.carbon.apimgt.gateway.handlers.analytics;
 import org.wso2.carbon.apimgt.impl.APIManagerAnalyticsConfiguration;
 import org.wso2.carbon.apimgt.usage.publisher.APIMgtUsageDataPublisher;
 
-public class APIMgtUsageHandlerWrapper extends APIMgtUsageHandler {
-    private APIManagerAnalyticsConfiguration apiManagerAnalyticsConfiguration;
+public class APIMgtThrottleUsageHandlerWrapper extends APIMgtThrottleUsageHandler {
 
-    public APIMgtUsageHandlerWrapper(APIManagerAnalyticsConfiguration apiManagerAnalyticsConfiguration,
-                                     APIMgtUsageDataPublisher apiMgtUsageDataPublisher) {
+    public APIMgtThrottleUsageHandlerWrapper(APIMgtUsageDataPublisher apiMgtUsageDataPublisher, boolean enabled, boolean
+            skipEventReceiverConnection, APIManagerAnalyticsConfiguration apiManagerAnalyticsConfiguration) {
+        this.enabled = enabled;
+        this.skipEventReceiverConnection = skipEventReceiverConnection;
         this.publisher = apiMgtUsageDataPublisher;
-        this.apiManagerAnalyticsConfiguration = apiManagerAnalyticsConfiguration;
-    }
-
-    @Override
-    protected APIManagerAnalyticsConfiguration getApiManagerAnalyticsConfiguration() {
-        return apiManagerAnalyticsConfiguration;
     }
 }
