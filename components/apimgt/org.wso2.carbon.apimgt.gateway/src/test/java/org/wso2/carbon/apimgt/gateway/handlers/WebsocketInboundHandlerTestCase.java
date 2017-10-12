@@ -150,6 +150,6 @@ public class WebsocketInboundHandlerTestCase {
 
     @Test
     public void testDoThrottle() {
-
+     //todo
     }
 }
