@@ -305,7 +305,7 @@
                     <excludes>
                        <exclude>*</exclude>
                     </excludes>
-		</configuration>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
