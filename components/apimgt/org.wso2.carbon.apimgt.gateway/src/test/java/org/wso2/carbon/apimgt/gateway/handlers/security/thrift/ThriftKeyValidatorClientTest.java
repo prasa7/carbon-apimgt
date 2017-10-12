@@ -182,10 +182,8 @@ public class ThriftKeyValidatorClientTest {
         uriTemplate.setThrottlingTier("Unlimited");
         uriTemplate.setConditionGroups(conditionGroupDTOS);
 
-
         List<org.wso2.carbon.apimgt.impl.generated.thrift.URITemplate> uriTemplates = new ArrayList<>();
         uriTemplates.add(uriTemplate);
-
 
         PowerMockito.when(TSSLTransportFactory.getClientSocket(Mockito.anyString(), Mockito.anyInt(), Mockito.anyInt
                 (), (TSSLTransportFactory.TSSLTransportParameters) Mockito.anyObject())).thenReturn(tTransport);
@@ -217,6 +215,4 @@ public class ThriftKeyValidatorClientTest {
             Assert.assertTrue(e.getMessage().contains(errorMessage));
         }
     }
-
-
 }

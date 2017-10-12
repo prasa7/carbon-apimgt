@@ -247,8 +247,8 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/AuthenticationException.class</exclude>
-                        <exclude>**/AuthenticatorService.class</exclude>
+                        <exclude>**/AuthenticationException*</exclude>
+                        <exclude>**/AuthenticatorService*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
