@@ -58,7 +58,8 @@ import java.util.List;
 public class SAMLGroupIDExtractorImplTest {
 
     @Test
-    public void getGroupingIdentifiersTestCase() throws ParserConfigurationException, IOException, SAXException, UnmarshallingException, UserStoreException {
+    public void getGroupingIdentifiersTestCase() throws ParserConfigurationException, IOException, SAXException,
+            UnmarshallingException, UserStoreException {
 
         SAMLGroupIDExtractorImpl samlGroupIDExtractor = new SMALGroupIDExtractorImplWrapper();
         DocumentBuilderFactory documentBuilderFactory = Mockito.mock(DocumentBuilderFactory.class);
@@ -72,7 +73,8 @@ public class SAMLGroupIDExtractorImplTest {
 
         Mockito.when(DocumentBuilderFactory.newInstance()).thenReturn(documentBuilderFactory);
         Mockito.when(documentBuilderFactory.newDocumentBuilder()).thenReturn(documentBuilder);
-        Mockito.when(documentBuilder.parse(samlGroupIDExtractor.getByteArrayInputStream("test"))).thenReturn(document);
+        Mockito.when(documentBuilder.parse(samlGroupIDExtractor.getByteArrayInputStream("test"))).
+                thenReturn(document);
         Mockito.when(document.getDocumentElement()).thenReturn(element);
 
         PowerMockito.mockStatic(Configuration.class);
@@ -107,6 +109,7 @@ public class SAMLGroupIDExtractorImplTest {
                 getTenantAwareUsername("user"), "http://wso2.org/claims/organization", null)).
                 thenReturn("organization");
 
-       Assert.assertEquals("carbon.super/organization",samlGroupIDExtractor.getGroupingIdentifiers("test"));
+       Assert.assertEquals("carbon.super/organization",samlGroupIDExtractor.
+               getGroupingIdentifiers("test"));
     }
 }
