@@ -29,7 +29,6 @@ import org.apache.http.util.EntityUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -38,8 +37,13 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
 import org.wso2.carbon.apimgt.api.model.APIStore;
+import org.wso2.carbon.apimgt.impl.APIConstants;
+import org.wso2.carbon.apimgt.impl.APIManagerConfiguration;
+import org.wso2.carbon.apimgt.impl.APIManagerConfigurationService;
 import org.wso2.carbon.apimgt.impl.internal.ServiceReferenceHolder;
 import org.wso2.carbon.base.ServerConfiguration;
+import org.wso2.carbon.user.core.service.RealmService;
+import org.wso2.carbon.user.core.tenant.TenantManager;
 import org.wso2.carbon.utils.CarbonUtils;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
@@ -60,6 +64,7 @@ public class WSO2APIPublisherTestCase {
         store.setDisplayName("Sample");
         try {
             wso2APIPublisher.publishToStore(api, store);
+            Assert.fail("APIManagement exception not thrown for error scenario");
         } catch (APIManagementException e) {
             String msg = "External APIStore endpoint URL or credentials are not defined. " +
                     "Cannot proceed with publishing API to the APIStore - " + store.getDisplayName();
@@ -89,6 +94,7 @@ public class WSO2APIPublisherTestCase {
 
         try {
             wso2APIPublisher.publishToStore(api, store);
+            Assert.fail("APIManagement exception not thrown for error scenario");
         } catch (APIManagementException e) {
             String errorMsg = "\"Login failed. Please recheck the username and password and try again..\"";
             String msg = " Authentication with external APIStore - " + store.getDisplayName()
@@ -149,6 +155,18 @@ public class WSO2APIPublisherTestCase {
         APIIdentifier identifier = new APIIdentifier("P1_API1_v1.0.0");
         API api = new API(identifier);
         api.setThumbnailUrl("/thumbnail");
+        api.setContext("/store");
+        api.setBusinessOwner("user");
+        api.setBusinessOwnerEmail("user@gmail.com");
+        api.setTechnicalOwner("admin");
+        api.setTechnicalOwnerEmail("admin@gmail.com");
+        api.setVisibility("Public");
+        api.setVisibleRoles("admin");
+        api.setEndpointSecured(true);
+        api.setEndpointAuthDigest(true);
+        api.setEndpointUTUsername("admin");
+        api.setEndpointUTPassword("admin");
+
         APIStore store = new APIStore();
         store.setDisplayName("Sample");
         store.setUsername("admin");
@@ -185,9 +203,20 @@ public class WSO2APIPublisherTestCase {
         PowerMockito.whenNew(File.class).withAnyArguments().thenReturn(file);
         PowerMockito.when(file.exists()).thenReturn(true);
 
-        FileUtils fileUtils = Mockito.mock(FileUtils.class);
         PowerMockito.mockStatic(FileUtils.class);
-        PowerMockito.doNothing().when(fileUtils).copyURLToFile(Matchers.any(URL.class), Matchers.any(File.class));
+        PowerMockito.doNothing().when(FileUtils.class);
+
+        RealmService realmService = Mockito.mock(RealmService.class);
+        Mockito.when(serviceReferenceHolder.getRealmService()).thenReturn(realmService);
+        TenantManager tenantManager = Mockito.mock(TenantManager.class);
+        Mockito.when(realmService.getTenantManager()).thenReturn(tenantManager);
+        Mockito.when(tenantManager.getTenantId(Mockito.anyString())).thenReturn(1234);
+
+        APIManagerConfigurationService apiManagerConfigurationService = Mockito.mock(APIManagerConfigurationService.class);
+        Mockito.when(serviceReferenceHolder.getAPIManagerConfigurationService()).thenReturn(apiManagerConfigurationService);
+        APIManagerConfiguration apiManagerConfiguration = Mockito.mock(APIManagerConfiguration.class);
+        Mockito.when(apiManagerConfigurationService.getAPIManagerConfiguration()).thenReturn(apiManagerConfiguration);
+        Mockito.when(apiManagerConfiguration.getFirstProperty(APIConstants.EXTERNAL_API_STORES + "." + APIConstants.EXTERNAL_API_STORES_STORE_URL)).thenReturn("http://localhost:9292/redirect");
 
         boolean published = wso2APIPublisher.publishToStore(api, store);
         Assert.assertTrue(published);
@@ -202,6 +231,7 @@ public class WSO2APIPublisherTestCase {
         store.setDisplayName("Sample");
         try {
             wso2APIPublisher.deleteFromStore(apiIdentifier, store);
+            Assert.fail("APIManagement exception not thrown for error scenario");
         } catch (APIManagementException e) {
             String msg = "External APIStore endpoint URL or credentials are not defined. " +
                     "Cannot proceed with deleting API from the APIStore - " + store.getDisplayName();
@@ -222,6 +252,7 @@ public class WSO2APIPublisherTestCase {
         store.setDisplayName("Sample");
         try {
             wso2APIPublisher.updateToStore(api, store);
+            Assert.fail("APIManagement exception not thrown for error scenario");
         } catch (APIManagementException e) {
             String msg = "External APIStore endpoint URL or credentials are not defined.Cannot proceed with " +
                     "publishing API to the APIStore - " + store.getDisplayName();
@@ -242,6 +273,7 @@ public class WSO2APIPublisherTestCase {
         store.setDisplayName("Sample");
         try {
             wso2APIPublisher.isAPIAvailable(api, store);
+            Assert.fail("APIManagement exception not thrown for error scenario");
         } catch (APIManagementException e) {
             String msg = "External APIStore endpoint URL or credentials are not defined. " +
                     "Cannot proceed with checking API availability from the APIStore - "
@@ -264,6 +296,7 @@ public class WSO2APIPublisherTestCase {
         String version = "v1.0.0";
         try {
             wso2APIPublisher.createVersionedAPIToStore(api, store, version);
+            Assert.fail("APIManagement exception not thrown for error scenario");
         } catch (APIManagementException e) {
             String msg = "External APIStore endpoint URL or credentials are not defined. Cannot proceed with " +
                     "publishing API to the APIStore - " + store.getDisplayName();
