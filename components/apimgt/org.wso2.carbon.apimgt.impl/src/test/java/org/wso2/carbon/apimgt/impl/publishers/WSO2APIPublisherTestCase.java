@@ -144,7 +144,7 @@ public class WSO2APIPublisherTestCase {
         wso2APIPublisher.publishToStore(api, store);
     }
 
-    /*@Test
+    @Test
     public void testPublishToStore() throws Exception {
         //Happy path
         HttpClient defaultHttpClient = Mockito.mock(HttpClient.class);
@@ -205,6 +205,7 @@ public class WSO2APIPublisherTestCase {
 
         PowerMockito.mockStatic(FileUtils.class);
         PowerMockito.doNothing().when(FileUtils.class);
+        FileUtils.copyURLToFile((URL)Mockito.anyObject(),(File) Mockito.anyObject());
 
         RealmService realmService = Mockito.mock(RealmService.class);
         Mockito.when(serviceReferenceHolder.getRealmService()).thenReturn(realmService);
@@ -220,7 +221,7 @@ public class WSO2APIPublisherTestCase {
 
         boolean published = wso2APIPublisher.publishToStore(api, store);
         Assert.assertTrue(published);
-    }*/
+    }
 
     @Test
     public void testDeleteFromStoreWithNullStoreArguments() throws Exception {
