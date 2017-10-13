@@ -30,7 +30,10 @@ import org.powermock.core.classloader.annotations.SuppressStaticInitializationFo
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.WorkflowStatus;
+
+import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
+import org.wso2.carbon.apimgt.api.model.Application;
 import org.wso2.carbon.apimgt.api.model.AccessTokenInfo;
 import org.wso2.carbon.apimgt.api.model.AccessTokenRequest;
 import org.wso2.carbon.apimgt.api.model.KeyManager;
@@ -40,10 +43,14 @@ import org.wso2.carbon.apimgt.api.model.Tier;
 import org.wso2.carbon.apimgt.impl.dao.ApiMgtDAO;
 import org.wso2.carbon.apimgt.impl.dto.WorkflowDTO;
 import org.wso2.carbon.apimgt.impl.factory.KeyManagerHolder;
+import org.wso2.carbon.apimgt.impl.utils.APINameComparator;
 import org.wso2.carbon.apimgt.impl.utils.APIUtil;
 import org.wso2.carbon.apimgt.impl.utils.ApplicationUtils;
 import org.wso2.carbon.apimgt.impl.workflow.WorkflowExecutorFactory;
 import org.wso2.carbon.governance.api.common.dataobjects.GovernanceArtifact;
+import org.wso2.carbon.governance.api.exception.GovernanceException;
+import org.wso2.carbon.governance.api.generic.GenericArtifactManager;
+import org.wso2.carbon.governance.api.generic.dataobjects.GenericArtifact;
 import org.wso2.carbon.governance.api.generic.dataobjects.GenericArtifactImpl;
 import org.wso2.carbon.governance.api.util.GovernanceUtils;
 import org.wso2.carbon.registry.core.Registry;
@@ -53,9 +60,13 @@ import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
 import javax.xml.namespace.QName;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertFalse;
@@ -339,5 +350,42 @@ public class APIConsumerImplTest {
         when(subscribedAPI.getTier()).thenReturn(tier);
         when(tier.getName()).thenReturn("tier");
         assertNotNull(apiConsumer.getSubscribedAPIs(subscriber, "testID"));
+    }
+
+    @Test
+    public void getAllPublishedAPIsTest() throws APIManagementException, GovernanceException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        PowerMockito.mockStatic(APIUtil.class);
+        APINameComparator apiNameComparator = Mockito.mock(APINameComparator.class);
+        SortedSet<API> apiSortedSet = new TreeSet<API>(apiNameComparator);
+        GenericArtifactManager artifactManager = Mockito.mock(GenericArtifactManager.class);
+        PowerMockito.when(APIUtil.getArtifactManager(apiConsumer.registry, APIConstants.API_KEY)).
+                thenReturn(artifactManager);
+        GenericArtifact artifact = Mockito.mock(GenericArtifact.class);
+        GenericArtifact[] genericArtifacts = new GenericArtifact[]{artifact};
+        APIIdentifier apiId1 = new APIIdentifier("admin", "API1", "1.0.0");
+        API api = new API(apiId1);
+
+        Mockito.when(artifactManager.getAllGenericArtifacts()).thenReturn(genericArtifacts);
+        Mockito.when(artifact.getAttribute(APIConstants.API_OVERVIEW_STATUS)).thenReturn("PUBLISHED");
+        Mockito.when(APIUtil.getAPI(artifact)).thenReturn(api);
+
+        Map<String, API> latestPublishedAPIs = new HashMap<String, API>();
+        latestPublishedAPIs.put("user:key", api);
+        apiSortedSet.addAll(latestPublishedAPIs.values());
+        assertNotNull(apiConsumer.getAllPublishedAPIs("testDomain"));
+    }
+
+    @Test
+    public void addApplicationTest() throws APIManagementException, UserStoreException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        Application application = Mockito.mock(Application.class);
+        PowerMockito.mockStatic(APIUtil.class);
+        PowerMockito.when(APIUtil.isApplicationExist("userID", "app", "1")).
+                thenReturn(false);
+        Mockito.when(apiMgtDAO.addApplication(application, "userID")).thenReturn(1);
+        assertEquals(1, apiConsumer.addApplication(application, "userID"));
     }
 }
