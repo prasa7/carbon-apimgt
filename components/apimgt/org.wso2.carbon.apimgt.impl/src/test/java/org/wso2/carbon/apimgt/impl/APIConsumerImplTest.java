@@ -30,11 +30,7 @@ import org.powermock.core.classloader.annotations.SuppressStaticInitializationFo
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.WorkflowStatus;
-import org.wso2.carbon.apimgt.api.model.APIIdentifier;
-import org.wso2.carbon.apimgt.api.model.AccessTokenInfo;
-import org.wso2.carbon.apimgt.api.model.AccessTokenRequest;
-import org.wso2.carbon.apimgt.api.model.KeyManager;
-import org.wso2.carbon.apimgt.api.model.Subscriber;
+import org.wso2.carbon.apimgt.api.model.*;
 import org.wso2.carbon.apimgt.impl.dao.ApiMgtDAO;
 import org.wso2.carbon.apimgt.impl.dto.WorkflowDTO;
 import org.wso2.carbon.apimgt.impl.factory.KeyManagerHolder;
@@ -50,16 +46,13 @@ import org.wso2.carbon.user.api.UserStoreException;
 import org.wso2.carbon.utils.multitenancy.MultitenantConstants;
 
 import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.intThat;
 import static org.mockito.Mockito.when;
 
 
@@ -285,5 +278,57 @@ public class APIConsumerImplTest {
         } catch (APIManagementException e) {
             assertTrue(true);
         }
+    }
+
+    @Test
+    public void getSubscriptionCountTest() throws APIManagementException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        Subscriber subscriber = new Subscriber("Subscriber");
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        when(apiMgtDAO.getSubscriptionCount((Subscriber) Mockito.anyObject(), Mockito.anyString(),
+                Mockito.anyString())).thenReturn(10);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        assertEquals((Integer) 10, apiConsumer.getSubscriptionCount(subscriber, "testApplication",
+                "testId"));
+    }
+
+    @Test
+    public void isSubscribedTest() throws APIManagementException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        APIIdentifier apiIdentifier = new APIIdentifier("admin", "TestAPI", "1.0.0");
+        Mockito.when(apiMgtDAO.isSubscribed(apiIdentifier, "testID")).thenReturn(true);
+        assertEquals(true, apiConsumer.isSubscribed(apiIdentifier, "testID"));
+
+        // Error Path
+        Mockito.when(apiMgtDAO.isSubscribed(apiIdentifier, "testID")).thenThrow(APIManagementException.class);
+        try {
+            apiConsumer.isSubscribed(apiIdentifier, "testID");
+            assertTrue(false);
+        } catch (APIManagementException e) {
+            assertTrue(true);
+        }
+    }
+
+    @Test
+    public void getSubscribedAPIs() throws APIManagementException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        Set<SubscribedAPI> originalSubscribedAPIs = new HashSet<SubscribedAPI>();
+
+        SubscribedAPI subscribedAPI = Mockito.mock(SubscribedAPI.class);
+        originalSubscribedAPIs.add(subscribedAPI);
+        Subscriber subscriber = new Subscriber("Subscriber");
+        PowerMockito.mockStatic(APIUtil.class);
+
+        Tier tier = Mockito.mock(Tier.class);
+
+        when(apiMgtDAO.getSubscribedAPIs(subscriber, "testID")).thenReturn(originalSubscribedAPIs);
+        when(subscribedAPI.getTier()).thenReturn(tier);
+        when(tier.getName()).thenReturn("tier");
+        assertNotNull(apiConsumer.getSubscribedAPIs(subscriber, "testID"));
     }
 }
