@@ -17,35 +17,26 @@ import java.util.zip.ZipInputStream;
 public class TenantManagerHostObjectTest {
     private TenantManagerHostObject tmhostObject = new TenantManagerHostObject();
     @Test
-    public void getStoreTenantThemesPath() throws Exception {
+    public void testGetStoreTenantThemesPath() throws Exception {
         Assert.assertEquals(TenantManagerHostObject.getStoreTenantThemesPath(), "repository/deployment/server/" +
                 "jaggeryapps/store/site/tenant_themes/");
     }
 
     @Test
-    public void getClassName() throws Exception {
+    public void testGetClassName() throws Exception {
         Assert.assertEquals(tmhostObject.getClassName(), "APIManager");
     }
 
     @Test
-    public void jsConstructor() throws Exception {
-        //TenantManagerHostObject tmHostObject = PowerMockito.
-    }
-
-    @Test
-    public void jsFunction_addTenantTheme() throws Exception {
+    public void testJsFunction_addTenantTheme() throws Exception {
         FileHostObject fileHostObject = Mockito.mock(FileHostObject.class);
         FileInputStream inputStream = Mockito.mock(FileInputStream.class);
         ZipInputStream zipInputStream = Mockito.mock(ZipInputStream.class);
         Object args[] = {fileHostObject, "b"};
-
         Mockito.when(fileHostObject.getInputStream()).thenReturn(inputStream);
-
         PowerMockito.whenNew(ZipInputStream.class).withAnyArguments().thenReturn(zipInputStream);
-        tmhostObject.jsFunction_addTenantTheme(null, null, args, null );
 
-
-
+        Assert.assertTrue(tmhostObject.jsFunction_addTenantTheme(null, null, args, null ));
     }
 
 }

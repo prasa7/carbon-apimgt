@@ -24,12 +24,12 @@ import static org.junit.Assert.*;
 public class MutualAuthHostObjectTest {
     MutualAuthHostObject mutualAuthHostObject = new MutualAuthHostObject();
     @Test
-    public void getClassName() throws Exception {
+    public void testGetClassName() throws Exception {
         Assert.assertTrue("MutualAuthHostObject".equals(mutualAuthHostObject.getClassName()));
     }
 
     @Test(expected = ScriptException.class)
-    public void jsFunction_validateUserNameHeader() throws Exception {
+    public void testJsFunction_validateUserNameHeader() throws Exception {
         Object args[] = {"user@test.com"};
 
         PowerMockito.mockStatic(ServiceReferenceHolder.class);
@@ -55,12 +55,6 @@ public class MutualAuthHostObjectTest {
         //invalid arguments
         Object argsInvalid1[] = {};
         mutualAuthHostObject.jsFunction_validateUserNameHeader(null, null, argsInvalid1, null);
-
-        //exception path
-        /*Mockito.when(serviceReferenceHolder.getInstance()).thenThrow(new Exception());
-        mutualAuthHostObject.jsFunction_validateUserNameHeader(null, null, args, null);
-*/
-
     }
 
 }
