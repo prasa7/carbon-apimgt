@@ -37,6 +37,7 @@ import org.wso2.carbon.apimgt.api.model.Application;
 import org.wso2.carbon.apimgt.api.model.AccessTokenInfo;
 import org.wso2.carbon.apimgt.api.model.AccessTokenRequest;
 import org.wso2.carbon.apimgt.api.model.KeyManager;
+import org.wso2.carbon.apimgt.api.model.Scope;
 import org.wso2.carbon.apimgt.api.model.Subscriber;
 import org.wso2.carbon.apimgt.api.model.SubscribedAPI;
 import org.wso2.carbon.apimgt.api.model.Tier;
@@ -387,5 +388,38 @@ public class APIConsumerImplTest {
                 thenReturn(false);
         Mockito.when(apiMgtDAO.addApplication(application, "userID")).thenReturn(1);
         assertEquals(1, apiConsumer.addApplication(application, "userID"));
+    }
+
+    @Test
+    public void getScopesBySubscribedAPIsTest() throws APIManagementException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        List<APIIdentifier> identifiers = new ArrayList<APIIdentifier>();
+        Set<Scope> scopes = new HashSet<Scope>();
+        when(apiMgtDAO.getScopesBySubscribedAPIs(identifiers)).thenReturn(scopes);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        assertEquals(scopes, apiConsumer.getScopesBySubscribedAPIs(identifiers));
+    }
+
+    @Test
+    public void getScopesByTokenTest() throws APIManagementException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        when(apiMgtDAO.getScopesByToken("testToken")).thenReturn("valid");
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        assertEquals("valid", apiConsumer.getScopesByToken("testToken"));
+    }
+
+    @Test
+    public void getScopesByScopeKeysTest() throws APIManagementException {
+        APIConsumerImpl apiConsumer = new APIConsumerImplWrapper();
+        ApiMgtDAO apiMgtDAO = Mockito.mock(ApiMgtDAO.class);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        Set<Scope> scopes = new HashSet<Scope>();
+        when(apiMgtDAO.getScopesByScopeKeys("testKey", 1234)).thenReturn(scopes);
+        apiConsumer.apiMgtDAO = apiMgtDAO;
+        assertEquals(scopes, apiConsumer.getScopesByScopeKeys("testKey", 1234));
     }
 }
