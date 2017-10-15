@@ -551,6 +551,7 @@ public class ApiMgtDAO {
      * authorized.
      * @throws APIManagementException Error when accessing the database or registry.
      */
+    @Deprecated
     public APIKeyValidationInfoDTO validateKey(String context, String version, String accessToken,
                                                String requiredAuthenticationLevel) throws APIManagementException {
         Connection conn = null;

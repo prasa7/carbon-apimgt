@@ -31,6 +31,7 @@ import java.util.ArrayList;
  * interacts with the API Manager database to validate and authenticate API
  * keys.
  */
+@Deprecated
 public class JDBCAPIKeyDataStore implements APIKeyDataStore {
 
     private ApiMgtDAO dao;
