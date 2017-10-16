@@ -11459,6 +11459,7 @@ public class ApiMgtDAO {
                     // condition id list for all throttling tiers associated with this API.
                     infoDTO.setThrottlingDataList(list);
                 }
+                infoDTO.setAuthorized(true);
                 return infoDTO;
             }
             infoDTO.setAuthorized(false);
