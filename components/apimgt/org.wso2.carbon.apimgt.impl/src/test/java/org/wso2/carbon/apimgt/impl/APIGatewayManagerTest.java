@@ -32,7 +32,6 @@ import org.wso2.carbon.apimgt.api.APIManagementException;
 import org.wso2.carbon.apimgt.api.model.API;
 import org.wso2.carbon.apimgt.api.model.APIIdentifier;
 import org.wso2.carbon.apimgt.gateway.dto.stub.APIData;
-import org.wso2.carbon.apimgt.gateway.dto.stub.ResourceData;
 import org.wso2.carbon.apimgt.impl.dto.Environment;
 import org.wso2.carbon.apimgt.impl.internal.ServiceReferenceHolder;
 import org.wso2.carbon.apimgt.impl.template.APITemplateBuilder;
@@ -61,7 +60,6 @@ public class APIGatewayManagerTest {
     private APIData apiData;
     private APIData defaultAPIdata;
     private APIIdentifier apiIdentifier;
-    private APITemplateBuilder apiTemplateBuilder;
     private String apiName = "weatherAPI";
     private String provider = "admin";
     private String version = "v1";
@@ -94,7 +92,7 @@ public class APIGatewayManagerTest {
                     "      \"config\":null\n" +
                     "   }\n" +
                     "}";
-    private   String sandBoxEndpointConfig =
+    private String sandBoxEndpointConfig =
             "{\n" +
                     "   \"sandbox_endpoints\":{\n" +
                     "      \"url\":\"https://localhost:9443/am/sample/pizzashack/v1/api/\",\n" +
@@ -111,7 +109,6 @@ public class APIGatewayManagerTest {
         defaultAPIdata = Mockito.mock(APIData.class);
         genericArtifact = Mockito.mock(GenericArtifact.class);
         apiGatewayAdminClient = Mockito.mock(APIGatewayAdminClient.class);
-        apiTemplateBuilder = Mockito.mock(APITemplateBuilder.class);
         APIManagerConfigurationService apiManagerConfigurationService = new APIManagerConfigurationServiceImpl(config);
         ServiceReferenceHolder.getInstance().setAPIManagerConfigurationService(apiManagerConfigurationService);
         PowerMockito.mockStatic(PrivilegedCarbonContext.class);
@@ -194,6 +191,7 @@ public class APIGatewayManagerTest {
         Mockito.when(apiGatewayAdminClient.getDefaultApi(tenantDomain, apiIdentifier)).thenReturn(defaultAPIdata);
         Mockito.when(apiGatewayAdminClient.isExistingSequence(Mockito.anyString(), Mockito.anyString())).thenReturn
                 (true);
+
         //Set tenant domain = null, so that 'carbon.super' tenant will be loaded
         Map<String, String> failedEnvironmentsMap = gatewayManager.removeFromGateway(api, null);
         Assert.assertEquals(failedEnvironmentsMap.size(), 0);
@@ -243,10 +241,8 @@ public class APIGatewayManagerTest {
 
     @Test
     public void testCreatingNewWebSocketAPIWithProductionEndpoint() throws GovernanceException, AxisFault {
-
         API api = new API(apiIdentifier);
         api.setType("WS");
-
         Mockito.when(genericArtifact.getAttribute(APIConstants.API_OVERVIEW_ENVIRONMENTS)).thenReturn
                 (prodEnvironmentName);
         Mockito.when(genericArtifact.getAttribute(APIConstants.API_OVERVIEW_CONTEXT)).thenReturn(apiContext);
@@ -259,10 +255,8 @@ public class APIGatewayManagerTest {
 
     @Test
     public void testCreatingNewWebSocketAPIWithSandBoxEndpoint() throws GovernanceException, AxisFault {
-
         API api = new API(apiIdentifier);
         api.setType("WS");
-
         Mockito.when(genericArtifact.getAttribute(APIConstants.API_OVERVIEW_ENVIRONMENTS)).thenReturn
                 (sandBoxEnvironmentName);
         Mockito.when(genericArtifact.getAttribute(APIConstants.API_OVERVIEW_CONTEXT)).thenReturn(apiContext);
@@ -275,7 +269,6 @@ public class APIGatewayManagerTest {
 
     @Test
     public void testExceptionsWhileCreatingWebSocketAPI() throws Exception {
-
         API api = new API(apiIdentifier);
         api.setType("WS");
 
@@ -359,7 +352,6 @@ public class APIGatewayManagerTest {
 
     @Test
     public void testFailureWhileCheckingAPIIsPublished() throws AxisFault {
-        //Test already published API's availability in gateway
         API api = new API(apiIdentifier);
         Mockito.when(apiGatewayAdminClient.getApi(tenantDomain, apiIdentifier)).thenThrow(new AxisFault("Error while " +
                 "checking whether the API is published"));
@@ -370,5 +362,4 @@ public class APIGatewayManagerTest {
             Assert.fail("Unexpected APIManagementException occurred while checking, whether the API is published");
         }
     }
-
 }
