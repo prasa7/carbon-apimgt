@@ -30,8 +30,7 @@ public class APISubscriptionInfoDTO implements Serializable {
     private String apiName;
     private String version;
     private String context;
-
-    private String subscriptionTier;
+    private SubscriptionTierDTO subscriptionTier;
 
     private Set<ResourceInfoDTO> resources;
 
@@ -75,11 +74,11 @@ public class APISubscriptionInfoDTO implements Serializable {
         this.resources = resources;
     }
 
-    public String getSubscriptionTier() {
+    public SubscriptionTierDTO getSubscriptionTier() {
         return subscriptionTier;
     }
 
-    public void setSubscriptionTier(String subscriptionTier) {
+    public void setSubscriptionTier(SubscriptionTierDTO subscriptionTier) {
         this.subscriptionTier = subscriptionTier;
     }
 

@@ -27,7 +27,7 @@ public class SubscribedApiDTO implements Serializable {
     private String version;
     private String publisher;
 
-    private String subscriptionTier;
+    private SubscriptionTierDTO subscriptionTier;
     private String subscriberTenantDomain;
 
     public String getName() {
@@ -62,11 +62,11 @@ public class SubscribedApiDTO implements Serializable {
         this.publisher = publisher;
     }
 
-    public String getSubscriptionTier() {
+    public SubscriptionTierDTO getSubscriptionTier() {
         return subscriptionTier;
     }
 
-    public void setSubscriptionTier(String subscriptionTier) {
+    public void setSubscriptionTier(SubscriptionTierDTO subscriptionTier) {
         this.subscriptionTier = subscriptionTier;
     }
 

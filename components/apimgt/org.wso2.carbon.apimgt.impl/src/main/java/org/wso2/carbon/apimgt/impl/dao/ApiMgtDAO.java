@@ -77,6 +77,7 @@ import org.wso2.carbon.apimgt.impl.dto.APIKeyInfoDTO;
 import org.wso2.carbon.apimgt.impl.dto.APIKeyValidationInfoDTO;
 import org.wso2.carbon.apimgt.impl.dto.APISubscriptionInfoDTO;
 import org.wso2.carbon.apimgt.impl.dto.ApplicationRegistrationWorkflowDTO;
+import org.wso2.carbon.apimgt.impl.dto.SubscriptionTierDTO;
 import org.wso2.carbon.apimgt.impl.dto.SubscriptionWorkflowDTO;
 import org.wso2.carbon.apimgt.impl.dto.TierPermissionDTO;
 import org.wso2.carbon.apimgt.impl.dto.WorkflowDTO;
@@ -11395,7 +11396,10 @@ public class ApiMgtDAO {
                 infoDTO.setApiName(rs.getString("API_NAME"));
                 infoDTO.setContext(rs.getString("API_CONTEXT"));
                 infoDTO.setVersion(rs.getString("API_VERSION"));
-                infoDTO.setSubscriptionTier(rs.getString("SP_TIER_ID"));
+                SubscriptionTierDTO subscriptionTierDTO = new SubscriptionTierDTO();
+                subscriptionTierDTO.setTierName(rs.getString("SP_TIER_ID"));
+                subscriptionTierDTO.setStopOnQuotaReach(rs.getBoolean("STOP_ON_QUOTA_REACH"));
+                infoDTO.setSubscriptionTier(subscriptionTierDTO);
                 apiSubscriptionInfoDTOS.add(infoDTO);
             }
         } catch (SQLException e) {

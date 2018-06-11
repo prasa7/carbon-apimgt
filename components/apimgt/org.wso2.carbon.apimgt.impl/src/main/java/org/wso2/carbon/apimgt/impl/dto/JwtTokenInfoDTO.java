@@ -37,7 +37,7 @@ public class JwtTokenInfoDTO implements Serializable {
     private String keyType;
     private ApplicationDTO application;
     private List<SubscribedApiDTO> subscribedApiDTOList = new ArrayList<SubscribedApiDTO>();
-    private Map<String, SubscriptionPolicyDTO> subscriptionPolicyDTOList = new HashMap<String, SubscriptionPolicyDTO>();
+    private Map<String, SubscriptionTierDTO> subscriptionPolicyDTOList = new HashMap<String, SubscriptionTierDTO>();
 
     public String getSubject() {
         return subject;
@@ -127,11 +127,11 @@ public class JwtTokenInfoDTO implements Serializable {
         this.subscribedApiDTOList = subscribedApiDTOList;
     }
 
-    public Map<String, SubscriptionPolicyDTO> getSubscriptionPolicyDTOList() {
+    public Map<String, SubscriptionTierDTO> getSubscriptionPolicyDTOList() {
         return subscriptionPolicyDTOList;
     }
 
-    public void setSubscriptionPolicyDTOList(Map<String, SubscriptionPolicyDTO> subscriptionPolicyDTOList) {
+    public void setSubscriptionPolicyDTOList(Map<String, SubscriptionTierDTO> subscriptionPolicyDTOList) {
         this.subscriptionPolicyDTOList = subscriptionPolicyDTOList;
     }
 
