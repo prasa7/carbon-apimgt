@@ -2874,6 +2874,9 @@ public class SQLConstants {
                 "AND (ALIAS=? OR END_POINT=?)";
 
         public static final String DELETE_CERTIFICATES = "DELETE FROM AM_CERTIFICATE_METADATA WHERE TENANT_ID=? " +
-                "AND (ALIAS=? OR END_POINT=?)";
+                "AND ALIAS=?";
+
+        public static final String CERTIFICATE_COUNT_QUERY = "SELECT COUNT(*) AS count FROM AM_CERTIFICATE_METADATA " +
+                "WHERE TENANT_ID=?";
     }
 }
