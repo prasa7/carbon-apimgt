@@ -5170,6 +5170,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
     @Override
     public int addCertificate(String userName, String certificate, String alias, String endpoint)
             throws APIManagementException {
+
         ResponseCode responseCode = ResponseCode.INTERNAL_SERVER_ERROR;
         CertificateManager certificateManager = new CertificateManagerImpl();
         String tenantDomain = MultitenantUtils.getTenantDomain(userName);
@@ -5196,6 +5197,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
 
     @Override
     public int deleteCertificate(String userName, String alias, String endpoint) throws APIManagementException {
+
         ResponseCode responseCode = ResponseCode.INTERNAL_SERVER_ERROR;
         CertificateManager certificateManager = new CertificateManagerImpl();
         String tenantDomain = MultitenantUtils.getTenantDomain(userName);
@@ -5221,12 +5223,14 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
 
     @Override
     public boolean isConfigured() {
+
         CertificateManager certificateManager = new CertificateManagerImpl();
         return certificateManager.isConfigured();
     }
 
     @Override
     public List<CertificateMetadataDTO> getCertificates(String userName) throws APIManagementException {
+
         CertificateManager certificateManager = new CertificateManagerImpl();
         int tenantId = 0;
         try {
@@ -5241,6 +5245,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
     @Override
     public List<CertificateMetadataDTO> searchCertificates(int tenantId, String alias, String endpoint) throws
             APIManagementException {
+
         CertificateManager certificateManager = new CertificateManagerImpl();
         return certificateManager.getCertificates(tenantId, alias, endpoint);
     }
@@ -5282,6 +5287,7 @@ class APIProviderImpl extends AbstractAPIManager implements APIProvider {
 
     @Override
     public ByteArrayInputStream getCertificateContent(String alias) throws APIManagementException {
+
         return new CertificateManagerImpl().getCertificateContent(alias);
     }
 
