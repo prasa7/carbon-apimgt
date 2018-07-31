@@ -291,7 +291,6 @@ public class CertificateMgtDAO {
             preparedStatement = connection.prepareStatement(deleteCertQuery);
             preparedStatement.setInt(1, tenantId);
             preparedStatement.setString(2, alias);
-            preparedStatement.setString(3, endpoint);
             result = preparedStatement.executeUpdate() == 1;
             connection.commit();
             connection.setAutoCommit(initialAutoCommit);
