@@ -936,7 +936,7 @@
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
         <version.commons-collections>3.2.2.wso2v1</version.commons-collections>
         <rx.java.version>1.2.0.wso2v1</rx.java.version>
-        <testng.version>6.9.10</testng.version>
+        <testng.version>7.3.0</testng.version>
         <org.wso2.orbit.org.apache.solr.version>5.2.1.wso2v1</org.wso2.orbit.org.apache.solr.version>
         <org.wso2.orbit.org.apache.solr.import.version>[5.2.1,5.3.0)</org.wso2.orbit.org.apache.solr.import.version>
         <maven.shadeplugin.version>2.4.1</maven.shadeplugin.version>
